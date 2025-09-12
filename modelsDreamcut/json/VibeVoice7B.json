@@ -1,0 +1,52 @@
+{
+    "type": "object",
+    "properties": {
+      "script": {
+        "type": "string",
+        "description": "The script to be converted into speech. Can be formatted with 'Speaker X:' prefixes for multi-speaker dialogues. The model supports English (EN) and Chinese (ZH).",
+        "required": true
+      },
+      "speakers": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "preset": {
+              "type": "string",
+              "description": "The voice preset to use for this speaker. 'Default' selects a default voice. Other presets are language-specific.",
+              "enum": [
+                "Default",
+                "Alice [EN]",
+                "Alice [EN] (Background Music)",
+                "Carter [EN]",
+                "Frank [EN]",
+                "Maya [EN]",
+                "Anchen [ZH] (Background Music)",
+                "Bowen [ZH]",
+                "Xinran [ZH]"
+              ]
+            }
+          }
+        },
+        "description": "List of speakers to use for the script.",
+        "required": true
+      },
+      "seed": {
+        "type": "integer",
+        "description": "Random seed for reproducible generation.",
+        "required": false
+      },
+      "cfg_scale": {
+        "type": "number",
+        "description": "CFG (Classifier-Free Guidance) scale. Higher values increase adherence to the text.",
+        "default": 1.3,
+        "minimum": 1,
+        "maximum": 2,
+        "required": false
+      }
+    },
+    "required": [
+      "script",
+      "speakers"
+    ]
+  }
