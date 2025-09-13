@@ -28,6 +28,7 @@ import YourDesignsContent from "@/components/YourDesignsContent";
 export default function AIDesignToolV2() {
   // États locaux pour le prompt et la visibilité de la modale de connexion
   const [prompt, setPrompt] = useState("");
+  const [initialMedia, setInitialMedia] = useState<MediaItem[]>([]);
   const [showLoginModal, setShowLoginModal] = useState(false);
   const [showChatInterface, setShowChatInterface] = useState(false);
   const [activeTab, setActiveTab] = useState<"ai" | "designs" | "templates">("ai");
@@ -89,6 +90,8 @@ export default function AIDesignToolV2() {
   const handleAuthenticatedSend = (promptText: string, media: MediaItem[]) => {
     console.log("Utilisateur connecté. Envoi du prompt :", promptText);
     console.log("Médias sélectionnés :", media);
+    // Stocker les médias pour les transmettre à ChatInterface
+    setInitialMedia(media);
     // Afficher l'interface de chat
     setShowChatInterface(true);
   };
@@ -102,7 +105,11 @@ export default function AIDesignToolV2() {
       {showChatInterface && (
         <ChatInterface
           initialPrompt={prompt}
-          onBack={() => setShowChatInterface(false)}
+          initialMedia={initialMedia}
+          onBack={() => {
+            setShowChatInterface(false);
+            setInitialMedia([]); // Nettoyer les médias lors du retour
+          }}
           user={user}
         />
       )}

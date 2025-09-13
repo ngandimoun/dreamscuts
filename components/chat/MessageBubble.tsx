@@ -1,7 +1,9 @@
 "use client"
 
 import { Message } from "./types";
-import { User, Bot, Sparkles, CheckCircle } from "lucide-react";
+import { MediaItem } from "./mediaTypes";
+import { User, Bot, Sparkles, CheckCircle, Play, Pause, Volume2 } from "lucide-react";
+import { useState } from "react";
 
 interface MessageBubbleProps {
   message: Message;
@@ -11,6 +13,125 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.type === "user";
   const isConceptionSummary = message.isConceptionSummary;
   const isAssistantResponse = message.isAssistantResponse;
+  const [playingAudio, setPlayingAudio] = useState<string | null>(null);
+
+  // Helper function to render a single media item
+  const renderMediaItem = (media: MediaItem, isInGrid = false, index = 0) => {
+    const isAudio = media.type === 'audio';
+    const isVideo = media.type === 'video';
+    const isImage = media.type === 'image';
+    const isDocument = media.type === 'document';
+
+    if (isAudio) {
+      return (
+        <div key={`${media.id}_${index}`} className="bg-gray-100 dark:bg-gray-800 rounded-lg p-2 flex items-center gap-2 max-w-xs">
+          <button
+            type="button"
+            onClick={() => {
+              const audio = new Audio(media.url);
+              if (playingAudio === media.id) {
+                audio.pause();
+                setPlayingAudio(null);
+              } else {
+                audio.play();
+                setPlayingAudio(media.id);
+                audio.onended = () => setPlayingAudio(null);
+              }
+            }}
+            className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-500 text-white flex items-center justify-center hover:bg-blue-600 transition-colors"
+          >
+            {playingAudio === media.id ? (
+              <Pause className="w-3 h-3" />
+            ) : (
+              <Play className="w-3 h-3 ml-0.5" />
+            )}
+          </button>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1">
+              <Volume2 className="w-3 h-3 text-gray-500" />
+              <span className="text-xs font-medium truncate">{media.name}</span>
+            </div>
+            {media.duration && (
+              <span className="text-xs text-gray-500">
+                {Math.floor(media.duration / 60)}:{(media.duration % 60).toString().padStart(2, '0')}
+              </span>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    if (isVideo) {
+      const maxSize = isInGrid ? '150px' : '200px';
+      const maxWidth = isInGrid ? '200px' : '320px';
+      
+      return (
+        <div key={`${media.id}_${index}`} className="relative max-w-xs">
+          <video 
+            src={media.url} 
+            controls 
+            className="w-full h-auto rounded-lg"
+            poster={media.thumbnail}
+            style={{ 
+              maxHeight: maxSize,
+              maxWidth: maxWidth,
+              minHeight: '60px'
+            }}
+            preload="metadata"
+          />
+          {media.name && (
+            <div className="text-xs text-gray-500 mt-1 truncate">{media.name}</div>
+          )}
+        </div>
+      );
+    }
+
+    if (isImage) {
+      const maxSize = isInGrid ? '150px' : '200px';
+      const maxWidth = isInGrid ? '200px' : '320px';
+      
+      return (
+        <div key={`${media.id}_${index}`} className="relative max-w-xs">
+          <img 
+            src={media.url} 
+            alt={media.name || "Media"} 
+            className="w-full h-auto rounded-lg object-cover cursor-pointer hover:opacity-90 transition-opacity"
+            style={{ 
+              maxHeight: maxSize,
+              maxWidth: maxWidth,
+              minHeight: '60px'
+            }}
+            loading="lazy"
+          />
+          {media.name && (
+            <div className="text-xs text-gray-500 mt-1 truncate">{media.name}</div>
+          )}
+        </div>
+      );
+    }
+
+    if (isDocument) {
+      return (
+        <div key={`${media.id}_${index}`} className="bg-gray-100 dark:bg-gray-800 rounded-lg p-2 flex items-center gap-2 max-w-xs">
+          <div className="flex-shrink-0 w-6 h-6 rounded bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+            <span className="text-xs font-medium text-gray-600 dark:text-gray-300">
+              {media.name.split('.').pop()?.toUpperCase()}
+            </span>
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="text-xs font-medium truncate">{media.name}</div>
+            {media.fileSize && (
+              <span className="text-xs text-gray-500">
+                {(media.fileSize / 1024 / 1024).toFixed(1)} MB
+              </span>
+            )}
+          </div>
+        </div>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"}`}>
@@ -57,8 +178,23 @@ export default function MessageBubble({ message }: MessageBubbleProps) {
           
           <div className="text-sm leading-relaxed whitespace-pre-line">{message.content}</div>
           
-          {/* Affichage du média si présent */}
-          {message.mediaUrl && (
+          {/* Affichage des médias si présents */}
+          {(message.mediaItems && message.mediaItems.length > 0) && (
+            <div className="mt-3 space-y-2">
+              {message.mediaItems.length === 1 ? (
+                // Un seul média : affichage normal
+                renderMediaItem(message.mediaItems[0], false)
+              ) : (
+                // Plusieurs médias : grille responsive
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 max-w-md">
+                  {message.mediaItems.map((media, index) => renderMediaItem(media, true, index))}
+                </div>
+              )}
+            </div>
+          )}
+          
+          {/* Support pour l'ancien format mediaUrl (deprecated) */}
+          {message.mediaUrl && !message.mediaItems && (
             <div className="mt-3">
               {message.mediaUrl.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? (
                 <img 

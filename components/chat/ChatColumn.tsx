@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { Message } from "./types";
+import { MediaItem } from "./mediaTypes";
 import MessageBubble from "./MessageBubble";
 import ChatInput from "./ChatInput";
 import ThinkingState from "./ThinkingState";
 
 interface ChatColumnProps {
   messages: Message[];
-  onSendMessage: (content: string) => void;
+  onSendMessage: (content: string, mediaItems?: MediaItem[]) => void;
   isGenerating: boolean;
   generationSteps: string[];
   currentStep: number;
@@ -24,18 +25,20 @@ export default function ChatColumn({
   finalResult,
 }: ChatColumnProps) {
   const [inputValue, setInputValue] = useState("");
+  const [selectedMedia, setSelectedMedia] = useState<MediaItem[]>([]);
 
-  const handleSendMessage = () => {
-    if (inputValue.trim()) {
-      onSendMessage(inputValue.trim());
+  const handleSendMessage = (mediaItems?: MediaItem[]) => {
+    if (inputValue.trim() || (mediaItems && mediaItems.length > 0)) {
+      onSendMessage(inputValue.trim(), mediaItems);
       setInputValue("");
+      setSelectedMedia([]);
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      handleSendMessage();
+      handleSendMessage(selectedMedia);
     }
   };
 
@@ -43,22 +46,14 @@ export default function ChatColumn({
     <div className="flex flex-col h-full overflow-hidden">
       {/* Zone des messages avec scroll local uniquement */}
       <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
-        {messages.map((message) => (
-          <MessageBubble key={message.id} message={message} />
-        ))}
+        {messages
+          .filter((message) => message.type === "user")
+          .map((message) => (
+            <MessageBubble key={message.id} message={message} />
+          ))}
         
-        {/* État de réflexion de l'IA */}
+        {/* État de réflexion de l'IA - seulement pendant la génération */}
         {isGenerating && (
-          <ThinkingState 
-            generationSteps={generationSteps}
-            currentStep={currentStep}
-            isGenerating={isGenerating}
-            finalResult={finalResult}
-          />
-        )}
-        
-        {/* Afficher le résultat final même quand la génération est terminée */}
-        {!isGenerating && finalResult && (
           <ThinkingState 
             generationSteps={generationSteps}
             currentStep={currentStep}
@@ -73,9 +68,11 @@ export default function ChatColumn({
         <ChatInput
           value={inputValue}
           onChange={setInputValue}
-          onSend={handleSendMessage}
+          onSend={() => handleSendMessage(selectedMedia)}
           onKeyPress={handleKeyPress}
           disabled={isGenerating}
+          selectedMedia={selectedMedia}
+          onMediaChange={setSelectedMedia}
         />
       </div>
     </div>

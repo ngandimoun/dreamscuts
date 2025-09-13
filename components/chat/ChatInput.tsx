@@ -1,6 +1,7 @@
 "use client"
 
 import UnifiedInput from "@/components/UnifiedInput";
+import { MediaItem } from "./mediaTypes";
 
 interface ChatInputProps {
   value: string;
@@ -8,6 +9,8 @@ interface ChatInputProps {
   onSend: () => void;
   onKeyPress: (e: React.KeyboardEvent) => void;
   disabled?: boolean;
+  selectedMedia?: MediaItem[];
+  onMediaChange?: (media: MediaItem[]) => void;
 }
 
 export default function ChatInput({
@@ -16,6 +19,8 @@ export default function ChatInput({
   onSend,
   onKeyPress,
   disabled = false,
+  selectedMedia = [],
+  onMediaChange,
 }: ChatInputProps) {
   return (
     <UnifiedInput
@@ -27,6 +32,8 @@ export default function ChatInput({
       showFileAttachment={true}
       mediaPreviewSize="large"
       placeholder="Describe your idea, and I'll bring it to life"
+      selectedMedia={selectedMedia}
+      onMediaChange={onMediaChange}
     />
   );
 }

@@ -32,8 +32,8 @@ export function ThemeToggle() {
       variant="outline"
       size="icon"
       onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-      className="w-8 h-8 rounded-full border-purple-200/50 bg-purple-100/50 hover:bg-purple-200/80 text-purple-800 transition-colors"
-      title={theme === "light" ? "Passer au thème sombre" : "Passer au thème clair"}
+      className="w-7 h-7 cursor-pointer rounded-full border-purple-200/50 bg-purple-100/50 hover:bg-purple-200/80 text-purple-800 transition-colors"
+      title={theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
     >
       {theme === "light" ? (
         <Moon className="h-4 w-4" />

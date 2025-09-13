@@ -27,6 +27,10 @@ interface UnifiedInputProps {
     className?: string;
     showFileAttachment?: boolean;
     mediaPreviewSize?: "small" | "large";
+    
+    // Props pour la gestion des médias
+    selectedMedia?: MediaItem[];
+    onMediaChange?: (media: MediaItem[]) => void;
 }
 
 export default function UnifiedInput({
@@ -40,10 +44,23 @@ export default function UnifiedInput({
     placeholder = "Describe your idea, and I'll bring it to life",
     className = "",
     showFileAttachment = false,
-    mediaPreviewSize = "small"
+    mediaPreviewSize = "small",
+    selectedMedia: externalSelectedMedia,
+    onMediaChange
 }: UnifiedInputProps) {
     const [attachedFile, setAttachedFile] = useState<File | null>(null);
-    const [selectedMedia, setSelectedMedia] = useState<MediaItem[]>([]);
+    const [internalSelectedMedia, setInternalSelectedMedia] = useState<MediaItem[]>([]);
+    
+    // Use external media if provided, otherwise use internal state
+    const selectedMedia = externalSelectedMedia || internalSelectedMedia;
+    const setSelectedMedia = (media: MediaItem[] | ((prev: MediaItem[]) => MediaItem[])) => {
+        if (onMediaChange) {
+            const newMedia = typeof media === 'function' ? media(selectedMedia) : media;
+            onMediaChange(newMedia);
+        } else {
+            setInternalSelectedMedia(media);
+        }
+    };
     const [showMediaModal, setShowMediaModal] = useState(false);
     const [previewMedia, setPreviewMedia] = useState<MediaItem | null>(null);
     const [showPreviewModal, setShowPreviewModal] = useState(false);
@@ -207,6 +224,8 @@ export default function UnifiedInput({
         if (e.key === 'Enter' && !e.shiftKey) {
             e.preventDefault();
             handleSubmit();
+            // Ne pas appeler onKeyPress si on a déjà géré l'événement
+            return;
         }
         onKeyPress?.(e);
     };
@@ -230,7 +249,7 @@ export default function UnifiedInput({
                 const audioUrl = URL.createObjectURL(audioBlob);
                 
                 const audioMediaItem: MediaItem = {
-                    id: `voice_${Date.now()}`,
+                    id: `voice_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
                     name: `Voice recording ${new Date().toLocaleTimeString()}`,
                     type: 'audio',
                     url: audioUrl,

@@ -52,14 +52,14 @@ interface ResultColumnProps {
 export function FinalResult({
   images = [
     {
-      id: "1",
+      id: `img_${Date.now()}_1_${Math.random().toString(36).substr(2, 9)}`,
       url: "/cute-little-girl-in-blue-hat-and-blue-dress-with-f.png",
       prompt: "Cute little girl in blue hat and blue dress with floral pattern",
       borderColor: "border-lime-400",
       type: "image",
     },
     {
-      id: "2",
+      id: `img_${Date.now()}_2_${Math.random().toString(36).substr(2, 9)}`,
       url: "/cute-anime-girl-in-green-dress-with-floral-pattern.png",
       prompt: "Cute anime girl in green dress with floral pattern and hat",
       borderColor: "border-orange-400",

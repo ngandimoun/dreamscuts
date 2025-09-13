@@ -65,7 +65,7 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
     }
 
     for (const file of Array.from(files)) {
-      const fileId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+      const fileId = `file_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       
       // Create initial media item with uploading state
       const newMedia: MediaItem = {

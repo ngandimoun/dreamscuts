@@ -1,9 +1,12 @@
+import { MediaItem } from "./mediaTypes";
+
 export interface Message {
   id: string;
   type: "user" | "assistant";
   content: string;
   timestamp: Date;
-  mediaUrl?: string;
+  mediaUrl?: string; // Deprecated: use mediaItems instead
+  mediaItems?: MediaItem[]; // Support for multiple media items
   isConceptionSummary?: boolean;
   isAssistantResponse?: boolean;
 }
