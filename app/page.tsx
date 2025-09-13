@@ -118,7 +118,7 @@ export default function AIDesignToolV2() {
 
       {/* Interface par défaut - masquée pendant le chat */}
       {!showChatInterface && (
-        <div className="min-h-screen font-sans bg-background custom-scrollbar">
+        <div className="min-h-screen font-sans bg-background">
           {/* Conteneur du header avec masque de fondu */}
           <div
             className="absolute top-0 left-0 w-full h-1/2 dark:h-0 bg-gradient-to-r from-[#abf4fd] via-blue-100 to-purple-300"

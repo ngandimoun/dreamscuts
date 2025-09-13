@@ -193,7 +193,7 @@
 }
 
 .scrollbar-thin::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-track {
@@ -222,7 +222,7 @@ body.chat-active {
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+  width: 4px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -251,9 +251,51 @@ body.chat-active {
   background: rgba(156, 163, 175, 0.5);
 }
 
-/* Désactiver le scroll global pour toute l'application */
-body {
+/* Désactiver le scroll global seulement quand l'interface de chat est active */
+body.chat-active {
   overflow: hidden;
+}
+
+/* Scroll personnalisé pour le body principal */
+body {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Appliquer le scroll personnalisé au html et body pour le scroll du navigateur */
+html, body {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.5) transparent;
+}
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  width: 4px;
+}
+
+html::-webkit-scrollbar-track, body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb, body::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 4px;
+}
+
+html::-webkit-scrollbar-thumb:hover, body::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.7);
+}
+
+/* Mode sombre pour le scroll du navigateur */
+.dark html, .dark body {
+  scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+}
+
+.dark html::-webkit-scrollbar-thumb, .dark body::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+}
+
+.dark html::-webkit-scrollbar-thumb:hover, .dark body::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
 }
 
 /* Styles pour le redimensionnement des colonnes */
