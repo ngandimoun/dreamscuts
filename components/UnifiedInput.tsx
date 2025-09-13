@@ -1,9 +1,10 @@
 "use client"
 
-import { useState, useRef } from "react";
-import { Paperclip, X, Plus, Mic, ArrowRight, Video, Music, FileText } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { Paperclip, X, Plus, Mic, ArrowRight, Video, Music, FileText, Play, Pause, Info, Edit3 } from "lucide-react";
 import MediaModal from "./chat/MediaModal";
 import MediaPreviewModal from "./chat/MediaPreviewModal";
+import DescriptionModal from "./chat/DescriptionModal";
 import { MediaItem } from "./chat/mediaTypes";
 import AspectRatioSelector from "@/components/ui/aspect-ratio-selector";
 import ModelSelector from "@/components/ui/model-selector";
@@ -51,9 +52,31 @@ export default function UnifiedInput({
     const [aspectRatio, setAspectRatio] = useState("16:9");
     const [selectedModel, setSelectedModel] = useState("claude-4-sonnet");
     const fileInputRef = useRef<HTMLInputElement>(null);
+    
+    // États pour le preview au survol
+    const [hoveredMedia, setHoveredMedia] = useState<MediaItem | null>(null);
+    const [hoverPosition, setHoverPosition] = useState<{ x: number; y: number } | null>(null);
+    const [showHoverPreview, setShowHoverPreview] = useState(false);
+    const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+    const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const videoRef = useRef<HTMLVideoElement>(null);
+    
+    // États pour la gestion des descriptions
+    const [showDescriptionModal, setShowDescriptionModal] = useState(false);
+    const [editingMedia, setEditingMedia] = useState<MediaItem | null>(null);
+    const [showDescriptionTooltip, setShowDescriptionTooltip] = useState<string | null>(null);
 
     // Accès au store pour l'authentification
     const { user, setPromptBeforeLogin } = useAppStore();
+
+    // Nettoyage des timeouts
+    useEffect(() => {
+        return () => {
+            if (hoverTimeoutRef.current) {
+                clearTimeout(hoverTimeoutRef.current);
+            }
+        };
+    }, []);
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -78,7 +101,44 @@ export default function UnifiedInput({
         setSelectedMedia(prev => prev.filter(media => media.id !== mediaId));
     };
 
-    const handleMediaPreview = (media: MediaItem, event: React.MouseEvent) => {
+    const handleMediaHover = (media: MediaItem, event: React.MouseEvent) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const viewportWidth = window.innerWidth;
+        const previewWidth = 320; // Largeur du preview
+        
+        // Positionner à droite par défaut, mais à gauche si pas assez de place
+        let x = rect.right + 10;
+        if (x + previewWidth > viewportWidth) {
+            x = rect.left - previewWidth - 10;
+        }
+        
+        setHoveredMedia(media);
+        setHoverPosition({
+            x: Math.max(10, x), // Éviter de sortir à gauche
+            y: rect.top,
+        });
+        
+        // Délai avant d'afficher le preview
+        hoverTimeoutRef.current = setTimeout(() => {
+            setShowHoverPreview(true);
+            // Pour les vidéos, démarrer la lecture automatiquement
+            if (media.type === 'video') {
+                setIsVideoPlaying(true);
+            }
+        }, 300);
+    };
+
+    const handleMediaHoverLeave = () => {
+        if (hoverTimeoutRef.current) {
+            clearTimeout(hoverTimeoutRef.current);
+        }
+        setShowHoverPreview(false);
+        setHoveredMedia(null);
+        setHoverPosition(null);
+        setIsVideoPlaying(false);
+    };
+
+    const handleMediaClick = (media: MediaItem, event: React.MouseEvent) => {
         const rect = event.currentTarget.getBoundingClientRect();
         setPreviewMedia(media);
         setPreviewPosition({ x: rect.left + rect.width / 2, y: rect.top });
@@ -89,6 +149,29 @@ export default function UnifiedInput({
         setShowPreviewModal(false);
         setPreviewMedia(null);
         setPreviewPosition(null);
+    };
+
+    // Fonctions pour gérer les descriptions
+    const handleEditDescription = (media: MediaItem) => {
+        setEditingMedia(media);
+        setShowDescriptionModal(true);
+    };
+
+    const handleSaveDescription = (description: string) => {
+        if (editingMedia) {
+            setSelectedMedia(prev => prev.map(media => 
+                media.id === editingMedia.id 
+                    ? { ...media, description: description.trim() || undefined }
+                    : media
+            ));
+        }
+        setShowDescriptionModal(false);
+        setEditingMedia(null);
+    };
+
+    const handleCloseDescriptionModal = () => {
+        setShowDescriptionModal(false);
+        setEditingMedia(null);
     };
 
     // Détermine si le bouton d'envoi doit être actif
@@ -195,13 +278,14 @@ export default function UnifiedInput({
 
                             {/* Zone des previews des médias */}
                             {selectedMedia.length > 0 && (
-                                <div className="flex flex-wrap gap-2 mt-3 bg-gradient-to-r from-[#defbff] to-purple-100 -mx-4 -mb-4 px-4 pb-4 pt-3 rounded-b-2xl">
+                                <div className="flex flex-wrap gap-2 mt-3 bg-gradient-to-r from-[#defbff] to-purple-100 dark:from-cyan-300 dark:to-purple-300 -mx-4 -mb-4 px-4 pb-4 pt-3 rounded-b-2xl">
                                     {selectedMedia.map((media) => (
                                         <div key={media.id} className="relative group">
                                             <div
                                                 className={`${previewSize} bg-white rounded-lg border-2 border-gray-200 overflow-hidden shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-200 cursor-pointer`}
-                                                onMouseEnter={(e) => handleMediaPreview(media, e)}
-                                                onMouseLeave={handleMediaPreviewClose}
+                                                onMouseEnter={(e) => handleMediaHover(media, e)}
+                                                onMouseLeave={handleMediaHoverLeave}
+                                                onClick={(e) => handleMediaClick(media, e)}
                                             >
                                                 {media.type === 'image' ? (
                                                     <img
@@ -209,11 +293,18 @@ export default function UnifiedInput({
                                                         alt={media.name}
                                                         className="w-full h-full object-cover"
                                                     />
+                                                ) : media.type === 'video' ? (
+                                                    <div className="w-full h-full relative flex items-center justify-center bg-gray-50">
+                                                        <Video className="w-6 h-6 text-gray-500" />
+                                                        {isVideoPlaying && hoveredMedia?.id === media.id && (
+                                                            <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                                                <Pause className="w-4 h-4 text-white" />
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center bg-gray-50">
-                                                        {media.type === 'video' ? (
-                                                            <Video className="w-6 h-6 text-gray-500" />
-                                                        ) : media.type === 'audio' ? (
+                                                        {media.type === 'audio' ? (
                                                             <Music className="w-6 h-6 text-gray-500" />
                                                         ) : (
                                                             <FileText className="w-6 h-6 text-gray-500" />
@@ -221,6 +312,25 @@ export default function UnifiedInput({
                                                     </div>
                                                 )}
                                             </div>
+                                            
+                                            {/* Bouton d'information pour la description */}
+                                            <button
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    handleEditDescription(media);
+                                                }}
+                                                onMouseEnter={() => {
+                                                    if (media.description) {
+                                                        setShowDescriptionTooltip(media.id);
+                                                    }
+                                                }}
+                                                onMouseLeave={() => setShowDescriptionTooltip(null)}
+                                                className="absolute -top-2 -left-2 w-5 h-5 bg-blue-500 hover:bg-blue-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                                                title={media.description ? "Edit description" : "Add a description"}
+                                            >
+                                                <Info className="w-3 h-3" />
+                                            </button>
+                                            
                                             {/* Bouton de suppression */}
                                             <button
                                                 onClick={() => removeSelectedMedia(media.id)}
@@ -228,12 +338,14 @@ export default function UnifiedInput({
                                             >
                                                 <X className="w-3 h-3" />
                                             </button>
+                                            
                                             {/* Nom du fichier pour les grandes previews */}
                                             {mediaPreviewSize === "large" && (
                                                 <div className="mt-1 text-xs text-gray-600 text-center truncate max-w-16">
                                                     {media.name.length > 12 ? `${media.name.substring(0, 12)}...` : media.name}
                                                 </div>
                                             )}
+                                            
                                         </div>
                                     ))}
                                 </div>
@@ -270,8 +382,90 @@ export default function UnifiedInput({
             <MediaPreviewModal
                 isOpen={showPreviewModal}
                 media={previewMedia}
-                position={previewPosition}
+                onClose={handleMediaPreviewClose}
             />
+
+            {/* Modal de description */}
+            <DescriptionModal
+                isOpen={showDescriptionModal}
+                media={editingMedia}
+                onClose={handleCloseDescriptionModal}
+                onSave={handleSaveDescription}
+            />
+
+            {/* Preview au survol */}
+            {showHoverPreview && hoveredMedia && hoverPosition && (
+                <div
+                    className="fixed z-50 pointer-events-none"
+                    style={{
+                        left: `${hoverPosition.x}px`,
+                        top: `${hoverPosition.y}px`,
+                        transform: 'translateY(-50%)',
+                    }}
+                >
+                    <div className="bg-background border border-gray-200 rounded-lg shadow-2xl p-3">
+                        <div className="relative w-80 h-48">
+                            {hoveredMedia.type === 'image' ? (
+                                <img
+                                    src={hoveredMedia.url}
+                                    alt={hoveredMedia.name}
+                                    className="w-full h-full object-contain rounded"
+                                />
+                            ) : hoveredMedia.type === 'video' ? (
+                                <div className="w-full h-full relative bg-black rounded overflow-hidden">
+                                    <video
+                                        ref={videoRef}
+                                        src={hoveredMedia.url}
+                                        className="w-full h-full object-contain"
+                                        autoPlay={isVideoPlaying}
+                                        muted
+                                        loop
+                                        onPlay={() => setIsVideoPlaying(true)}
+                                        onPause={() => setIsVideoPlaying(false)}
+                                    />
+                                    <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                                        {isVideoPlaying ? (
+                                            <Pause className="w-8 h-8 text-white" />
+                                        ) : (
+                                            <Play className="w-8 h-8 text-white" />
+                                        )}
+                                    </div>
+                                </div>
+                            ) : hoveredMedia.type === 'audio' ? (
+                                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded">
+                                    <div className="text-center">
+                                        <Music className="w-12 h-12 text-gray-500 mx-auto mb-2" />
+                                        <p className="text-sm text-gray-600">{hoveredMedia.name}</p>
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded">
+                                    <div className="text-center">
+                                        <FileText className="w-12 h-12 text-gray-500 mx-auto mb-2" />
+                                        <p className="text-sm text-gray-600">{hoveredMedia.name}</p>
+                                    </div>
+                                </div>
+                            )}
+                            <div className="absolute bottom-2 left-2 right-2 bg-black/70 text-white text-xs p-2 rounded">
+                                <p className="truncate font-medium">{hoveredMedia.name}</p>
+                                <p className="text-gray-300 capitalize">{hoveredMedia.source}</p>
+                                {hoveredMedia.description && (
+                                    <p className="text-gray-200 mt-1 text-xs line-clamp-2">{hoveredMedia.description}</p>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Tooltip de description */}
+            {showDescriptionTooltip && selectedMedia.find(m => m.id === showDescriptionTooltip)?.description && (
+                <div className="fixed z-50 pointer-events-none">
+                    <div className="bg-gray-900 text-white text-xs rounded-lg p-2 shadow-lg max-w-xs">
+                        {selectedMedia.find(m => m.id === showDescriptionTooltip)?.description}
+                    </div>
+                </div>
+            )}
 
             {/* Input file caché (optionnel) */}
             {showFileAttachment && (

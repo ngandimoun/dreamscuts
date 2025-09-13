@@ -23,8 +23,6 @@ import UnifiedInput from "@/components/UnifiedInput";
 import { MediaItem } from "@/components/chat/mediaTypes";
 // Import des composants d'interface
 import YourDesignsContent from "@/components/YourDesignsContent";
-import TemplatesContent from "@/components/TemplatesContent";
-
 
 export default function AIDesignToolV2() {
   // États locaux pour le prompt et la visibilité de la modale de connexion
@@ -158,12 +156,6 @@ export default function AIDesignToolV2() {
                       <Folder className="w-4 h-4" /> Your designs
                     </button>
                     <button
-                      onClick={() => setActiveTab("templates")}
-                      className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors text-gray-600 dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-gray-500"
-                    >
-                      <FileText className="w-4 h-4" /> Templates
-                    </button>
-                    <button
                       onClick={() => setActiveTab("ai")}
                       className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors text-purple-800 dark:text-purple-50 bg-gradient-to-r from-cyan-100/70 to-purple-200/70 shadow-sm border border-purple-200/50"
                     >
@@ -213,15 +205,6 @@ export default function AIDesignToolV2() {
                         <Folder className="w-4 h-4" /> Your designs
                       </button>
                       <button
-                        onClick={() => setActiveTab("templates")}
-                        className={`flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors ${activeTab === "templates"
-                            ? "text-purple-800 bg-gradient-to-r from-cyan-100/70 to-purple-200/70 shadow-sm border border-purple-200/50"
-                            : "text-gray-600 dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-gray-500"
-                          }`}
-                      >
-                        <FileText className="w-4 h-4" /> Templates
-                      </button>
-                      <button
                         onClick={() => setActiveTab("ai")}
                         className="flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-medium transition-colors text-gray-600 dark:text-gray-50 hover:bg-gray-100 dark:hover:bg-gray-500"
                       >
@@ -235,12 +218,6 @@ export default function AIDesignToolV2() {
                   {activeTab === "designs" && (
                     <div className="w-full max-w-7xl h-[calc(100vh-260px)]">
                       <YourDesignsContent />
-                    </div>
-                  )}
-
-                  {activeTab === "templates" && (
-                    <div className="w-full max-w-7xl h-[calc(100vh-270px)]">
-                      <TemplatesContent />
                     </div>
                   )}
                 </div>
