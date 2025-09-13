@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react";
-import { X, Upload, Palette, Image as ImageIcon, FileText, Video, Music, Sparkles, Search, Eye, Play, ChevronDown } from "lucide-react";
+import { X, Upload, Palette, Image as ImageIcon, FileText, Video, Music, Sparkles, Search, Eye, Play, ChevronDown, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -30,6 +30,9 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
   const [searchQuery, setSearchQuery] = useState('');
   const [templates, setTemplates] = useState<MediaItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMoreContent, setHasMoreContent] = useState(true);
   const [previewMedia, setPreviewMedia] = useState<MediaItem | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   
@@ -37,6 +40,7 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
   const { user } = useAppStore();
   const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [uploadingFiles, setUploadingFiles] = useState<Set<string>>(new Set());
 
   // Load user designs when modal opens and user is available
@@ -171,12 +175,21 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
   // Charger les templates depuis les APIs
   useEffect(() => {
     if (activeTab === 'templates') {
-      loadTemplates();
+      // Reset pagination when changing filters
+      setCurrentPage(1);
+      setTemplates([]);
+      setHasMoreContent(true);
+      loadTemplates(1, true);
     }
   }, [activeTab, activeSubMenu, activeCategory, searchQuery]);
 
-  const loadTemplates = async () => {
-    setLoading(true);
+  const loadTemplates = async (page: number = 1, reset: boolean = false) => {
+    if (reset) {
+      setLoading(true);
+    } else {
+      setLoadingMore(true);
+    }
+    
     try {
       let results: MediaItem[] = [];
       const query = searchQuery || activeCategory;
@@ -185,22 +198,39 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
 
       switch (activeSubMenu) {
         case 'images':
-          results = (hasSearchQuery || hasCategoryQuery) ? await mediaService.getImages(query) : await mediaService.getPopularImages();
+          results = (hasSearchQuery || hasCategoryQuery) ? 
+            await mediaService.getImages(query, page, 20) : 
+            await mediaService.getPopularImages(page, 20);
           break;
         case 'videos':
-          results = (hasSearchQuery || hasCategoryQuery) ? await mediaService.getVideos(query) : await mediaService.getPopularVideos();
+          results = (hasSearchQuery || hasCategoryQuery) ? 
+            await mediaService.getVideos(query, page, 20) : 
+            await mediaService.getPopularVideos(page, 20);
           break;
         case 'sounds':
-          results = (hasSearchQuery || hasCategoryQuery) ? await mediaService.getSounds(query) : await mediaService.getPopularSounds();
+          results = (hasSearchQuery || hasCategoryQuery) ? 
+            await mediaService.getSounds(query, page, 20) : 
+            await mediaService.getPopularSounds(page, 20);
           break;
       }
 
-      setTemplates(results);
+      if (reset) {
+        setTemplates(results);
+      } else {
+        setTemplates(prev => [...prev, ...results]);
+      }
+      
+      // Check if we have more content to load
+      setHasMoreContent(results.length === 20);
+      
     } catch (error) {
       console.error('Error loading templates:', error);
-      setTemplates([]);
+      if (reset) {
+        setTemplates([]);
+      }
     } finally {
       setLoading(false);
+      setLoadingMore(false);
     }
   };
 
@@ -208,16 +238,33 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
     setActiveSubMenu(subMenu);
     setActiveCategory('');
     setSearchQuery('');
+    setCurrentPage(1);
+    setTemplates([]);
+    setHasMoreContent(true);
   };
 
   const handleCategorySelect = (categoryQuery: string) => {
     setActiveCategory(categoryQuery);
     setSearchQuery('');
+    setCurrentPage(1);
+    setTemplates([]);
+    setHasMoreContent(true);
   };
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
     setActiveCategory('');
+    setCurrentPage(1);
+    setTemplates([]);
+    setHasMoreContent(true);
+  };
+
+  const handleLoadMore = () => {
+    if (!loadingMore && hasMoreContent) {
+      const nextPage = currentPage + 1;
+      setCurrentPage(nextPage);
+      loadTemplates(nextPage, false);
+    }
   };
 
   const handlePreviewMedia = (media: MediaItem) => {
@@ -393,7 +440,18 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
             </div>
           )}
 
-                     <div className="flex-1 overflow-y-auto scrollbar-thin">
+                     <div 
+                       ref={scrollContainerRef}
+                       className="flex-1 overflow-y-auto custom-scrollbar"
+                       onScroll={(e) => {
+                         const container = e.currentTarget;
+                         const isNearBottom = container.scrollTop + container.clientHeight >= container.scrollHeight - 100;
+                         
+                         if (isNearBottom && !loadingMore && hasMoreContent && activeTab === 'templates') {
+                           handleLoadMore();
+                         }
+                       }}
+                     >
             {loading || (activeTab === 'uploads' && isLoadingMedia) ? (
               <div className="flex items-center justify-center py-12">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
@@ -540,6 +598,29 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
                     </ImageHoverPreview>
                   );
                 })}
+              </div>
+            )}
+            
+            {/* Bouton Load More pour les templates */}
+            {activeTab === 'templates' && hasMoreContent && !loading && templates.length > 0 && (
+              <div className="flex justify-center py-6">
+                <Button
+                  onClick={handleLoadMore}
+                  disabled={loadingMore}
+                  className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg flex items-center gap-2"
+                >
+                  {loadingMore ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Loading more...
+                    </>
+                  ) : (
+                    <>
+                      <Loader2 className="w-4 h-4" />
+                      Load more {activeSubMenu}
+                    </>
+                  )}
+                </Button>
               </div>
             )}
           </div>

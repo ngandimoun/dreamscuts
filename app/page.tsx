@@ -111,7 +111,7 @@ export default function AIDesignToolV2() {
 
       {/* Interface par défaut - masquée pendant le chat */}
       {!showChatInterface && (
-        <div className="min-h-screen font-sans bg-background">
+        <div className="min-h-screen font-sans bg-background custom-scrollbar">
           {/* Conteneur du header avec masque de fondu */}
           <div
             className="absolute top-0 left-0 w-full h-1/2 dark:h-0 bg-gradient-to-r from-[#abf4fd] via-blue-100 to-purple-300"
@@ -150,16 +150,16 @@ export default function AIDesignToolV2() {
                 <>
                   <div className="text-center mb-12 pt-16">
                     <div className="mb-10">
-                      <h1 className="text-5xl ibarra-real-nova mb-2">
-                        <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 bg-clip-text text-transparent dark:text-white">
+                      <h1 className="text-5xl bodoni-moda mb-2">
+                        <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 bg-clip-text text-transparent dark:bg-gradient-to-r dark:from-purple-600 dark:via-pink-500 dark:to-rose-500 dark:bg-clip-text dark:text-transparent">
                           If you can dream it
                         </span>
                       </h1>
-                      <h1 className="text-5xl ibarra-real-nova">
+                      <h2 className="text-5xl ibarra-real-nova">
                         <span className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 bg-clip-text text-transparent dark:text-white">
                           You can make it
                         </span>
-                      </h1>
+                      </h2>
                     </div>
                   </div>
 
@@ -206,16 +206,16 @@ export default function AIDesignToolV2() {
                   {/* Compact Header */}
                   <div className="text-center mb-8">
                     <div className="text-center mb-6">
-                      <h1 className="text-5xl ibarra-real-nova mb-2">
-                        <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 bg-clip-text text-transparent dark:text-white">
+                      <h1 className="text-5xl bodoni-moda mb-2">
+                        <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 bg-clip-text text-transparent">
                           If you can dream it
                         </span>
                       </h1>
-                      <h1 className="text-5xl ibarra-real-nova">
+                      <h2 className="text-5xl ibarra-real-nova">
                         <span className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 bg-clip-text text-transparent dark:text-white">
                           You can make it
                         </span>
-                      </h1>
+                      </h2>
                     </div>
 
                     {/* Tab Navigation */}

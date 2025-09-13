@@ -48,7 +48,7 @@ export default function UnifiedInput({
     const [previewMedia, setPreviewMedia] = useState<MediaItem | null>(null);
     const [showPreviewModal, setShowPreviewModal] = useState(false);
     const [previewPosition, setPreviewPosition] = useState<{ x: number; y: number } | null>(null);
-    const [aspectRatio, setAspectRatio] = useState("16:9");
+    const [aspectRatio, setAspectRatio] = useState("Smart Auto");
     const fileInputRef = useRef<HTMLInputElement>(null);
     
     // États pour le preview au survol

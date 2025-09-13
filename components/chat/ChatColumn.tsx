@@ -42,7 +42,7 @@ export default function ChatColumn({
   return (
     <div className="flex flex-col h-full overflow-hidden">
       {/* Zone des messages avec scroll local uniquement */}
-      <div className="flex-1 overflow-y-auto p-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+      <div className="flex-1 overflow-y-auto p-6 space-y-4 custom-scrollbar">
         {messages.map((message) => (
           <MessageBubble key={message.id} message={message} />
         ))}

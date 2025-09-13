@@ -136,3 +136,4 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 GRANT ALL ON user_media TO authenticated;
 GRANT EXECUTE ON FUNCTION get_user_media(UUID) TO authenticated;
 GRANT EXECUTE ON FUNCTION delete_user_media(UUID) TO authenticated;
+
