@@ -35,6 +35,7 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
   const [hasMoreContent, setHasMoreContent] = useState(true);
   const [previewMedia, setPreviewMedia] = useState<MediaItem | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
+  const [fullscreenImage, setFullscreenImage] = useState<MediaItem | null>(null);
   
   const { uploadedMedia, generatedMedia, addUploadedMedia, updateUploadedMedia, loadUserMediaFromDatabase, loadUserDesignsFromDatabase, isLoadingMedia } = useMediaStore();
   const { user } = useAppStore();
@@ -217,7 +218,12 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
       if (reset) {
         setTemplates(results);
       } else {
-        setTemplates(prev => [...prev, ...results]);
+        // Éviter les doublons en filtrant les IDs existants
+        setTemplates(prev => {
+          const existingIds = new Set(prev.map(media => media.id));
+          const newResults = results.filter(media => !existingIds.has(media.id));
+          return [...prev, ...newResults];
+        });
       }
       
       // Check if we have more content to load
@@ -270,6 +276,12 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
   const handlePreviewMedia = (media: MediaItem) => {
     setPreviewMedia(media);
     setShowPreviewModal(true);
+  };
+
+  const handleFullscreenImage = (media: MediaItem) => {
+    if (media.type === 'image') {
+      setFullscreenImage(media);
+    }
   };
 
   // Calculer le ratio d'aspect d'un média en utilisant width et height
@@ -465,12 +477,15 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
                   ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
                   : 'grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5'
               }`}>
-                {currentMedia.map((media) => {
+                {currentMedia.map((media, index) => {
+                  // Créer une clé unique en combinant l'ID avec l'index
+                  const uniqueKey = `${media.id}_${index}`;
+                  
                   // Utiliser SoundCard pour les sons
                   if (activeSubMenu === 'sounds' && media.type === 'audio') {
                     return (
                       <SoundCard
-                        key={media.id}
+                        key={uniqueKey}
                         media={media}
                         onSelect={onSelectMedia}
                         onPreview={handlePreviewMedia}
@@ -480,7 +495,7 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
 
                   // Utiliser le design standard pour les images et vidéos
                   return (
-                    <ImageHoverPreview key={media.id} media={media}>
+                    <ImageHoverPreview key={uniqueKey} media={media}>
                       <div
                         onClick={() => !media.isUploading && !media.uploadError && onSelectMedia(media)}
                         className={`group rounded-lg border transition-colors overflow-hidden ${
@@ -552,7 +567,19 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
                                   <ImageIcon className="w-4 h-4 text-gray-700" />
                                 )}
                               </div>
-                              {(media.type === 'video' || media.type === 'audio') && (
+                              {/* Icône d'œil pour les images (templates) et preview pour vidéos/audio */}
+                              {media.type === 'image' && activeTab === 'templates' ? (
+                                <button
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleFullscreenImage(media);
+                                  }}
+                                  className="bg-background rounded-full p-2 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                                  title="View full size"
+                                >
+                                  <Eye className="w-4 h-4 text-gray-700" />
+                                </button>
+                              ) : (media.type === 'video' || media.type === 'audio') && (
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation();
@@ -675,6 +702,46 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
             setPreviewMedia(null);
           }}
         />
+
+        {/* Modal d'image en plein écran */}
+        {fullscreenImage && (
+          <div 
+            className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+            onClick={() => setFullscreenImage(null)}
+          >
+            <div className="relative max-w-[95vw] max-h-[95vh] flex items-center justify-center">
+              {/* Bouton de fermeture */}
+              <button
+                onClick={() => setFullscreenImage(null)}
+                className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 transition-all duration-200 hover:scale-110"
+                title="Close"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Image en taille naturelle */}
+              <img
+                src={fullscreenImage.url}
+                alt={fullscreenImage.name}
+                className="max-w-full max-h-full object-contain rounded-lg shadow-2xl"
+                onClick={(e) => e.stopPropagation()}
+              />
+
+              {/* Informations de l'image */}
+              <div className="absolute bottom-4 left-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg p-3 text-white">
+                <h3 className="text-lg font-semibold truncate">
+                  {fullscreenImage.name}
+                </h3>
+                <p className="text-sm text-gray-300 capitalize">
+                  {fullscreenImage.source} • {fullscreenImage.type}
+                  {fullscreenImage.width && fullscreenImage.height && (
+                    <span> • {fullscreenImage.width} × {fullscreenImage.height}px</span>
+                  )}
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
