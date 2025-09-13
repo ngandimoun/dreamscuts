@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react";
-import { Paperclip, X, Plus, Mic, ArrowRight, Video, Music, FileText, Play, Pause, Info, Edit3 } from "lucide-react";
+import { Paperclip, X, Plus, Mic, ArrowRight, Video, Music, FileText, Play, Pause, Info, Edit3, Square, Trash2 } from "lucide-react";
 import MediaModal from "./chat/MediaModal";
 import MediaPreviewModal from "./chat/MediaPreviewModal";
 import DescriptionModal from "./chat/DescriptionModal";
@@ -49,7 +49,14 @@ export default function UnifiedInput({
     const [showPreviewModal, setShowPreviewModal] = useState(false);
     const [previewPosition, setPreviewPosition] = useState<{ x: number; y: number } | null>(null);
     const [aspectRatio, setAspectRatio] = useState("Smart Auto");
+    const [isRecording, setIsRecording] = useState(false);
+    const [recordedAudio, setRecordedAudio] = useState<MediaItem | null>(null);
+    const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+    const [audioDuration, setAudioDuration] = useState<number>(0);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const audioChunksRef = useRef<Blob[]>([]);
+    const audioRef = useRef<HTMLAudioElement | null>(null);
     
     // États pour le preview au survol
     const [hoveredMedia, setHoveredMedia] = useState<MediaItem | null>(null);
@@ -173,7 +180,7 @@ export default function UnifiedInput({
     };
 
     // Détermine si le bouton d'envoi doit être actif
-    const isSendActive = value.trim().length > 0 || selectedMedia.length > 0 || (showFileAttachment && attachedFile);
+    const isSendActive = value.trim().length > 0 || selectedMedia.length > 0 || recordedAudio || (showFileAttachment && attachedFile);
 
     const handleSubmit = () => {
         if (!isSendActive || disabled) return;
@@ -203,6 +210,96 @@ export default function UnifiedInput({
         }
         onKeyPress?.(e);
     };
+
+    // Fonctions pour l'enregistrement vocal
+    const startRecording = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorderRef.current = mediaRecorder;
+            audioChunksRef.current = [];
+
+            mediaRecorder.ondataavailable = (event) => {
+                if (event.data.size > 0) {
+                    audioChunksRef.current.push(event.data);
+                }
+            };
+
+            mediaRecorder.onstop = () => {
+                const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+                const audioUrl = URL.createObjectURL(audioBlob);
+                
+                const audioMediaItem: MediaItem = {
+                    id: `voice_${Date.now()}`,
+                    name: `Voice recording ${new Date().toLocaleTimeString()}`,
+                    type: 'audio',
+                    url: audioUrl,
+                    thumbnail: '', // Pas de thumbnail pour l'audio
+                    uploadedAt: new Date(),
+                    fileSize: audioBlob.size,
+                    mimeType: 'audio/wav',
+                    isGenerated: true,
+                    source: 'voice_recording'
+                };
+
+                setRecordedAudio(audioMediaItem);
+                setSelectedMedia(prev => [...prev, audioMediaItem]);
+                setAudioDuration(0); // Reset duration for new recording
+                
+                // Arrêter le stream
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            mediaRecorder.start();
+            setIsRecording(true);
+        } catch (error) {
+            console.error('Error starting recording:', error);
+            alert('Unable to access microphone. Please check permissions.');
+        }
+    };
+
+    const stopRecording = () => {
+        if (mediaRecorderRef.current && isRecording) {
+            mediaRecorderRef.current.stop();
+            setIsRecording(false);
+        }
+    };
+
+    const playRecordedAudio = () => {
+        if (recordedAudio && audioRef.current) {
+            if (isPlayingAudio) {
+                audioRef.current.pause();
+                setIsPlayingAudio(false);
+            } else {
+                audioRef.current.play();
+                setIsPlayingAudio(true);
+            }
+        }
+    };
+
+    const formatDuration = (seconds: number): string => {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };
+
+    const deleteRecordedAudio = () => {
+        if (recordedAudio) {
+            URL.revokeObjectURL(recordedAudio.url);
+            setRecordedAudio(null);
+            setAudioDuration(0);
+            setSelectedMedia(prev => prev.filter(media => media.id !== recordedAudio.id));
+        }
+    };
+
+    // Nettoyer les URLs d'audio quand le composant se démonte
+    useEffect(() => {
+        return () => {
+            if (recordedAudio) {
+                URL.revokeObjectURL(recordedAudio.url);
+            }
+        };
+    }, [recordedAudio]);
 
     const previewSize = mediaPreviewSize === "large" ? "w-16 h-16" : "w-10 h-10";
 
@@ -249,10 +346,20 @@ export default function UnifiedInput({
 
                                 <div className="flex items-center gap-2">
                                     <button
-                                        className="bg-gray-100 hover:bg-gray-200 rounded-full p-2 transition-colors"
+                                        onClick={isRecording ? stopRecording : startRecording}
+                                        className={`rounded-full p-2 transition-colors ${
+                                            isRecording 
+                                                ? 'bg-red-500 hover:bg-red-600 text-white animate-pulse' 
+                                                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                                        }`}
                                         disabled={disabled}
+                                        title={isRecording ? 'Stop recording' : 'Start voice recording'}
                                     >
-                                        <Mic className="w-5 h-5 text-gray-700" />
+                                        {isRecording ? (
+                                            <Square className="w-5 h-5" />
+                                        ) : (
+                                            <Mic className="w-5 h-5" />
+                                        )}
                                     </button>
 
                                     {/* Bouton d'envoi avec flèche */}
@@ -268,6 +375,54 @@ export default function UnifiedInput({
                                     </button>
                                 </div>
                             </div>
+
+                            {/* Preview de l'audio enregistré */}
+                            {recordedAudio && (
+                                <div className="mt-3 bg-gradient-to-r from-[#defbff] to-purple-100 dark:from-cyan-300 dark:to-purple-300 -mx-4 -mb-4 px-4 pb-4 pt-3 rounded-b-2xl">
+                                    <div className="flex items-center gap-3 p-3 bg-white rounded-lg border-2 border-purple-200 shadow-sm">
+                                        <div className="flex items-center gap-2">
+                                            <button
+                                                onClick={playRecordedAudio}
+                                                className="w-8 h-8 bg-purple-600 hover:bg-purple-700 text-white rounded-full flex items-center justify-center transition-colors"
+                                                title={isPlayingAudio ? 'Pause' : 'Play'}
+                                            >
+                                                {isPlayingAudio ? (
+                                                    <Pause className="w-4 h-4" />
+                                                ) : (
+                                                    <Play className="w-4 h-4" />
+                                                )}
+                                            </button>
+                                            <div className="flex flex-col">
+                                                <span className="text-sm font-medium text-gray-700">
+                                                    Voice recording
+                                                </span>
+                                                <span className="text-xs text-gray-500">
+                                                    {audioDuration > 0 ? formatDuration(audioDuration) : 'Loading...'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={deleteRecordedAudio}
+                                            className="ml-auto w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center transition-colors"
+                                            title="Delete recording"
+                                        >
+                                            <Trash2 className="w-3 h-3" />
+                                        </button>
+                                    </div>
+                                    <audio
+                                        ref={audioRef}
+                                        src={recordedAudio.url}
+                                        onEnded={() => setIsPlayingAudio(false)}
+                                        onPause={() => setIsPlayingAudio(false)}
+                                        onPlay={() => setIsPlayingAudio(true)}
+                                        onLoadedMetadata={(e) => {
+                                            const audio = e.currentTarget;
+                                            setAudioDuration(audio.duration);
+                                        }}
+                                        className="hidden"
+                                    />
+                                </div>
+                            )}
 
                             {/* Zone des previews des médias */}
                             {selectedMedia.length > 0 && (

@@ -6,7 +6,7 @@ export interface MediaItem {
   thumbnail?: string;
   uploadedAt: Date;
   isGenerated?: boolean;
-  source?: 'pexels' | 'pixabay' | 'unsplash' | 'freesound' | 'user-design';
+  source?: 'pexels' | 'pixabay' | 'unsplash' | 'freesound' | 'user-design' | 'voice_recording';
   originalData?: any;
   width?: number;
   height?: number;
