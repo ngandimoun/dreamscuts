@@ -27,8 +27,13 @@ import {
   FileText,
   ChevronDown,
   ChevronUp,
+  Save,
+  Check,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { User } from "@supabase/supabase-js"
+import { saveDesignToCollection, generateTitleFromPrompt, extractTagsFromPrompt, determineCategoryFromPrompt } from "@/lib/utils/saveDesign"
+import { useMediaStore } from "@/store/useMediaStore"
 
 interface GeneratedImage {
   id: string
@@ -41,6 +46,7 @@ interface GeneratedImage {
 interface ResultColumnProps {
   images?: GeneratedImage[]
   prompt?: string
+  user?: User | null
 }
 
 export function FinalResult({
@@ -61,6 +67,7 @@ export function FinalResult({
     },
   ],
   prompt = "Cute little girl in blue hat and blue dress with floral pattern",
+  user,
 }: ResultColumnProps) {
   const [likedImages, setLikedImages] = useState<Set<string>>(new Set())
   const [dislikedImages, setDislikedImages] = useState<Set<string>>(new Set())
@@ -69,6 +76,9 @@ export function FinalResult({
   const [isPlaying, setIsPlaying] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
+  const [savedImages, setSavedImages] = useState<Set<string>>(new Set())
+  const [savingImage, setSavingImage] = useState<string | null>(null)
+  const { loadUserDesignsFromDatabase } = useMediaStore()
 
   const handleLike = (imageId: string) => {
     const newLiked = new Set(likedImages)
@@ -98,6 +108,54 @@ export function FinalResult({
 
     setLikedImages(newLiked)
     setDislikedImages(newDisliked)
+  }
+
+  const handleSaveDesign = async (imageId: string) => {
+    if (!user) {
+      alert('Please sign in to save designs to your collection');
+      return;
+    }
+
+    const image = images.find(img => img.id === imageId);
+    if (!image) return;
+
+    setSavingImage(imageId);
+
+    try {
+      const title = generateTitleFromPrompt(image.prompt);
+      const tags = extractTagsFromPrompt(image.prompt);
+      const category = determineCategoryFromPrompt(image.prompt);
+
+      const result = await saveDesignToCollection(user, {
+        title,
+        description: `Generated from prompt: ${image.prompt}`,
+        imageUrl: image.url,
+        category,
+        tags,
+        prompt: image.prompt,
+        modelUsed: 'AI Generator', // You can make this dynamic based on actual model used
+        fileFormat: 'image',
+        aspectRatio: '1:1', // You can make this dynamic
+        resolution: '1024x1024', // You can make this dynamic
+      });
+
+      if (result.success) {
+        setSavedImages(prev => new Set([...prev, imageId]));
+        // Refresh the media store to show the new design
+        if (user) {
+          await loadUserDesignsFromDatabase(user);
+        }
+        // Show success message
+        console.log('Design saved successfully!');
+      } else {
+        alert(`Failed to save design: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error saving design:', error);
+      alert('Failed to save design. Please try again.');
+    } finally {
+      setSavingImage(null);
+    }
   }
 
   const imageEditingTools = [
@@ -180,6 +238,32 @@ export function FinalResult({
                     </div>
                   )}
                 </div>
+
+                {/* Save button */}
+                {user && (
+                  <div className="absolute bottom-2 right-2">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      className={cn(
+                        "w-6 h-6 p-0 rounded-full transition-all duration-200",
+                        savedImages.has(image.id) 
+                          ? "bg-green-500 hover:bg-green-600 text-white" 
+                          : "bg-white/90 hover:bg-white text-gray-700"
+                      )}
+                      onClick={() => handleSaveDesign(image.id)}
+                      disabled={savingImage === image.id}
+                    >
+                      {savingImage === image.id ? (
+                        <div className="w-3 h-3 border border-gray-400 border-t-transparent rounded-full animate-spin" />
+                      ) : savedImages.has(image.id) ? (
+                        <Check className="w-3 h-3" />
+                      ) : (
+                        <Save className="w-3 h-3" />
+                      )}
+                    </Button>
+                  </div>
+                )}
               </div>
             </Card>
           ))}

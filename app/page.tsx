@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 // Imports pour Supabase, Zustand et les composants d'authentification
 import { supabase } from "@/lib/supabase/client";
 import { useAppStore } from "@/store/useStore";
+import { useMediaStore } from "@/store/useMediaStore";
 import LoginModal from "@/components/auth/LoginModal";
 import UserProfile from "@/components/auth/UserProfile";
 
@@ -33,6 +34,7 @@ export default function AIDesignToolV2() {
 
   // Accès au store Zustand pour l'état global (utilisateur, prompt sauvegardé)
   const { user, setUser, promptBeforeLogin, setPromptBeforeLogin } = useAppStore();
+  const { loadUserMediaFromDatabase } = useMediaStore();
 
   // Effet pour gérer l'état d'authentification et restaurer le prompt après connexion
   useEffect(() => {
@@ -56,6 +58,10 @@ export default function AIDesignToolV2() {
       // Cela empêche la modale de se fermer lors des vérifications de session initiales.
       if (event === 'SIGNED_IN') {
         setShowLoginModal(false);
+        // Load user media when they sign in
+        if (session?.user?.id) {
+          loadUserMediaFromDatabase(session.user.id);
+        }
       }
     });
 
@@ -97,6 +103,7 @@ export default function AIDesignToolV2() {
         <ChatInterface
           initialPrompt={prompt}
           onBack={() => setShowChatInterface(false)}
+          user={user}
         />
       )}
 
@@ -142,9 +149,18 @@ export default function AIDesignToolV2() {
               {activeTab === "ai" && (
                 <>
                   <div className="text-center mb-12 pt-16">
-                    <h1 className="text-5xl ibarra-real-nova bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 bg-clip-text text-transparent dark:text-white mb-10">
-                      What will you design today?
-                    </h1>
+                    <div className="mb-10">
+                      <h1 className="text-5xl ibarra-real-nova mb-2">
+                        <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 bg-clip-text text-transparent dark:text-white">
+                          If you can dream it
+                        </span>
+                      </h1>
+                      <h1 className="text-5xl ibarra-real-nova">
+                        <span className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 bg-clip-text text-transparent dark:text-white">
+                          You can make it
+                        </span>
+                      </h1>
+                    </div>
                   </div>
 
                   {/* AI Tab Navigation */}
@@ -173,7 +189,7 @@ export default function AIDesignToolV2() {
                       mediaPreviewSize="small"
                     />
                     <p className="text-center text-xs text-gray-500/80 dark:text-gray-50 mt-4">
-                      Canva AI can make mistakes. Please check for accuracy.{" "}
+                      DreamCut AI can make mistakes. Please check for accuracy.{" "}
                       <button className="underline hover:no-underline">See terms</button>
                       {" • "}
                       <button className="underline hover:no-underline">Give feedback</button>
@@ -189,9 +205,18 @@ export default function AIDesignToolV2() {
                 <div className="w-full pt-8">
                   {/* Compact Header */}
                   <div className="text-center mb-8">
-                    <h1 className="text-5xl ibarra-real-nova bg-gradient-to-r from-blue-500 via-purple-500 to-blue-600 bg-clip-text text-transparent dark:text-white mb-6">
-                      What will you design today?
-                    </h1>
+                    <div className="text-center mb-6">
+                      <h1 className="text-5xl ibarra-real-nova mb-2">
+                        <span className="bg-gradient-to-r from-purple-600 via-pink-500 to-rose-500 bg-clip-text text-transparent dark:text-white">
+                          If you can dream it
+                        </span>
+                      </h1>
+                      <h1 className="text-5xl ibarra-real-nova">
+                        <span className="bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-600 bg-clip-text text-transparent dark:text-white">
+                          You can make it
+                        </span>
+                      </h1>
+                    </div>
 
                     {/* Tab Navigation */}
                     <div className="flex justify-center gap-2 mb-8">
@@ -217,7 +242,7 @@ export default function AIDesignToolV2() {
                   {/* Content Container */}
                   {activeTab === "designs" && (
                     <div className="w-full max-w-7xl h-[calc(100vh-260px)]">
-                      <YourDesignsContent />
+                      <YourDesignsContent user={user} />
                     </div>
                   )}
                 </div>

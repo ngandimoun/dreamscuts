@@ -1,95 +1,15 @@
 "use client"
 
-import { useState } from "react";
-import { Search, Filter, Grid3X3, List, Download, Share2, MoreVertical, Calendar, Eye, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Search, Filter, Grid3X3, List, Download, Share2, MoreVertical, Calendar, Eye, Heart, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import SharedHeader from "./SharedHeader";
 import { User } from "@supabase/supabase-js";
+import { getUserDesigns, getAvailableCategories, type Design, type DesignFilters } from "@/lib/api/designs";
 
-interface Design {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl: string;
-  category: string;
-  createdAt: string;
-  views: number;
-  likes: number;
-  tags: string[];
-}
-
-const mockDesigns: Design[] = [
-  {
-    id: "1",
-    title: "Modern Logo Design",
-    description: "Clean and minimalist logo for tech startup",
-    imageUrl: "/placeholder.jpg",
-    category: "Logo",
-    createdAt: "2024-01-15",
-    views: 1247,
-    likes: 89,
-    tags: ["logo", "minimalist", "tech"]
-  },
-  {
-    id: "2",
-    title: "E-commerce Website",
-    description: "Responsive design for online store",
-    imageUrl: "/placeholder.jpg",
-    category: "Website",
-    createdAt: "2024-01-10",
-    views: 2156,
-    likes: 156,
-    tags: ["website", "e-commerce", "responsive"]
-  },
-  {
-    id: "3",
-    title: "Mobile App UI",
-    description: "User interface for fitness tracking app",
-    imageUrl: "/placeholder.jpg",
-    category: "Mobile",
-    createdAt: "2024-01-08",
-    views: 1893,
-    likes: 234,
-    tags: ["mobile", "ui", "fitness"]
-  },
-  {
-    id: "4",
-    title: "Brand Identity",
-    description: "Complete brand package for restaurant",
-    imageUrl: "/placeholder.jpg",
-    category: "Branding",
-    createdAt: "2024-01-05",
-    views: 987,
-    likes: 67,
-    tags: ["branding", "restaurant", "identity"]
-  },
-  {
-    id: "5",
-    title: "Social Media Graphics",
-    description: "Instagram post templates for beauty brand",
-    imageUrl: "/placeholder.jpg",
-    category: "Social Media",
-    createdAt: "2024-01-03",
-    views: 3421,
-    likes: 298,
-    tags: ["social media", "instagram", "beauty"]
-  },
-  {
-    id: "6",
-    title: "Print Advertisement",
-    description: "Magazine ad for luxury car brand",
-    imageUrl: "/placeholder.jpg",
-    category: "Print",
-    createdAt: "2024-01-01",
-    views: 1567,
-    likes: 123,
-    tags: ["print", "advertisement", "luxury"]
-  }
-];
-
-const categories = ["All", "Logo", "Website", "Mobile", "Branding", "Social Media", "Print"];
+const defaultCategories = ["All", "Logo", "Website", "Mobile", "Branding", "Social Media", "Print"];
 
 interface YourDesignsProps {
   activeTab: "ai" | "designs" | "templates";
@@ -101,13 +21,66 @@ export default function YourDesigns({ activeTab, setActiveTab, user }: YourDesig
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [designs, setDesigns] = useState<Design[]>([]);
+  const [categories, setCategories] = useState<string[]>(defaultCategories);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  const filteredDesigns = mockDesigns.filter(design => {
-    const matchesCategory = selectedCategory === "All" || design.category === selectedCategory;
-    const matchesSearch = design.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         design.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         design.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchesCategory && matchesSearch;
+  // Fetch user designs and available categories
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!user) {
+        setDesigns([]);
+        setLoading(false);
+        return;
+      }
+
+      setLoading(true);
+      setError(null);
+
+      try {
+        // Fetch user designs
+        const filters: DesignFilters = {
+          category: selectedCategory === "All" ? undefined : selectedCategory,
+          search: searchQuery || undefined,
+        };
+
+        const { data: designsData, error: designsError } = await getUserDesigns(user, filters);
+        
+        if (designsError) {
+          setError(designsError);
+        } else {
+          setDesigns(designsData || []);
+        }
+
+        // Fetch available categories
+        const { data: categoriesData, error: categoriesError } = await getAvailableCategories();
+        
+        if (!categoriesError && categoriesData) {
+          const allCategories = ["All", ...categoriesData];
+          setCategories(allCategories);
+        }
+      } catch (err) {
+        setError("Failed to fetch designs");
+        console.error("Error fetching designs:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [user, selectedCategory, searchQuery]);
+
+  // Filter designs based on search query (client-side filtering for better UX)
+  const filteredDesigns = designs.filter(design => {
+    if (!searchQuery) return true;
+    
+    const searchLower = searchQuery.toLowerCase();
+    return (
+      design.title.toLowerCase().includes(searchLower) ||
+      (design.description && design.description.toLowerCase().includes(searchLower)) ||
+      design.tags.some(tag => tag.toLowerCase().includes(searchLower))
+    );
   });
 
   return (
@@ -181,31 +154,65 @@ export default function YourDesigns({ activeTab, setActiveTab, user }: YourDesig
             </div>
           </div>
 
+          {/* Loading State */}
+          {loading && (
+            <div className="flex items-center justify-center py-12">
+              <Loader2 className="w-8 h-8 animate-spin text-purple-600" />
+              <span className="ml-2 text-gray-600">Loading your designs...</span>
+            </div>
+          )}
+
+          {/* Error State */}
+          {error && (
+            <div className="text-center py-12">
+              <div className="w-24 h-24 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center">
+                <Search className="w-8 h-8 text-red-400" />
+              </div>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">Error loading designs</h3>
+              <p className="text-gray-600 mb-4">{error}</p>
+              <Button 
+                onClick={() => window.location.reload()} 
+                variant="outline"
+              >
+                Try Again
+              </Button>
+            </div>
+          )}
+
           {/* Designs Grid/List */}
-          <div className="custom-scrollbar overflow-y-auto max-h-[calc(100vh-300px)]">
-            {viewMode === "grid" ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredDesigns.map((design) => (
-                  <DesignCard key={design.id} design={design} />
-                ))}
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {filteredDesigns.map((design) => (
-                  <DesignListItem key={design.id} design={design} />
-                ))}
-              </div>
-            )}
-          </div>
+          {!loading && !error && (
+            <div className="custom-scrollbar overflow-y-auto max-h-[calc(100vh-300px)]">
+              {viewMode === "grid" ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredDesigns.map((design) => (
+                    <DesignCard key={design.id} design={design} />
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {filteredDesigns.map((design) => (
+                    <DesignListItem key={design.id} design={design} />
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
 
           {/* Empty State */}
-          {filteredDesigns.length === 0 && (
+          {!loading && !error && filteredDesigns.length === 0 && (
             <div className="text-center py-12">
               <div className="w-24 h-24 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                 <Search className="w-8 h-8 text-gray-400" />
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No designs found</h3>
-              <p className="text-gray-600">Try adjusting your search or filter criteria</p>
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                {user ? "No designs found" : "Please sign in to view your designs"}
+              </h3>
+              <p className="text-gray-600">
+                {user 
+                  ? "Try adjusting your search or filter criteria, or create your first design!"
+                  : "Sign in to start creating and managing your designs."
+                }
+              </p>
             </div>
           )}
         </main>
@@ -220,7 +227,7 @@ function DesignCard({ design }: { design: Design }) {
       {/* Image */}
       <div className="aspect-video bg-gray-100 relative overflow-hidden">
         <img
-          src={design.imageUrl}
+          src={design.image_url}
           alt={design.title}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
         />
@@ -246,19 +253,23 @@ function DesignCard({ design }: { design: Design }) {
           </Badge>
         </div>
         
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2">{design.description}</p>
+        {design.description && (
+          <p className="text-sm text-gray-600 mb-3 line-clamp-2">{design.description}</p>
+        )}
         
         {/* Tags */}
-        <div className="flex flex-wrap gap-1 mb-3">
-          {design.tags.slice(0, 2).map((tag) => (
-            <span key={tag} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-              {tag}
-            </span>
-          ))}
-          {design.tags.length > 2 && (
-            <span className="text-xs text-gray-500">+{design.tags.length - 2}</span>
-          )}
-        </div>
+        {design.tags && design.tags.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-3">
+            {design.tags.slice(0, 2).map((tag) => (
+              <span key={tag} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                {tag}
+              </span>
+            ))}
+            {design.tags.length > 2 && (
+              <span className="text-xs text-gray-500">+{design.tags.length - 2}</span>
+            )}
+          </div>
+        )}
 
         {/* Stats */}
         <div className="flex items-center justify-between text-xs text-gray-500">
@@ -274,7 +285,7 @@ function DesignCard({ design }: { design: Design }) {
           </div>
           <span className="flex items-center gap-1">
             <Calendar className="w-3 h-3" />
-            {new Date(design.createdAt).toLocaleDateString()}
+            {new Date(design.created_at).toLocaleDateString()}
           </span>
         </div>
       </div>
@@ -289,7 +300,7 @@ function DesignListItem({ design }: { design: Design }) {
         {/* Image */}
         <div className="w-32 h-24 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
           <img
-            src={design.imageUrl}
+            src={design.image_url}
             alt={design.title}
             className="w-full h-full object-cover"
           />
@@ -304,16 +315,20 @@ function DesignListItem({ design }: { design: Design }) {
             </Badge>
           </div>
           
-          <p className="text-sm text-gray-600 mb-2">{design.description}</p>
+          {design.description && (
+            <p className="text-sm text-gray-600 mb-2">{design.description}</p>
+          )}
           
           {/* Tags */}
-          <div className="flex flex-wrap gap-1 mb-3">
-            {design.tags.map((tag) => (
-              <span key={tag} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
-                {tag}
-              </span>
-            ))}
-          </div>
+          {design.tags && design.tags.length > 0 && (
+            <div className="flex flex-wrap gap-1 mb-3">
+              {design.tags.map((tag) => (
+                <span key={tag} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* Stats */}
           <div className="flex items-center justify-between text-xs text-gray-500">
@@ -330,7 +345,7 @@ function DesignListItem({ design }: { design: Design }) {
             <div className="flex items-center gap-2">
               <span className="flex items-center gap-1">
                 <Calendar className="w-3 h-3" />
-                {new Date(design.createdAt).toLocaleDateString()}
+                {new Date(design.created_at).toLocaleDateString()}
               </span>
               <Button size="sm" variant="outline">
                 <Share2 className="w-4 h-4" />

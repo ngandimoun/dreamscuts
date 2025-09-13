@@ -1,71 +1,44 @@
 import { create } from 'zustand';
 import { MediaItem } from '@/components/chat/mediaTypes';
+import { loadUserMedia } from '@/lib/api/userMedia';
+import { getUserDesigns, type Design } from '@/lib/api/designs';
+import { User } from '@supabase/supabase-js';
+
+// Helper function to convert Design to MediaItem
+const designToMediaItem = (design: Design): MediaItem => ({
+  id: design.id,
+  name: design.title,
+  type: 'image', // Designs are typically images
+  url: design.image_url,
+  thumbnail: design.image_url,
+  uploadedAt: new Date(design.created_at),
+  isGenerated: true,
+  source: 'user-design',
+  category: design.category,
+  description: design.description,
+  tags: design.tags,
+});
 
 interface MediaStore {
   uploadedMedia: MediaItem[];
   generatedMedia: MediaItem[];
+  isLoadingMedia: boolean;
   addUploadedMedia: (media: MediaItem) => void;
   addGeneratedMedia: (media: MediaItem) => void;
+  updateUploadedMedia: (mediaId: string, updates: Partial<MediaItem>) => void;
   removeUploadedMedia: (mediaId: string) => void;
   removeGeneratedMedia: (mediaId: string) => void;
   clearAllMedia: () => void;
+  loadUserMediaFromDatabase: (userId: string) => Promise<void>;
+  loadUserDesignsFromDatabase: (user: User) => Promise<void>;
+  setUploadedMedia: (media: MediaItem[]) => void;
+  setGeneratedMedia: (media: MediaItem[]) => void;
 }
 
-export const useMediaStore = create<MediaStore>((set) => ({
-  uploadedMedia: [
-    {
-      id: '1',
-      name: 'Nickel-OIL Logo (White Background)',
-      type: 'image',
-      url: '/placeholder-logo.png',
-      thumbnail: '/placeholder-logo.png',
-      uploadedAt: new Date(),
-    },
-    {
-      id: '2',
-      name: 'Bar Chart - Competitive Analysis',
-      type: 'image',
-      url: '/placeholder.jpg',
-      thumbnail: '/placeholder.jpg',
-      uploadedAt: new Date(),
-    },
-    {
-      id: '3',
-      name: 'Kunai Weapon',
-      type: 'image',
-      url: '/placeholder.svg',
-      thumbnail: '/placeholder.svg',
-      uploadedAt: new Date(),
-    },
-    {
-      id: '4',
-      name: 'Anime Character - Minato',
-      type: 'image',
-      url: '/placeholder-user.jpg',
-      thumbnail: '/placeholder-user.jpg',
-      uploadedAt: new Date(),
-    },
-  ],
-  generatedMedia: [
-    {
-      id: 'g1',
-      name: 'AI Generated Logo',
-      type: 'image',
-      url: '/placeholder-logo.svg',
-      thumbnail: '/placeholder-logo.svg',
-      uploadedAt: new Date(),
-      isGenerated: true,
-    },
-    {
-      id: 'g2',
-      name: 'AI Generated Illustration',
-      type: 'image',
-      url: '/placeholder.jpg',
-      thumbnail: '/placeholder.jpg',
-      uploadedAt: new Date(),
-      isGenerated: true,
-    },
-  ],
+export const useMediaStore = create<MediaStore>((set, get) => ({
+  uploadedMedia: [],
+  isLoadingMedia: false,
+  generatedMedia: [],
   
   addUploadedMedia: (media) =>
     set((state) => ({
@@ -75,6 +48,13 @@ export const useMediaStore = create<MediaStore>((set) => ({
   addGeneratedMedia: (media) =>
     set((state) => ({
       generatedMedia: [media, ...state.generatedMedia],
+    })),
+    
+  updateUploadedMedia: (mediaId, updates) =>
+    set((state) => ({
+      uploadedMedia: state.uploadedMedia.map((media) =>
+        media.id === mediaId ? { ...media, ...updates } : media
+      ),
     })),
     
   removeUploadedMedia: (mediaId) =>
@@ -92,4 +72,45 @@ export const useMediaStore = create<MediaStore>((set) => ({
       uploadedMedia: [],
       generatedMedia: [],
     }),
+    
+  setUploadedMedia: (media) =>
+    set({ uploadedMedia: media }),
+    
+  setGeneratedMedia: (media) =>
+    set({ generatedMedia: media }),
+    
+  loadUserMediaFromDatabase: async (userId) => {
+    set({ isLoadingMedia: true });
+    try {
+      const result = await loadUserMedia(userId);
+      if (result.success && result.media) {
+        set({ uploadedMedia: result.media });
+      } else {
+        console.error('Failed to load user media:', result.error);
+        // Keep existing media on error
+      }
+    } catch (error) {
+      console.error('Error loading user media:', error);
+    } finally {
+      set({ isLoadingMedia: false });
+    }
+  },
+  
+  loadUserDesignsFromDatabase: async (user) => {
+    set({ isLoadingMedia: true });
+    try {
+      const { data: designs, error } = await getUserDesigns(user);
+      if (error) {
+        console.error('Failed to load user designs:', error);
+        // Keep existing designs on error
+      } else if (designs) {
+        const mediaItems = designs.map(designToMediaItem);
+        set({ generatedMedia: mediaItems });
+      }
+    } catch (error) {
+      console.error('Error loading user designs:', error);
+    } finally {
+      set({ isLoadingMedia: false });
+    }
+  },
 }));

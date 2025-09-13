@@ -12,6 +12,10 @@ import { templateSubMenus, MediaCategory } from "@/lib/api/categories";
 import MediaPreviewModal from "./MediaPreviewModal";
 import ImageHoverPreview from "./ImageHoverPreview";
 import SoundCard from "./SoundCard";
+import { uploadUserMedia, getFileTypeFromMime, formatFileSize } from "@/lib/utils/storage";
+import { supabase } from "@/lib/supabase/client";
+import { useAppStore } from "@/store/useStore";
+import { useToast } from "@/hooks/use-toast";
 
 interface MediaModalProps {
   isOpen: boolean;
@@ -29,24 +33,113 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
   const [previewMedia, setPreviewMedia] = useState<MediaItem | null>(null);
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   
-  const { uploadedMedia, generatedMedia, addUploadedMedia } = useMediaStore();
+  const { uploadedMedia, generatedMedia, addUploadedMedia, updateUploadedMedia, loadUserMediaFromDatabase, loadUserDesignsFromDatabase, isLoadingMedia } = useMediaStore();
+  const { user } = useAppStore();
+  const { toast } = useToast();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadingFiles, setUploadingFiles] = useState<Set<string>>(new Set());
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Load user designs when modal opens and user is available
+  useEffect(() => {
+    if (isOpen && user && activeTab === 'designs') {
+      loadUserDesignsFromDatabase(user);
+    }
+  }, [isOpen, user, activeTab, loadUserDesignsFromDatabase]);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (!files) return;
+    if (!files || !user) {
+      if (!user) {
+        toast({
+          title: "Authentication Required",
+          description: "Please sign in to upload media files.",
+          variant: "destructive",
+        });
+      }
+      return;
+    }
 
     for (const file of Array.from(files)) {
+      const fileId = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+      
+      // Create initial media item with uploading state
       const newMedia: MediaItem = {
-        id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+        id: fileId,
         name: file.name,
-        type: getFileType(file.type),
-        url: URL.createObjectURL(file),
+        type: getFileTypeFromMime(file.type),
+        url: URL.createObjectURL(file), // Temporary local URL for preview
         thumbnail: URL.createObjectURL(file),
         uploadedAt: new Date(),
+        fileSize: file.size,
+        mimeType: file.type,
+        isUploading: true,
+        uploadProgress: 0,
       };
 
+      // Add to store immediately for UI feedback
       addUploadedMedia(newMedia);
+      setUploadingFiles(prev => new Set(prev).add(fileId));
+
+      try {
+        // Upload to Supabase
+        const uploadResult = await uploadUserMedia(
+          file,
+          user.id,
+          (progress) => {
+            // Update progress in store
+            updateUploadedMedia(fileId, { uploadProgress: progress });
+          }
+        );
+
+        if (uploadResult.success && uploadResult.url) {
+          // Update media item with Supabase URL and database ID
+          updateUploadedMedia(fileId, {
+            id: uploadResult.mediaId || fileId, // Use database ID if available
+            url: uploadResult.url,
+            thumbnail: uploadResult.url,
+            supabasePath: uploadResult.path,
+            supabaseBucket: 'dreamcut-assets',
+            isUploading: false,
+            uploadProgress: 100,
+            uploadError: undefined,
+          });
+          
+          toast({
+            title: "Upload Successful",
+            description: `${file.name} has been uploaded successfully.`,
+          });
+        } else {
+          // Handle upload error
+          updateUploadedMedia(fileId, {
+            isUploading: false,
+            uploadError: uploadResult.error || 'Upload failed',
+          });
+          
+          toast({
+            title: "Upload Failed",
+            description: uploadResult.error || `Failed to upload ${file.name}`,
+            variant: "destructive",
+          });
+        }
+      } catch (error) {
+        console.error('Upload error:', error);
+        updateUploadedMedia(fileId, {
+          isUploading: false,
+          uploadError: error instanceof Error ? error.message : 'Upload failed',
+        });
+        
+        toast({
+          title: "Upload Error",
+          description: `An error occurred while uploading ${file.name}`,
+          variant: "destructive",
+        });
+      } finally {
+        setUploadingFiles(prev => {
+          const newSet = new Set(prev);
+          newSet.delete(fileId);
+          return newSet;
+        });
+      }
     }
 
     if (fileInputRef.current) {
@@ -54,12 +147,6 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
     }
   };
 
-  const getFileType = (mimeType: string): 'image' | 'video' | 'document' | 'audio' => {
-    if (mimeType.startsWith('image/')) return 'image';
-    if (mimeType.startsWith('video/')) return 'video';
-    if (mimeType.startsWith('audio/')) return 'audio';
-    return 'document';
-  };
 
   const getFileIcon = (type: string) => {
     switch (type) {
@@ -73,6 +160,13 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
         return <FileText className="w-4 h-4" />;
     }
   };
+
+  // Load user media from database when user changes or component mounts
+  useEffect(() => {
+    if (user && isOpen && activeTab === 'uploads') {
+      loadUserMediaFromDatabase(user.id);
+    }
+  }, [user, isOpen, activeTab, loadUserMediaFromDatabase]);
 
   // Charger les templates depuis les APIs
   useEffect(() => {
@@ -224,13 +318,19 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
                 {activeTab === 'uploads' ? 'Media uploads' : 'Generated designs'}
               </h3>
               {activeTab === 'uploads' && (
-                <Button
-                  onClick={() => fileInputRef.current?.click()}
-                  className="bg-purple-600 hover:bg-purple-700 text-white"
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Upload files
-                </Button>
+                <div className="flex flex-col items-end gap-2">
+                  <Button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    disabled={!user}
+                  >
+                    <Upload className="w-4 h-4 mr-2" />
+                    Upload files
+                  </Button>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    Max 100MB per file
+                  </p>
+                </div>
               )}
             </div>
           )}
@@ -294,10 +394,12 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
           )}
 
                      <div className="flex-1 overflow-y-auto scrollbar-thin">
-            {loading ? (
+            {loading || (activeTab === 'uploads' && isLoadingMedia) ? (
               <div className="flex items-center justify-center py-12">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
-                <span className="ml-3 text-gray-600 dark:text-gray-400">Loading {activeSubMenu}...</span>
+                <span className="ml-3 text-gray-600 dark:text-gray-400">
+                  {activeTab === 'uploads' ? 'Loading your media...' : `Loading ${activeSubMenu}...`}
+                </span>
               </div>
             ) : (
               <div className={`grid gap-4 pb-4 ${
@@ -322,8 +424,14 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
                   return (
                     <ImageHoverPreview key={media.id} media={media}>
                       <div
-                        onClick={() => onSelectMedia(media)}
-                        className="group cursor-pointer rounded-lg border border-gray-200 hover:border-purple-300 transition-colors overflow-hidden"
+                        onClick={() => !media.isUploading && !media.uploadError && onSelectMedia(media)}
+                        className={`group rounded-lg border transition-colors overflow-hidden ${
+                          media.isUploading 
+                            ? 'cursor-wait border-blue-300 bg-blue-50 dark:bg-blue-900/20' 
+                            : media.uploadError 
+                            ? 'cursor-not-allowed border-red-300 bg-red-50 dark:bg-red-900/20'
+                            : 'cursor-pointer border-gray-200 hover:border-purple-300'
+                        }`}
                       >
                         <div className="aspect-square bg-background relative overflow-hidden">
                           {media.type === 'image' ? (
@@ -350,6 +458,30 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
                           ) : (
                             <div className="w-full h-full flex items-center justify-center bg-background">
                               {getFileIcon(media.type)}
+                            </div>
+                          )}
+                          
+                          {/* Upload progress overlay */}
+                          {media.isUploading && (
+                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                              <div className="bg-background rounded-lg p-4 text-center">
+                                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mx-auto mb-2"></div>
+                                <p className="text-xs text-gray-700 dark:text-gray-300">
+                                  Uploading... {media.uploadProgress}%
+                                </p>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Upload error overlay */}
+                          {media.uploadError && (
+                            <div className="absolute inset-0 bg-red-500/20 flex items-center justify-center">
+                              <div className="bg-background rounded-lg p-3 text-center max-w-[80%]">
+                                <div className="text-red-600 text-xs mb-1">Upload Failed</div>
+                                <p className="text-xs text-gray-600 dark:text-gray-400 truncate" title={media.uploadError}>
+                                  {media.uploadError}
+                                </p>
+                              </div>
                             </div>
                           )}
                           
@@ -392,9 +524,16 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
                               </span>
                             </div>
                           ) : (
-                            <p className="text-xs text-gray-500 dark:text-gray-50">
-                              {media.uploadedAt.toLocaleDateString()}
-                            </p>
+                            <div className="flex items-center justify-between">
+                              <p className="text-xs text-gray-500 dark:text-gray-50">
+                                {media.uploadedAt.toLocaleDateString()}
+                              </p>
+                              {media.fileSize && (
+                                <span className="text-xs text-gray-400 dark:text-gray-500">
+                                  {formatFileSize(media.fileSize)}
+                                </span>
+                              )}
+                            </div>
                           )}
                         </div>
                       </div>
@@ -423,7 +562,9 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
               </h3>
               <p className="text-gray-500 dark:text-gray-50">
                 {activeTab === 'uploads' 
-                  ? 'Upload your first media file to get started'
+                  ? user 
+                    ? 'Upload your first media file to get started'
+                    : 'Please sign in to upload media files'
                   : activeTab === 'designs'
                   ? 'Generate your first design to see it here'
                   : `Try searching for different ${activeSubMenu} or browse categories`
@@ -439,7 +580,7 @@ export default function MediaModal({ isOpen, onClose, onSelectMedia }: MediaModa
           ref={fileInputRef}
           type="file"
           multiple
-          accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt"
+          accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.mp4,.mov,.avi,.wmv,.flv,.webm,.mp3,.wav,.ogg,.m4a,.aac"
           onChange={handleFileUpload}
           className="hidden"
         />

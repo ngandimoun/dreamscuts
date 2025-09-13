@@ -8,9 +8,10 @@ import ResultColumn from "./ResultColumn";
 interface ChatInterfaceProps {
   initialPrompt: string;
   onBack: () => void;
+  user?: any;
 }
 
-export default function ChatInterface({ initialPrompt, onBack }: ChatInterfaceProps) {
+export default function ChatInterface({ initialPrompt, onBack, user }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
@@ -162,6 +163,7 @@ export default function ChatInterface({ initialPrompt, onBack }: ChatInterfacePr
             generationSteps={generationSteps}
             currentStep={currentStep}
             finalResult={finalResult}
+            user={user}
           />
         </div>
       </div>

@@ -7,7 +7,6 @@ import MediaPreviewModal from "./chat/MediaPreviewModal";
 import DescriptionModal from "./chat/DescriptionModal";
 import { MediaItem } from "./chat/mediaTypes";
 import AspectRatioSelector from "@/components/ui/aspect-ratio-selector";
-import ModelSelector from "@/components/ui/model-selector";
 import { useAppStore } from "@/store/useStore";
 import { supabase } from "@/lib/supabase/client";
 
@@ -50,7 +49,6 @@ export default function UnifiedInput({
     const [showPreviewModal, setShowPreviewModal] = useState(false);
     const [previewPosition, setPreviewPosition] = useState<{ x: number; y: number } | null>(null);
     const [aspectRatio, setAspectRatio] = useState("16:9");
-    const [selectedModel, setSelectedModel] = useState("claude-4-sonnet");
     const fileInputRef = useRef<HTMLInputElement>(null);
     
     // États pour le preview au survol
@@ -245,11 +243,6 @@ export default function UnifiedInput({
                                     <AspectRatioSelector
                                         value={aspectRatio}
                                         onChange={setAspectRatio}
-                                        disabled={disabled}
-                                    />
-                                    <ModelSelector
-                                        value={selectedModel}
-                                        onChange={setSelectedModel}
                                         disabled={disabled}
                                     />
                                 </div>

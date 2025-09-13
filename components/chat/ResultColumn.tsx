@@ -9,6 +9,7 @@ interface ResultColumnProps {
   generationSteps: string[];
   currentStep: number;
   finalResult: string | null;
+  user?: any;
 }
 
 export default function ResultColumn({
@@ -16,6 +17,7 @@ export default function ResultColumn({
   generationSteps,
   currentStep,
   finalResult,
+  user,
 }: ResultColumnProps) {
   const [animationPhase, setAnimationPhase] = useState(0);
 
@@ -126,7 +128,7 @@ export default function ResultColumn({
         ) : (
           // Résultat final - Directement intégré sans conteneurs supplémentaires
           finalResult ? (
-            <FinalResult />
+            <FinalResult user={user} />
           ) : (
             // État d'attente avec design moderne
             <div className="h-full flex flex-col items-center justify-center p-6 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
