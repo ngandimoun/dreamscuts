@@ -78,7 +78,9 @@ interface AspectRatioSelectorProps {
 
 export default function AspectRatioSelector({ value = "Smart Auto", onChange, disabled = false }: AspectRatioSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [menuPosition, setMenuPosition] = useState<'bottom' | 'top'>('bottom');
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   // S'assurer que "Smart Auto" est sélectionné par défaut
   useEffect(() => {
@@ -90,6 +92,22 @@ export default function AspectRatioSelector({ value = "Smart Auto", onChange, di
   // Utiliser "Smart Auto" comme valeur par défaut si aucune valeur n'est fournie
   const currentValue = value || "Smart Auto";
   const selectedRatio = aspectRatios.find(ratio => ratio.value === currentValue) || aspectRatios[0];
+
+  // Calculer la position du menu pour éviter les débordements
+  useEffect(() => {
+    if (isOpen && buttonRef.current) {
+      const buttonRect = buttonRef.current.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const menuHeight = 256; // max-h-64 = 16rem = 256px
+      
+      // Si le menu déborderait en bas, l'afficher en haut
+      if (buttonRect.bottom + menuHeight > viewportHeight - 20) {
+        setMenuPosition('top');
+      } else {
+        setMenuPosition('bottom');
+      }
+    }
+  }, [isOpen]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -112,19 +130,20 @@ export default function AspectRatioSelector({ value = "Smart Auto", onChange, di
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        ref={buttonRef}
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
-        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 border border-gray-200 hover:bg-gray-200 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <div className="flex items-center gap-1">
           {selectedRatio.value === "Smart Auto" ? (
-            <div className="w-3 h-2 bg-background border border-gray-400 rounded flex items-center justify-center">
-              <div className="w-1.5 h-1 bg-gray-400 rounded-sm"></div>
+            <div className="w-3 h-2 bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-500 rounded flex items-center justify-center">
+              <div className="w-1.5 h-1 bg-gray-400 dark:bg-gray-500 rounded-sm"></div>
             </div>
           ) : (
             <div
-              className="w-3 bg-background border border-gray-400 rounded"
+              className="w-3 bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-500 rounded"
               style={{
                 aspectRatio: `${selectedRatio.width}/${selectedRatio.height}`
               }}
@@ -136,22 +155,27 @@ export default function AspectRatioSelector({ value = "Smart Auto", onChange, di
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-64 max-h-64 overflow-y-auto custom-scrollbar">
+        <div className={`absolute left-0 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-600 rounded-lg shadow-xl z-[9999] min-w-64 max-h-64 overflow-y-auto custom-scrollbar ${
+          menuPosition === 'top' ? 'bottom-full mb-1' : 'top-full mt-1'
+        }`}>
           {aspectRatios.map((ratio) => (
             <button
               key={ratio.value}
               type="button"
               onClick={() => handleSelect(ratio)}
-              className={`w-full flex items-center gap-3 px-3 py-3 text-xs hover:bg-gray-50 transition-colors ${ratio.value === currentValue ? 'bg-purple-50 text-purple-700' : 'text-gray-700'
-                }`}
+              className={`w-full flex items-center gap-3 px-3 py-3 text-xs hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors ${
+                ratio.value === currentValue 
+                  ? 'bg-purple-50 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300' 
+                  : 'text-gray-700 dark:text-gray-300'
+              }`}
             >
                {ratio.value === "Smart Auto" ? (
-                 <div className="w-3 h-2 bg-background border border-gray-400 rounded flex items-center justify-center">
-                   <div className="w-1.5 h-1 bg-gray-400 rounded-sm"></div>
+                 <div className="w-3 h-2 bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-500 rounded flex items-center justify-center">
+                   <div className="w-1.5 h-1 bg-gray-400 dark:bg-gray-500 rounded-sm"></div>
                  </div>
                ) : (
                  <div
-                   className="w-3 bg-background border border-gray-400 rounded"
+                   className="w-3 bg-white dark:bg-gray-800 border border-gray-400 dark:border-gray-500 rounded"
                    style={{
                      aspectRatio: `${ratio.width}/${ratio.height}`
                    }}
@@ -159,10 +183,10 @@ export default function AspectRatioSelector({ value = "Smart Auto", onChange, di
                )}
                <div className="flex-1 text-left">
                  <div className="font-medium">{ratio.label}</div>
-                 <div className="text-gray-500 text-xs mt-0.5">{ratio.description}</div>
+                 <div className="text-gray-500 dark:text-gray-400 text-xs mt-0.5">{ratio.description}</div>
                </div>
                {ratio.value === currentValue && (
-                 <Check className="w-3 h-3 text-purple-600" />
+                 <Check className="w-3 h-3 text-purple-600 dark:text-purple-400" />
                )}
             </button>
           ))}
