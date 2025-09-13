@@ -7,6 +7,7 @@ import MediaPreviewModal from "./chat/MediaPreviewModal";
 import DescriptionModal from "./chat/DescriptionModal";
 import { MediaItem } from "./chat/mediaTypes";
 import AspectRatioSelector from "@/components/ui/aspect-ratio-selector";
+import MediaTypeSelector from "@/components/ui/media-type-selector";
 import { useAppStore } from "@/store/useStore";
 import { supabase } from "@/lib/supabase/client";
 
@@ -66,6 +67,9 @@ export default function UnifiedInput({
     const [showPreviewModal, setShowPreviewModal] = useState(false);
     const [previewPosition, setPreviewPosition] = useState<{ x: number; y: number } | null>(null);
     const [aspectRatio, setAspectRatio] = useState("Smart Auto");
+    const [mediaType, setMediaType] = useState("image");
+    const [imageCount, setImageCount] = useState(1);
+    const [videoDuration, setVideoDuration] = useState(5);
     const [isRecording, setIsRecording] = useState(false);
     const [recordedAudio, setRecordedAudio] = useState<MediaItem | null>(null);
     const [isPlayingAudio, setIsPlayingAudio] = useState(false);
@@ -356,6 +360,15 @@ export default function UnifiedInput({
                                     >
                                         <Plus className="w-4 h-4" />
                                     </button>
+                                    <MediaTypeSelector
+                                        value={mediaType}
+                                        onChange={setMediaType}
+                                        disabled={disabled}
+                                        onImageCountChange={setImageCount}
+                                        onVideoDurationChange={setVideoDuration}
+                                        imageCount={imageCount}
+                                        videoDuration={videoDuration}
+                                    />
                                     <AspectRatioSelector
                                         value={aspectRatio}
                                         onChange={setAspectRatio}
