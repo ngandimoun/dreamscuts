@@ -5,18 +5,26 @@ import { Message } from "./types";
 import { MediaItem } from "./mediaTypes";
 import ChatColumn from "./ChatColumn";
 import ResultColumn from "./ResultColumn";
+import QueryAnalyzerIntegration from "./QueryAnalyzerIntegration";
 import { HomeIcon, Sidebar } from "lucide-react";
 import { Button } from "../ui/button";
 import { ThemeToggle } from "../ui/theme-toggle";
+import { useQueryAnalyzer, type BriefPackage } from "@/hooks/useQueryAnalyzer";
 
 interface ChatInterfaceProps {
   initialPrompt: string;
   initialMedia?: MediaItem[];
   onBack: () => void;
   user?: any;
+  initialParameters?: {
+    mediaType?: string;
+    aspectRatio?: string;
+    imageCount?: number;
+    videoDuration?: number;
+  };
 }
 
-export default function ChatInterface({ initialPrompt, initialMedia, onBack, user }: ChatInterfaceProps) {
+export default function ChatInterface({ initialPrompt, initialMedia, onBack, user, initialParameters }: ChatInterfaceProps) {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: `initial-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -26,10 +34,13 @@ export default function ChatInterface({ initialPrompt, initialMedia, onBack, use
       mediaItems: initialMedia || [],
     },
   ]);
-  const [isGenerating, setIsGenerating] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
   const [generationSteps, setGenerationSteps] = useState<string[]>([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [finalResult, setFinalResult] = useState<string | null>(null);
+  const [currentBrief, setCurrentBrief] = useState<BriefPackage | null>(null);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
+  const [userParameters, setUserParameters] = useState(initialParameters || {});
   
   // États pour le redimensionnement et la visibilité
   const [leftColumnWidth, setLeftColumnWidth] = useState(30); // 35% par défaut
@@ -73,73 +84,81 @@ export default function ChatInterface({ initialPrompt, initialMedia, onBack, use
     };
   }, [isResizing, handleMouseMove, handleMouseUp]);
 
-  // Simuler la génération des étapes et du résultat final
-  const simulateGeneration = async () => {
-    setIsGenerating(true);
+  // Real Query Analyzer integration
+  const handleAnalysisComplete = (brief: BriefPackage) => {
+    setCurrentBrief(brief);
+    setAnalysisError(null);
     
-    // Simuler les étapes de génération
+    // Update generation steps based on real analysis
     const steps = [
-      "Étape 1: Analyse de la demande",
-      "Étape 2: Conception de l'idée",
-      "Étape 3: Préparation des ressources",
-      "Étape 4: Génération du contenu",
-      "Étape 5: Finalisation et optimisation"
+      "Step 1: Query Analysis Complete",
+      "Step 2: Asset Processing Plan Ready",
+      "Step 3: Creative Options Generated",
+      "Step 4: Brief Package Created",
+      "Step 5: Ready for Next Steps"
     ];
     
     setGenerationSteps(steps);
-    
-    // Simuler l'affichage progressif des étapes
-    for (let i = 0; i < steps.length; i++) {
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      setCurrentStep(i + 1);
-    }
-    
-    // Simuler la génération du résultat final
-    await new Promise(resolve => setTimeout(resolve, 2000));
-    setFinalResult("Résultat généré avec succès !");
+    setCurrentStep(steps.length);
+    setFinalResult("Analysis completed successfully!");
     setIsGenerating(false);
     
-    // Ajouter les réponses de l'assistant au tableau des messages
-    addAssistantResponse();
+    // Add real assistant response based on brief
+    addRealAssistantResponse(brief);
   };
 
-  // Fonction pour ajouter la réponse de l'assistant
-  const addAssistantResponse = () => {
-    const conceptionSummary: Message = {
-      id: `assistant-conception-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+  const handleAnalysisError = (error: string) => {
+    setAnalysisError(error);
+    setIsGenerating(false);
+    setFinalResult("Analysis failed");
+    
+    // Add error message to chat
+    const errorMessage: Message = {
+      id: `error-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       type: "assistant",
-      content: `🎨 **Analyse de votre demande** : J'ai analysé votre prompt et identifié les éléments clés pour créer une image qui correspond exactement à vos attentes.
+      content: `❌ **Analysis Failed**: ${error}\n\nPlease try again with a different query or check your assets.`,
+      timestamp: new Date(),
+      isError: true,
+    };
+    setMessages(prev => [...prev, errorMessage]);
+  };
 
-💡 **Conception créative** : J'ai développé une approche artistique qui combine les éléments visuels que vous avez mentionnés avec des techniques modernes de design.
+  // Real assistant response based on brief analysis
+  const addRealAssistantResponse = (brief: BriefPackage) => {
+    const analysisSummary: Message = {
+      id: `assistant-analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      type: "assistant",
+      content: `🎯 **Query Analysis Complete** : I've analyzed your request and identified the key elements for your creative project.
 
-🔧 **Choix techniques** : J'ai sélectionné les meilleures méthodes de génération pour garantir un résultat de haute qualité et fidèle à votre vision.
+📊 **Asset Analysis** : Processed ${Object.keys(brief.analysis).length} asset types with specialized AI models.
 
-✨ **Innovation** : J'ai ajouté des touches créatives uniques pour rendre votre création vraiment spéciale.`,
+💡 **Creative Options** : Generated ${brief.plan.creativeOptions.length} creative approaches tailored to your vision.
+
+🔧 **Processing Plan** : Created a detailed plan for ${Object.keys(brief.plan.assetProcessing).length} assets with specific enhancement steps.
+
+✨ **Brief Package** : Your creative brief (ID: ${brief.briefId}) is ready for the next steps in the DreamCut pipeline!`,
       timestamp: new Date(),
       isConceptionSummary: true,
     };
 
-    const assistantResponse: Message = {
-      id: `assistant-response-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    const creativeOptions: Message = {
+      id: `assistant-options-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
       type: "assistant",
-      content: `🖼️ **Image créée** : Une composition artistique moderne qui capture l'essence de votre idée
+      content: `🎨 **Creative Options Generated** :
 
-🎯 **Détails techniques** : Résolution haute qualité, style cohérent, couleurs harmonieuses
+${brief.plan.creativeOptions.slice(0, 3).map((option, index) => 
+  `**Option ${index + 1}**: ${option.title || `Creative Approach ${index + 1}`}\n${option.description || 'AI-generated creative direction'}\n`
+).join('\n')}
 
-💎 **Points forts** : Design unique, composition équilibrée, impact visuel immédiat
+💰 **Cost Estimate** : ${brief.plan.costEstimate ? `${brief.plan.costEstimate.toFixed(2)} credits` : 'Calculating...'}
 
-L'image est maintenant prête dans la colonne de droite. Vous pouvez la télécharger ou la partager selon vos besoins !`,
+📋 **Next Steps** : Your brief is ready! The system will now proceed with asset processing and content generation based on your selected creative direction.`,
       timestamp: new Date(),
       isAssistantResponse: true,
     };
 
-    setMessages(prev => [...prev, conceptionSummary, assistantResponse]);
+    setMessages(prev => [...prev, analysisSummary, creativeOptions]);
   };
-
-  // Démarrer la simulation au montage du composant
-  useEffect(() => {
-    simulateGeneration();
-  }, []);
 
   const addMessage = (content: string, mediaItems?: MediaItem[]) => {
     const newMessage: Message = {
@@ -151,10 +170,12 @@ L'image est maintenant prête dans la colonne de droite. Vous pouvez la téléch
     };
     setMessages(prev => [...prev, newMessage]);
     
-    // Déclencher une nouvelle génération de réponse
-    if (content.trim() || (mediaItems && mediaItems.length > 0)) {
-      simulateGeneration();
-    }
+    // Reset states for new analysis
+    setCurrentBrief(null);
+    setAnalysisError(null);
+    setFinalResult(null);
+    setGenerationSteps([]);
+    setCurrentStep(0);
   };
 
   return (
@@ -201,6 +222,19 @@ L'image est maintenant prête dans la colonne de droite. Vous pouvez la téléch
               currentStep={currentStep}
               finalResult={finalResult}
             />
+            
+            {/* Query Analyzer Integration */}
+            {messages.length > 0 && !currentBrief && !analysisError && (
+              <div className="p-4 border-t border-gray-200">
+                <QueryAnalyzerIntegration
+                  query={messages[messages.length - 1]?.content || initialPrompt}
+                  mediaItems={messages[messages.length - 1]?.mediaItems || initialMedia || []}
+                  userParameters={userParameters}
+                  onAnalysisComplete={handleAnalysisComplete}
+                  onError={handleAnalysisError}
+                />
+              </div>
+            )}
           </div>
         )}
 
@@ -224,6 +258,10 @@ L'image est maintenant prête dans la colonne de droite. Vous pouvez la téléch
             currentStep={currentStep}
             finalResult={finalResult}
             user={user}
+            currentBrief={currentBrief}
+            analysisError={analysisError}
+            userParameters={userParameters}
+            mediaItems={messages[messages.length - 1]?.mediaItems || initialMedia || []}
           />
         </div>
       </div>

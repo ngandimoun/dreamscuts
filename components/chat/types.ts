@@ -9,6 +9,7 @@ export interface Message {
   mediaItems?: MediaItem[]; // Support for multiple media items
   isConceptionSummary?: boolean;
   isAssistantResponse?: boolean;
+  isError?: boolean;
 }
 
 export interface GenerationStep {

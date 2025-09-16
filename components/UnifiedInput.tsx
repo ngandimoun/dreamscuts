@@ -20,7 +20,7 @@ interface UnifiedInputProps {
     disabled?: boolean;
 
     // Props pour le mode authentification
-    onAuthenticatedSend?: (prompt: string, media: MediaItem[]) => void;
+    onAuthenticatedSend?: (prompt: string, media: MediaItem[], parameters?: any) => void;
     showLoginModal?: () => void;
 
     // Props pour la personnalisation
@@ -32,6 +32,14 @@ interface UnifiedInputProps {
     // Props pour la gestion des médias
     selectedMedia?: MediaItem[];
     onMediaChange?: (media: MediaItem[]) => void;
+    
+    // Props pour les paramètres utilisateur
+    onParametersChange?: (parameters: {
+        mediaType?: string;
+        aspectRatio?: string;
+        imageCount?: number;
+        videoDuration?: number;
+    }) => void;
 }
 
 export default function UnifiedInput({
@@ -47,7 +55,8 @@ export default function UnifiedInput({
     showFileAttachment = false,
     mediaPreviewSize = "small",
     selectedMedia: externalSelectedMedia,
-    onMediaChange
+    onMediaChange,
+    onParametersChange
 }: UnifiedInputProps) {
     const [attachedFile, setAttachedFile] = useState<File | null>(null);
     const [internalSelectedMedia, setInternalSelectedMedia] = useState<MediaItem[]>([]);
@@ -103,6 +112,20 @@ export default function UnifiedInput({
             }
         };
     }, []);
+
+    // Notify parent when parameters change
+    useEffect(() => {
+        if (onParametersChange) {
+            const parameters = {
+                mediaType,
+                aspectRatio,
+                imageCount,
+                videoDuration
+            };
+            console.log('[UnifiedInput] Sending parameters:', parameters);
+            onParametersChange(parameters);
+        }
+    }, [mediaType, aspectRatio, imageCount, videoDuration, onParametersChange]);
 
     const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -210,7 +233,14 @@ export default function UnifiedInput({
             // Mode authentification (comme dans app/page.tsx)
             if (user) {
                 // Utilisateur connecté, on peut traiter le prompt
-                onAuthenticatedSend(value, selectedMedia);
+                const parameters = {
+                    mediaType,
+                    aspectRatio,
+                    imageCount,
+                    videoDuration
+                };
+                console.log('[UnifiedInput] Submitting with parameters:', parameters);
+                onAuthenticatedSend(value, selectedMedia, parameters);
             } else {
                 // Utilisateur non connecté, sauvegarder et ouvrir la modale
                 setPromptBeforeLogin(value);

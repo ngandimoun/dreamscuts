@@ -1,0 +1,131 @@
+﻿{
+    "success":  true,
+    "brief":  {
+                  "id":  "brief_1757983248865_4uxsgp",
+                  "createdAt":  "2025-09-16T00:40:48.865Z",
+                  "userId":  "legacy_user",
+                  "userPrompt":  "build a professional video",
+                  "intent":  "video",
+                  "options":  {
+                                  "durationSeconds":  30,
+                                  "aspectRatio":  "16:9",
+                                  "imageCount":  1,
+                                  "budget":  null
+                              },
+                  "assets":  [
+
+                             ],
+                  "globalAnalysis":  {
+                                         "goal":  "Create video based on user requirements: \"build a professional video\"",
+                                         "constraints":  {
+                                                             "durationSeconds":  null,
+                                                             "aspectRatio":  null,
+                                                             "imageCount":  null,
+                                                             "budget":  null,
+                                                             "technicalLimitations":  [
+
+                                                                                      ]
+                                                         },
+                                         "assetRoles":  {
+
+                                                        },
+                                         "conflicts":  [
+
+                                                       ],
+                                         "opportunities":  [
+                                                               "Leverage provided assets for enhanced output quality",
+                                                               "Apply intelligent creative direction from query analysis",
+                                                               "Optimize delivery for target platform and audience",
+                                                               "Ensure professional production standards"
+                                                           ],
+                                         "qualityAssessment":  {
+                                                                   "overallViability":  0.85,
+                                                                   "technicalFeasibility":  0.9,
+                                                                   "creativeStrength":  0.9
+                                                               }
+                                     },
+                  "creativeOptions":  [
+                                          {
+                                              "id":  "creative_1",
+                                              "title":  "Create a corporate explainer video",
+                                              "description":  "Alternative creative approach",
+                                              "reasons":  [
+                                                              "enhances creative vision"
+                                                          ],
+                                              "estimatedWorkload":  "medium",
+                                              "viabilityScore":  0.7,
+                                              "technicalRequirements":  [
+
+                                                                        ]
+                                          },
+                                          {
+                                              "id":  "standard_production",
+                                              "title":  "Professional Standard Production",
+                                              "description":  "High-quality execution following industry best practices",
+                                              "reasons":  [
+                                                              "meets professional standards",
+                                                              "optimal asset utilization",
+                                                              "scalable approach"
+                                                          ],
+                                              "estimatedWorkload":  "medium",
+                                              "viabilityScore":  0.9,
+                                              "technicalRequirements":  [
+                                                                            "quality validation",
+                                                                            "format optimization"
+                                                                        ]
+                                          }
+                                      ],
+                  "recommendedPipeline":  {
+                                              "preprocessing":  [
+                                                                    "analyze input assets for quality and suitability",
+                                                                    "validate technical specifications",
+                                                                    "optimize assets for target output format",
+                                                                    "ensure consistency across all media types"
+                                                                ],
+                                              "generationModels":  {
+                                                                       "text":  "together-ai-llama-3-1-405b",
+                                                                       "image":  "replicate-sdxl-lightning",
+                                                                       "video":  "shotstack-edit",
+                                                                       "audio":  "elevenlabs-enhance"
+                                                                   },
+                                              "integration":  "unified-multi-stage-pipeline",
+                                              "costOptimization":  {
+                                                                       "estimatedCredits":  "varies by complexity and output requirements",
+                                                                       "optimizationTips":  [
+                                                                                                "use appropriate resolution for target platform",
+                                                                                                "batch similar processing operations",
+                                                                                                "leverage asset reuse opportunities",
+                                                                                                "implement progressive quality scaling"
+                                                                                            ]
+                                                                   }
+                                          },
+                  "warnings":  [
+
+                               ],
+                  "metadata":  {
+                                   "processingTimeMs":  6990,
+                                   "modelsUsed":  {
+                                                      "query":  "llama31_405b",
+                                                      "assets":  {
+
+                                                                 }
+                                                  },
+                                   "analysisDepth":  "comprehensive",
+                                   "pipelineVersion":  "2.0-unified",
+                                   "confidenceScore":  0.9
+                               }
+              },
+    "debug":  {
+                  "analysisSteps":  [
+                                        "query",
+                                        "assets",
+                                        "comprehensive_response"
+                                    ],
+                  "processingTime":  "8515ms",
+                  "modelsInvoked":  1,
+                  "confidence":  0.9,
+                  "assetsAnalyzed":  0,
+                  "queryAnalysisSuccess":  true,
+                  "assetAnalysisSuccess":  true
+              }
+}
