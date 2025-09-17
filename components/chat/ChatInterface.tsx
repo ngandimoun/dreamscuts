@@ -130,11 +130,11 @@ export default function ChatInterface({ initialPrompt, initialMedia, onBack, use
       type: "assistant",
       content: `🎯 **Query Analysis Complete** : I've analyzed your request and identified the key elements for your creative project.
 
-📊 **Asset Analysis** : Processed ${Object.keys(brief.analysis).length} asset types with specialized AI models.
+📊 **Asset Analysis** : Processed ${Object.keys(brief.analysis || {}).length} asset types with specialized AI models.
 
-💡 **Creative Options** : Generated ${brief.plan.creativeOptions.length} creative approaches tailored to your vision.
+💡 **Creative Options** : Generated ${brief.plan?.creativeOptions?.length || 0} creative approaches tailored to your vision.
 
-🔧 **Processing Plan** : Created a detailed plan for ${Object.keys(brief.plan.assetProcessing).length} assets with specific enhancement steps.
+🔧 **Processing Plan** : Created a detailed plan for ${Object.keys(brief.plan?.assetProcessing || {}).length} assets with specific enhancement steps.
 
 ✨ **Brief Package** : Your creative brief (ID: ${brief.briefId}) is ready for the next steps in the DreamCut pipeline!`,
       timestamp: new Date(),
@@ -146,11 +146,11 @@ export default function ChatInterface({ initialPrompt, initialMedia, onBack, use
       type: "assistant",
       content: `🎨 **Creative Options Generated** :
 
-${brief.plan.creativeOptions.slice(0, 3).map((option, index) => 
+${(brief.plan?.creativeOptions || []).slice(0, 3).map((option, index) => 
   `**Option ${index + 1}**: ${option.title || `Creative Approach ${index + 1}`}\n${option.description || 'AI-generated creative direction'}\n`
 ).join('\n')}
 
-💰 **Cost Estimate** : ${brief.plan.costEstimate ? `${brief.plan.costEstimate.toFixed(2)} credits` : 'Calculating...'}
+💰 **Cost Estimate** : ${brief.plan?.costEstimate ? `${brief.plan.costEstimate.toFixed(2)} credits` : 'Calculating...'}
 
 📋 **Next Steps** : Your brief is ready! The system will now proceed with asset processing and content generation based on your selected creative direction.`,
       timestamp: new Date(),

@@ -553,8 +553,49 @@ export async function POST(req: NextRequest) {
     
     console.log(`🎬 END OF EXPERT ANALYSIS 🎬\n`);
     
+    // 🎨 AUTOMATIC REFINER INTEGRATION
+    console.log('🎨 [Auto-Refiner] Starting automatic refinement...');
+    let refinedResponse = richResponse;
+    
+    try {
+      // Call the refiner with ONLY the CLEAN RICH JSON OUTPUT ESSENTIAL ANALYSIS DATA
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      const refinerResponse = await fetch(`${baseUrl}/api/dreamcut/refiner`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(directorGradeOutput), // Send ONLY the CLEAN RICH JSON OUTPUT
+      });
+      
+      if (refinerResponse.ok) {
+        const refinerJson = await refinerResponse.json();
+        refinedResponse = refinerJson;
+        console.log('🎨 [Auto-Refiner] Refinement completed successfully');
+        console.log('🎨 [Auto-Refiner] Creative profile applied:', refinerJson.creative_direction?.core_concept || 'General refinement');
+      } else {
+        console.warn('🎨 [Auto-Refiner] Refinement failed, using original analyzer output');
+        const errorText = await refinerResponse.text();
+        console.warn('🎨 [Auto-Refiner] Error:', errorText);
+      }
+    } catch (refinerError) {
+      console.warn('🎨 [Auto-Refiner] Refinement error, using original analyzer output:', refinerError);
+      // In development, the refiner might not be available, so we continue with original output
+    }
+    
     // Return in the format expected by the frontend
     if (isLegacyFormat) {
+      // Ensure creativeOptions is always an array
+      const creativeOptions = refinedResponse.creativeOptions || richResponse.creativeOptions || [];
+      
+      console.log('🎨 [Auto-Refiner] Final response structure:', {
+        hasCreativeOptions: !!creativeOptions,
+        creativeOptionsLength: creativeOptions.length,
+        creativeOptionsType: typeof creativeOptions,
+        refinedResponseKeys: Object.keys(refinedResponse),
+        richResponseKeys: Object.keys(richResponse)
+      });
+      
       // Legacy format response
       return NextResponse.json({
         success: true,
@@ -563,23 +604,23 @@ export async function POST(req: NextRequest) {
           createdAt: richResponse.createdAt,
           request: body, // Original request
           analysis: {
-            comprehensive: richResponse,
+            comprehensive: refinedResponse, // Use refined response
             // Include the director-grade final analysis
             final_analysis: finalAnalysis?.result || null,
           },
           plan: {
             assetProcessing: {},
-            creativeOptions: richResponse.creativeOptions,
+            creativeOptions: creativeOptions,
             costEstimate: 0,
           },
           status: 'analyzed' as const,
-          // Also include the rich format
-          ...richResponse,
+          // Also include the refined format
+          ...refinedResponse,
         },
       });
     } else {
-      // Modern format response
-      return NextResponse.json(richResponse);
+      // Modern format response - return refined JSON
+      return NextResponse.json(refinedResponse);
     }
 
   } catch (error) {

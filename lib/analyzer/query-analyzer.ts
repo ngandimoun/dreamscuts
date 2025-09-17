@@ -32,38 +32,38 @@ export const QueryAnalysisSchema = z.object({
     reasoning: z.string()
   }),
   modifiers: z.object({
-    style: z.array(z.string()).optional(),
-    mood: z.array(z.string()).optional(),
-    theme: z.array(z.string()).optional(),
-    time_period: z.string().optional(),
-    emotions: z.array(z.string()).optional(),
-    aesthetic: z.array(z.string()).optional(),
-    genre: z.array(z.string()).optional(),
-    technical_specs: z.array(z.string()).optional()
+    style: z.union([z.array(z.string()), z.null()]).optional(),
+    mood: z.union([z.array(z.string()), z.null()]).optional(),
+    theme: z.union([z.array(z.string()), z.null()]).optional(),
+    time_period: z.union([z.string(), z.array(z.string()), z.null()]).optional(),
+    emotions: z.union([z.array(z.string()), z.null()]).optional(),
+    aesthetic: z.union([z.array(z.string()), z.null()]).optional(),
+    genre: z.union([z.array(z.string()), z.null()]).optional(),
+    technical_specs: z.union([z.array(z.string()), z.null()]).optional()
   }),
   constraints: z.object({
     // Image constraints
-    image_count: z.number().nullable().optional(),
-    aspect_ratio: z.string().nullable().optional(),
-    resolution: z.string().nullable().optional(),
-    image_format: z.string().nullable().optional(),
+    image_count: z.union([z.number(), z.array(z.number())]).nullable().optional(),
+    aspect_ratio: z.union([z.string(), z.array(z.string())]).nullable().optional(),
+    resolution: z.union([z.string(), z.array(z.string())]).nullable().optional(),
+    image_format: z.union([z.string(), z.array(z.string())]).nullable().optional(),
     
     // Video constraints
-    duration_seconds: z.number().nullable().optional(),
-    fps: z.number().nullable().optional(),
-    video_format: z.string().nullable().optional(),
-    video_quality: z.string().nullable().optional(),
+    duration_seconds: z.union([z.number(), z.array(z.number())]).nullable().optional(),
+    fps: z.union([z.number(), z.array(z.number())]).nullable().optional(),
+    video_format: z.union([z.string(), z.array(z.string())]).nullable().optional(),
+    video_quality: z.union([z.string(), z.array(z.string())]).nullable().optional(),
     
     // Audio constraints
-    audio_length_seconds: z.number().nullable().optional(),
-    audio_format: z.string().nullable().optional(),
-    sample_rate: z.number().nullable().optional(),
+    audio_length_seconds: z.union([z.number(), z.array(z.number())]).nullable().optional(),
+    audio_format: z.union([z.string(), z.array(z.string())]).nullable().optional(),
+    sample_rate: z.union([z.number(), z.array(z.number())]).nullable().optional(),
     
     // General constraints
-    budget: z.number().nullable().optional(),
-    timeline: z.string().nullable().optional(),
-    platform: z.array(z.string()).nullable().optional(),
-    target_audience: z.string().nullable().optional()
+    budget: z.union([z.number(), z.array(z.number())]).nullable().optional(),
+    timeline: z.union([z.string(), z.array(z.string())]).nullable().optional(),
+    platform: z.union([z.array(z.string()), z.string()]).nullable().optional(),
+    target_audience: z.union([z.string(), z.array(z.string())]).nullable().optional()
   }),
   gaps: z.object({
     missing_duration: z.boolean().optional(),
