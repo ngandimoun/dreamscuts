@@ -1,0 +1,49 @@
+{
+  "timestamp": "2025-09-18T13:40:40.012Z",
+  "summary": {
+    "total": 3,
+    "passed": 0,
+    "failed": 3,
+    "successRate": 0
+  },
+  "errors": [
+    "Educational Explainer - Short Video: HTTP 500: Internal Server Error",
+    "Finance Explainer - Medium Video: HTTP 500: Internal Server Error",
+    "UGC Influencer - Long Video: HTTP 500: Internal Server Error"
+  ],
+  "details": [
+    {
+      "scenario": "Educational Explainer - Short Video",
+      "success": false,
+      "responseTime": null,
+      "validation": {
+        "valid": false,
+        "error": "HTTP 500: Internal Server Error"
+      },
+      "result": null,
+      "error": "HTTP 500: Internal Server Error"
+    },
+    {
+      "scenario": "Finance Explainer - Medium Video",
+      "success": false,
+      "responseTime": null,
+      "validation": {
+        "valid": false,
+        "error": "HTTP 500: Internal Server Error"
+      },
+      "result": null,
+      "error": "HTTP 500: Internal Server Error"
+    },
+    {
+      "scenario": "UGC Influencer - Long Video",
+      "success": false,
+      "responseTime": null,
+      "validation": {
+        "valid": false,
+        "error": "HTTP 500: Internal Server Error"
+      },
+      "result": null,
+      "error": "HTTP 500: Internal Server Error"
+    }
+  ]
+}

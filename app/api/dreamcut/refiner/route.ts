@@ -33,7 +33,7 @@ import {
   type RefinerOutput
 } from '@/lib/analyzer/refiner-schema';
 import { assessRefinerQuality, validateRefinerQuality } from '@/lib/analyzer/refiner-quality-utils';
-import { callLLM, validateLLMJSON } from '@/lib/llm';
+import { callLLMLegacy, validateLLMJSON } from '@/lib/llm';
 import { generateRefinerPrompt, getPromptStats } from '@/lib/analyzer/refiner-prompt-library';
 import { detectCreativeProfile, detectCreativeProfileEnhanced, applyCreativeProfile } from '@/lib/analyzer/creative-profiles';
 import { createClient } from '@supabase/supabase-js';
@@ -181,7 +181,7 @@ export async function POST(req: NextRequest) {
     console.log('🔧 [Refiner] Calling LLM for refinement...');
     
         // Call LLM with automatic fallback
-        const llmResult = await callLLM(prompt, { 
+        const llmResult = await callLLMLegacy(prompt, { 
           model: 'claude-3.5-haiku',
           maxTokens: 2048,
           temperature: 0.1

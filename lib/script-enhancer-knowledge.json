@@ -1,0 +1,576 @@
+{
+  "scriptWritingKnowledge": {
+    "fundamentals": {
+      "threeStepProcess": {
+        "title": "3-Step Social Video Strategy",
+        "steps": [
+          {
+            "step": "Hook First",
+            "description": "Figure out your hook first. Without a strong hook, no one will watch your video.",
+            "importance": "The initial moments of your video are crucial. Without a compelling hook, viewers are unlikely to continue watching."
+          },
+          {
+            "step": "Juicy First Three Seconds",
+            "description": "Keep the first three seconds juicy. Cut straight to the chase, no fluff, no intro, deliver on what you promised. Time is money.",
+            "importance": "Get straight to the point. Avoid unnecessary introductions or 'fluff.' Deliver on the promise made in your hook immediately."
+          },
+          {
+            "step": "Talking Points, Not Scripts",
+            "description": "Map out talking points but omit a formal script. Remember, you want your videos to feel flowy & NOT forced & scripted.",
+            "importance": "Plan out the key points you want to cover, but avoid writing a word-for-word script. This allows for a more natural and conversational delivery."
+          }
+        ]
+      },
+      "hookRetainReward": {
+        "title": "Hook, Retain, and Reward System",
+        "description": "A three-step process popularized by Alex Hormozi in his book '$100M Leads'",
+        "steps": [
+          {
+            "step": "Hook",
+            "description": "The hook grabs attention and gets them to notice your content. Don't start with introductions like 'Hi, this is [name] from [company].' Get right into the information first.",
+            "importance": "Make viewers stop scrolling to see what you have to say."
+          },
+          {
+            "step": "Retain",
+            "description": "The content must be impactful and on topic. If you promised three ways to keep plants healthy, deliver exactly that throughout the video.",
+            "importance": "Make sure your content delivers on the promise made in the hook."
+          },
+          {
+            "step": "Reward",
+            "description": "This is your call to action (CTA). Ask your audience to do something: follow, share, like, book a call, download a guide, or make a purchase.",
+            "importance": "Guide viewers toward the next step in their journey with you."
+          }
+        ],
+        "proTips": [
+          "Don't ask for sales too often. Follow a 1:3 or 1:4 ratio (one sales pitch for every 3-4 pieces of valuable content).",
+          "Mature platforms (Instagram, Facebook) have more ads than newer platforms (TikTok).",
+          "Give information first, then viewers will figure out how to contact you if they want more."
+        ]
+      }
+    },
+    "scriptingFrameworks": {
+      "fiveStepScriptingProcess": {
+        "title": "5-Step Script Writing Framework",
+        "description": "A comprehensive approach to writing killer scripts that keep viewers hooked",
+        "steps": [
+          {
+            "step": "Packaging (Click Confirmation)",
+            "description": "Ensure the first few lines of your intro confirm and ideally beat the expectations set by your title and thumbnail.",
+            "details": "Your job when writing the script is to make sure the first few lines of the intro confirm and ideally beat the expectations set by the title. This is called click confirmation. If your title says 'I spent 100 hours inside the pyramids,' immediately show and tell that you're in the pyramids, then exceed expectations by adding something like 'with unprecedented access.'"
+          },
+          {
+            "step": "Outline (Drive Value)",
+            "description": "Create a bulleted outline with unique, differentiated points before writing the full script.",
+            "details": "Before writing the actual script, create a bulleted outline. Focus on having something unique and differentiated to say. For each point, include the what (what it is), the why (why it matters), and the how (how it fits in the overall puzzle). If your points aren't unique, go back to research."
+          },
+          {
+            "step": "Intro (5-Step Formula)",
+            "description": "Follow a 5-part intro formula: immediate context, common belief, contrarian approach, proof, and plan.",
+            "details": "1) Give immediate context on what the video is about to confirm the click. 2) Establish the common belief on the topic to build connection. 3) Create contrast by stating a contrarian approach that contradicts the common belief. 4) Establish proof for why they should trust your approach. 5) Give them a plan or ordered list for how you'll deliver."
+          },
+          {
+            "step": "Body (2-1-3-4 Method)",
+            "description": "Organize points strategically with your second-best point first, best point second, and include context, application, and framing for each point.",
+            "details": "Put your second-best point first, best point second, third best third, etc. For each point include: 1) Context - explain what it is simply, 2) Application - how to do it with examples, and 3) Framing - why it matters in the overall story. Use 'rehooking' between points to maintain interest."
+          },
+          {
+            "step": "Outro (Fortune Cookie)",
+            "description": "End on a high note by summarizing points and reminding viewers of the problem you solved.",
+            "details": "Wrap up the video in a clean way, summarize the points, and remind viewers of the problem you solved. This is like the free chocolate a restaurant gives with the check - a final reminder of the value provided that encourages likes, comments, and shares."
+          }
+        ],
+        "bonus": {
+          "title": "CTA Integration (Native Embedding)",
+          "description": "Seamlessly integrate calls to action by finding natural points to highlight resources as solutions to problems mentioned in your content."
+        }
+      },
+      "fiveLineStoryMethod": {
+        "title": "5-Line Story Method",
+        "description": "A simple yet powerful method to create the emotional core of any story",
+        "steps": [
+          {
+            "line": "Situation",
+            "description": "The starting point - where are we and what's happening.",
+            "importance": "Gives the viewer a clear starting point of where we are, what's happening, and who's in the story."
+          },
+          {
+            "line": "Desire",
+            "description": "What does the character want? What do they want to obtain or reach?",
+            "importance": "Shows the goal or need driving the story, sparks curiosity, and makes the audience invested."
+          },
+          {
+            "line": "Conflict",
+            "description": "What gets in the way? Where's the tension or obstacle that makes it hard to reach the desire?",
+            "importance": "Introduces tension or an obstacle, which is essential as stories need challenges to keep viewers watching."
+          },
+          {
+            "line": "Change",
+            "description": "What happens that shifts something? A turning point in the story.",
+            "importance": "Marks a turning point, showing growth and giving the audience a sense of movement forward."
+          },
+          {
+            "line": "Result",
+            "description": "How does it end? What's the new reality and how is the situation different now from when we started?",
+            "importance": "Gives the audience a satisfying takeaway, closure, and shows how the world or character has changed."
+          }
+        ],
+        "example": "The Lion King: 1) Simba is a young prince excited to one day rule the Pride Lands. 2) He wants to prove he's brave and worthy of being king. 3) After his father's death, Simba runs away, ashamed and afraid to face his past. 4) With help from friends and a vision from his father, Simba returns to confront Scar. 5) He restores balance to the Pride Lands and steps fully into who he was meant to be."
+      }
+    },
+    "visualHooks": {
+      "fiveVisualHooks": [
+        {
+          "name": "Quick Appearance",
+          "description": "A brief, often surprising, visual element that appears suddenly."
+        },
+        {
+          "name": "Fast Cuts",
+          "description": "Rapid editing and quick transitions between shots."
+        },
+        {
+          "name": "Walk-in",
+          "description": "A subject walking into the frame."
+        },
+        {
+          "name": "Transition Hook",
+          "description": "A visual transition connecting two different scenes or ideas."
+        },
+        {
+          "name": "Match Cut",
+          "description": "Cutting from one shot to another that is visually or thematically similar, creating a seamless connection."
+        }
+      ],
+      "additionalVisualHooks": [
+        {
+          "name": "Giant Stomp",
+          "description": "A dramatic stomp or impactful physical action."
+        },
+        {
+          "name": "Water Spill",
+          "description": "Using the visual of a liquid spill to reveal information."
+        },
+        {
+          "name": "Paper Step",
+          "description": "A paper element that is interacted with to reveal information."
+        },
+        {
+          "name": "Clap Reveal",
+          "description": "Using a clap to transition and reveal something new."
+        },
+        {
+          "name": "Get Out Run",
+          "description": "Someone running or in motion, often with a message."
+        }
+      ]
+    },
+    "shortsStrategies": {
+      "viralShortFramework": {
+        "title": "Framework for Creating Viral Shorts",
+        "key_elements": [
+          {
+            "element": "3-Second Thumbnail",
+            "description": "The opening 3 seconds of your video needs to convince somebody to stop scrolling and keep watching.",
+            "details": "Your intro needs the same elements as a great YouTube thumbnail: eye-catching, clear message, and intriguing enough to stop scrolling. Get straight to the point and make viewers feel compelled to continue watching."
+          },
+          {
+            "element": "Proven Ideas",
+            "description": "Base shorts on long-form videos that have already performed well or concepts that have gone viral on other platforms.",
+            "details": "Research your niche, know your competitors, see which concepts are working for them, then put your own spin on them. Viewers love recognizable concepts because they know what to expect."
+          },
+          {
+            "element": "Multiple Mini-Hooks",
+            "description": "Add multiple '3-second thumbnails' throughout your video to maintain engagement.",
+            "details": "Open curiosity loops throughout the video that need to be closed. Just when viewers are thinking of swiping up, re-engage them with another loop and convince them to stay."
+          },
+          {
+            "element": "Scripting",
+            "description": "Write a script for every video to condense information to the essentials and avoid rambling.",
+            "details": "Scripting helps to condense the information to the bare essentials and avoid repetition or rambling. If you have a long-form script, condense it down by removing all filler and keeping only the essential moments."
+          },
+          {
+            "element": "Seamless Loop",
+            "description": "End the video in a way that loops back to the beginning to improve retention.",
+            "details": "Never make your video sound like it's wrapping up. Instead, end it in a way that seamlessly loops back to the start, which helps keep your retention graph flat and makes the algorithm love you."
+          },
+          {
+            "element": "Consistency",
+            "description": "Repeat the successful formula across all shorts.",
+            "details": "Use the same background music, film in the same place, and maintain similar duration across all shorts. Being successful with YouTube shorts is about repeating a blueprint that works."
+          }
+        ],
+        "retention_target": "Aim for overall retention above 70% for maximum algorithm boost."
+      },
+      "shortsMonetization": {
+        "title": "Monetization Strategies for Shorts Creators",
+        "strategies": [
+          {
+            "strategy": "Sponsored Content",
+            "description": "Top creators can earn significant amounts per sponsored short.",
+            "potential": "Some creators make up to $1,000,000 per sponsored short."
+          },
+          {
+            "strategy": "Products and Courses",
+            "description": "Develop and sell your own products or courses to your audience."
+          },
+          {
+            "strategy": "Ad Revenue",
+            "description": "While lower than long-form content, can still generate income.",
+            "example": "50-100 million views per month can generate $5,000-$10,000 in ad revenue."
+          }
+        ],
+        "long_form_conversion": {
+          "strategy": "Create bit-based long-form videos",
+          "description": "Make long-form videos that feel like a series of shorts strung together.",
+          "example": "If you have 20 shorts recreating fast food items, make a long-form video recreating 100 fast food items."
+        }
+      }
+    },
+    "storytellingTechniques": {
+      "viralStorytellingFramework": {
+        "title": "60-Second Viral Storytelling Framework",
+        "steps": [
+          {
+            "step": "Start with a Question",
+            "description": "Begin with a shocking question that will make people stick until the end to find out the answer.",
+            "example": "Can I cook a burger faster than the drive-through?"
+          },
+          {
+            "step": "Take Viewers on a Journey",
+            "description": "Build up to your answer with constant progression so viewers feel they can't stop listening.",
+            "example": "Adding ingredients one by one to show progress toward completing the challenge."
+          },
+          {
+            "step": "Add Conflict",
+            "description": "Create tension before getting to the answer to make viewers more invested.",
+            "example": "Using a secondary character (like a mom) as a B-plot to create additional tension."
+          },
+          {
+            "step": "Deliver a Satisfying Answer",
+            "description": "After enough buildup, provide the answer in an engaging way.",
+            "example": "Building tension by making the outcome uncertain, then revealing the result quickly and concisely."
+          }
+        ],
+        "key_principle": "If it takes longer to tell your story than it does to make a burger, you're probably overcooking both."
+      },
+      "storytellingTechniques": {
+        "title": "Advanced Storytelling Techniques",
+        "techniques": [
+          {
+            "technique": "But-So Storytelling",
+            "description": "Use 'but' and 'so' to create conflict and resolution patterns that make stories more engaging.",
+            "example": "I was at home BUT I got bored SO I ended up going for a walk, BUT it started raining, SO I ended up trying to figure out what to do."
+          },
+          {
+            "technique": "Dual Narrative Storytelling",
+            "description": "Tell two stories simultaneously - one through voiceover and another through visuals.",
+            "example": "Talking about making a present while showing pictures that reveal the emotional reason behind it without explicitly stating it."
+          },
+          {
+            "technique": "Peak-End Theory",
+            "description": "People only remember their favorite part of content and the ending, so structure content accordingly.",
+            "example": "Create a rollercoaster of emotions with quick hook, medium-paced middle, a peak somewhere in the middle (like a funny joke), back to medium pacing, and quick ending."
+          }
+        ],
+        "pacing_advice": "Do not talk fast, just talk more concisely and try to get the message across in the least amount of words possible. After giving dense information, let it breathe so viewers can understand the context."
+      }
+    },
+    "onCameraPresence": {
+      "naturalPresenting": {
+        "title": "Natural Presenting Method",
+        "approaches": [
+          {
+            "method": "Slides-Based Presentation",
+            "description": "Use slides instead of teleprompter or memorized script for a more natural delivery.",
+            "benefits": [
+              "Points are right in front of you - no need to hide notes",
+              "Allows for conversational delivery while maintaining structure",
+              "Presenter can see visuals as they're shown, improving clarity"
+            ]
+          },
+          {
+            "method": "Best Friend Mindset",
+            "description": "Talk as if speaking to a smart, kind, funny, creative, and ambitious best friend.",
+            "benefits": [
+              "Creates warmth and connection with the audience",
+              "Prevents talking down to viewers",
+              "Makes content feel like a conversation rather than a lecture"
+            ],
+            "technique": "When stuck, imagine your friend just asked you a question and you're responding to them."
+          }
+        ],
+        "prioritizing_trust": {
+          "approach": "Prioritize trust and likability over authority",
+          "reasoning": "Focusing on trust and connection builds a sustainable audience that returns regularly.",
+          "goal": "Make viewers feel like they just hung out with you - warm, supportive, and valuable."
+        }
+      }
+    },
+    "aiContentTrends2025": {
+      "title": "2025 AI Content Creation Trends",
+      "description": "Latest AI-powered content features and techniques that are trending in 2025",
+      "trends": [
+        {
+          "trend": "AI Talking Avatars",
+          "description": "Hyper-realistic AI-generated talking avatars that can speak any language with perfect lip-sync",
+          "applications": [
+            "Virtual presenters for educational content",
+            "Multilingual content without hiring multiple voice actors",
+            "Consistent brand representation across all content",
+            "Accessibility for hearing-impaired audiences with sign language avatars"
+          ],
+          "script_considerations": [
+            "Design scenes with avatar close-ups for maximum impact",
+            "Include avatar personality traits in narration style",
+            "Plan for avatar gestures and expressions that match content tone",
+            "Consider avatar wardrobe and background that matches brand"
+          ]
+        },
+        {
+          "trend": "Face Swap Technology",
+          "description": "Advanced face swapping that maintains natural expressions and lighting",
+          "applications": [
+            "Celebrity cameos in educational content",
+            "Historical figure reenactments",
+            "Before/after transformations",
+            "Multi-character scenarios with single actor"
+          ],
+          "script_considerations": [
+            "Plan face swap reveals as dramatic moments",
+            "Include transition effects for seamless face changes",
+            "Design scenes that showcase the technology's capabilities",
+            "Create narrative justification for face swaps"
+          ]
+        },
+        {
+          "trend": "AI Voice Cloning",
+          "description": "Perfect voice replication for any speaker with emotional nuance",
+          "applications": [
+            "Consistent brand voice across all content",
+            "Posthumous content creation with original voices",
+            "Multi-language content with same voice characteristics",
+            "Accessibility with personalized voice options"
+          ],
+          "script_considerations": [
+            "Design for voice variety and emotional range",
+            "Include specific voice direction in production notes",
+            "Plan for voice transitions and character changes",
+            "Consider voice aging or modification effects"
+          ]
+        },
+        {
+          "trend": "Real-time AI Translation",
+          "description": "Instant translation with natural speech patterns and cultural adaptation",
+          "applications": [
+            "Global content distribution",
+            "Live multilingual presentations",
+            "Cultural adaptation of humor and references",
+            "Accessibility for international audiences"
+          ],
+          "script_considerations": [
+            "Design content that translates well across cultures",
+            "Include universal visual metaphors",
+            "Plan for cultural adaptation of jokes and references",
+            "Consider timing adjustments for different languages"
+          ]
+        },
+        {
+          "trend": "AI-Generated Backgrounds",
+          "description": "Photorealistic AI-generated environments and settings",
+          "applications": [
+            "Impossible or expensive locations",
+            "Historical recreations",
+            "Fantasy and sci-fi environments",
+            "Consistent brand environments"
+          ],
+          "script_considerations": [
+            "Design scenes that showcase unique environments",
+            "Include environmental storytelling elements",
+            "Plan for seamless integration with real footage",
+            "Consider environmental mood and atmosphere"
+          ]
+        },
+        {
+          "trend": "AI-Powered Motion Graphics",
+          "description": "Intelligent motion graphics that respond to content and emotion",
+          "applications": [
+            "Dynamic data visualization",
+            "Emotional response graphics",
+            "Interactive elements that react to narration",
+            "Brand-consistent animated elements"
+          ],
+          "script_considerations": [
+            "Design graphics that enhance rather than distract",
+            "Include specific timing for graphic reveals",
+            "Plan for graphics that support narrative flow",
+            "Consider accessibility with motion sensitivity"
+          ]
+        },
+        {
+          "trend": "AI Content Personalization",
+          "description": "Dynamic content adaptation based on viewer preferences and behavior",
+          "applications": [
+            "Personalized product recommendations",
+            "Adaptive difficulty levels",
+            "Customized examples and references",
+            "Individualized pacing and style"
+          ],
+          "script_considerations": [
+            "Design modular content sections",
+            "Include alternative versions for different audiences",
+            "Plan for seamless content transitions",
+            "Consider personalization triggers and moments"
+          ]
+        },
+        {
+          "trend": "AI-Generated Music and Sound",
+          "description": "Original music and sound effects generated to match content perfectly",
+          "applications": [
+            "Copyright-free original music",
+            "Mood-matching soundtracks",
+            "Custom sound effects for specific actions",
+            "Adaptive music that responds to content pacing"
+          ],
+          "script_considerations": [
+            "Design scenes with specific musical moments",
+            "Include sound effect cues in scene descriptions",
+            "Plan for music that enhances emotional impact",
+            "Consider silence as a powerful tool"
+          ]
+        },
+        {
+          "trend": "AI Visual Effects and Post-Production",
+          "description": "Intelligent visual effects that automatically enhance and stylize content",
+          "applications": [
+            "Automatic color grading and style transfer",
+            "AI-powered green screen removal and background replacement",
+            "Intelligent object removal and inpainting",
+            "Style-consistent visual effects across all scenes",
+            "Automatic lighting correction and enhancement",
+            "AI-generated particle effects and animations"
+          ],
+          "script_considerations": [
+            "Plan for AI effects that enhance narrative impact",
+            "Include specific visual effect descriptions in scene planning",
+            "Design scenes that showcase AI enhancement capabilities",
+            "Consider consistent visual style across all content"
+          ]
+        },
+        {
+          "trend": "AI Voiceover and Audio Enhancement",
+          "description": "Advanced AI voice synthesis with emotional nuance and automatic audio processing",
+          "applications": [
+            "Multi-language voiceover with perfect pronunciation",
+            "Emotional voice modulation based on content context",
+            "Automatic audio cleanup and noise reduction",
+            "AI-powered audio mastering and leveling",
+            "Voice aging, gender switching, and accent modification",
+            "Real-time voice translation with lip-sync"
+          ],
+          "script_considerations": [
+            "Design for emotional voice range and character development",
+            "Include specific voice direction and emotional cues",
+            "Plan for multilingual content with consistent voice characteristics",
+            "Consider audio quality and accessibility requirements"
+          ]
+        },
+        {
+          "trend": "AI Video Editing and Trimming",
+          "description": "Intelligent video editing that automatically creates optimal cuts and pacing",
+          "applications": [
+            "Automatic scene detection and optimal cut points",
+            "AI-powered pacing optimization for engagement",
+            "Intelligent content trimming based on viewer attention",
+            "Automatic transition selection and timing",
+            "Smart content compression without quality loss",
+            "AI-driven thumbnail generation and selection"
+          ],
+          "script_considerations": [
+            "Design content with natural cut points and transitions",
+            "Plan for optimal pacing and rhythm in scene structure",
+            "Include specific timing cues for AI editing systems",
+            "Consider viewer attention spans and engagement patterns"
+          ]
+        },
+        {
+          "trend": "AI-Generated Charts, Graphs, and Data Visualization",
+          "description": "Intelligent data visualization that automatically creates compelling charts and infographics",
+          "applications": [
+            "Automatic chart generation from data inputs",
+            "AI-powered infographic creation with brand consistency",
+            "Interactive data visualizations that respond to narration",
+            "Animated charts that reveal data progressively",
+            "AI-generated statistical graphics and diagrams",
+            "Brand-consistent visual data storytelling"
+          ],
+          "script_considerations": [
+            "Design scenes that showcase data visualization capabilities",
+            "Include specific data points and chart requirements",
+            "Plan for progressive data revelation and storytelling",
+            "Consider accessibility with clear data presentation"
+          ]
+        },
+        {
+          "trend": "AI Realistic Video Generation",
+          "description": "Photorealistic AI-generated video content that seamlessly integrates with real footage",
+          "applications": [
+            "AI-generated realistic human performances",
+            "Photorealistic product demonstrations and showcases",
+            "AI-created realistic environments and locations",
+            "Seamless integration of AI and real footage",
+            "AI-generated realistic animations and simulations",
+            "Photorealistic historical recreations and reenactments"
+          ],
+          "script_considerations": [
+            "Design scenes that showcase photorealistic AI capabilities",
+            "Plan for seamless integration between AI and real content",
+            "Include specific realism requirements and quality standards",
+            "Consider narrative justification for AI-generated realistic content"
+          ]
+        },
+        {
+          "trend": "AI Content Optimization and A/B Testing",
+          "description": "Intelligent content optimization that automatically tests and improves performance",
+          "applications": [
+            "Automatic A/B testing of different content versions",
+            "AI-powered audience targeting and personalization",
+            "Intelligent content optimization for different platforms",
+            "Automatic performance analysis and improvement suggestions",
+            "AI-driven content scheduling and distribution",
+            "Intelligent engagement prediction and optimization"
+          ],
+          "script_considerations": [
+            "Design modular content that can be easily tested and optimized",
+            "Include alternative versions for different audience segments",
+            "Plan for platform-specific optimizations and adaptations",
+            "Consider performance metrics and engagement goals"
+          ]
+        }
+      ],
+      "integration_guidelines": {
+        "title": "How to Integrate AI Trends into Scripts",
+        "guidelines": [
+          {
+            "guideline": "Natural Integration",
+            "description": "AI features should feel natural and enhance the story, not distract from it",
+            "example": "Use face swap as a reveal moment, not as a gimmick"
+          },
+          {
+            "guideline": "Purpose-Driven",
+            "description": "Every AI feature should serve the narrative or educational purpose",
+            "example": "AI avatar for consistent brand presence, not just because it's cool"
+          },
+          {
+            "guideline": "Accessibility First",
+            "description": "AI features should make content more accessible, not less",
+            "example": "AI translation for global reach, voice cloning for hearing accessibility"
+          },
+          {
+            "guideline": "Quality Over Novelty",
+            "description": "Focus on high-quality implementation rather than using every available feature",
+            "example": "Perfect one AI feature rather than mediocre implementation of many"
+          }
+        ]
+      }
+    }
+  }
+}

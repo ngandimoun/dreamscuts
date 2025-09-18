@@ -151,14 +151,25 @@ export async function POST(req: NextRequest) {
 
     // STEP 1: Advanced Query Analysis
     console.log('📝 Step 1: Analyzing user query...');
-    const queryAnalysis = await analyzeUserQuery(prompt, { 
+    let queryAnalysis = await analyzeUserQuery(prompt, { 
       model_preference: 'auto',
       enableCreativeReframing: true,
       enableDetailedModifierExtraction: true
     });
     
     if (!queryAnalysis.success || !queryAnalysis.result) {
-      throw new Error(`Query analysis failed: ${queryAnalysis.error}`);
+      console.warn(`⚠️ Query analysis failed: ${queryAnalysis.error}`);
+      console.log('🔄 Creating fallback query analysis based on UI selections...');
+      
+      // Create a fallback analysis when query analysis fails
+      const fallbackAnalysis = createFallbackQueryAnalysis(prompt, intent, options);
+      console.log('✅ Fallback query analysis created successfully');
+      
+      // Use the fallback analysis
+      queryAnalysis = {
+        success: true,
+        result: fallbackAnalysis
+      };
     }
     
     // Override with UI selections and enhance with better analysis
@@ -583,6 +594,37 @@ export async function POST(req: NextRequest) {
       // In development, the refiner might not be available, so we continue with original output
     }
     
+    // 🎬 AUTOMATIC SCRIPT ENHANCER INTEGRATION
+    console.log('🎬 [Auto-Script-Enhancer] Starting automatic script generation...');
+    let scriptResponse = null;
+    
+    try {
+      // Call the script enhancer with the refined response
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      const scriptEnhancerResponse = await fetch(`${baseUrl}/api/dreamcut/script-enhancer`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(refinedResponse), // Send the refined response
+      });
+      
+      if (scriptEnhancerResponse.ok) {
+        const scriptJson = await scriptEnhancerResponse.json();
+        scriptResponse = scriptJson;
+        console.log('🎬 [Auto-Script-Enhancer] Script generation completed successfully');
+        console.log('🎬 [Auto-Script-Enhancer] Script profile:', scriptJson.script?.script_metadata?.profile || 'general');
+        console.log('🎬 [Auto-Script-Enhancer] Script quality:', scriptJson.quality_assessment?.grade || 'unknown');
+      } else {
+        console.warn('🎬 [Auto-Script-Enhancer] Script generation failed, continuing without script');
+        const errorText = await scriptEnhancerResponse.text();
+        console.warn('🎬 [Auto-Script-Enhancer] Error:', errorText);
+      }
+    } catch (scriptError) {
+      console.warn('🎬 [Auto-Script-Enhancer] Script generation error, continuing without script:', scriptError);
+      // Script generation is optional, so we continue without it
+    }
+    
     // Return in the format expected by the frontend
     if (isLegacyFormat) {
       // Ensure creativeOptions is always an array
@@ -593,7 +635,8 @@ export async function POST(req: NextRequest) {
         creativeOptionsLength: creativeOptions.length,
         creativeOptionsType: typeof creativeOptions,
         refinedResponseKeys: Object.keys(refinedResponse),
-        richResponseKeys: Object.keys(richResponse)
+        richResponseKeys: Object.keys(richResponse),
+        hasScript: !!scriptResponse
       });
       
       // Legacy format response
@@ -616,11 +659,17 @@ export async function POST(req: NextRequest) {
           status: 'analyzed' as const,
           // Also include the refined format
           ...refinedResponse,
+          // Include script if generated
+          ...(scriptResponse && { script: scriptResponse.script }),
         },
       });
     } else {
-      // Modern format response - return refined JSON
-      return NextResponse.json(refinedResponse);
+      // Modern format response - return refined JSON with script
+      const modernResponse = {
+        ...refinedResponse,
+        ...(scriptResponse && { script: scriptResponse.script })
+      };
+      return NextResponse.json(modernResponse);
     }
 
   } catch (error) {
@@ -1526,6 +1575,184 @@ function generateEnhancedRecommendations(prompt: string, assets: any[], finalAna
   });
   
   return recommendations;
+}
+
+/**
+ * Create a fallback query analysis when the AI analysis fails
+ * This ensures the system continues to work even when there are issues with the LLM
+ */
+function createFallbackQueryAnalysis(prompt: string, intent: string | undefined, options: any): any {
+  const normalizedPrompt = prompt.trim() || 'Create content';
+  
+  return {
+    original_prompt: prompt,
+    normalized_prompt: normalizedPrompt,
+    intent: {
+      primary_output_type: intent || 'image',
+      confidence: 0.9, // High confidence since it's based on UI selection
+      secondary_types: [],
+      reasoning: 'Fallback analysis based on UI selection - user explicitly chose output type'
+    },
+    modifiers: {
+      style: extractStyleModifiers(prompt),
+      mood: extractMoodModifiers(prompt),
+      theme: extractThemeModifiers(prompt),
+      time_period: extractTimePeriod(prompt),
+      emotions: extractEmotions(prompt),
+      aesthetic: extractAestheticModifiers(prompt),
+      genre: extractGenreModifiers(prompt),
+      technical_specs: extractTechnicalSpecs(prompt)
+    },
+    constraints: {
+      image_count: options?.imageCount,
+      aspect_ratio: options?.aspectRatio || '16:9',
+      resolution: undefined,
+      image_format: undefined,
+      duration_seconds: options?.durationSeconds,
+      fps: undefined,
+      video_format: undefined,
+      video_quality: undefined,
+      audio_length_seconds: undefined,
+      audio_format: undefined,
+      sample_rate: undefined,
+      budget: undefined,
+      timeline: undefined,
+      platform: options?.platform ? [options.platform] : ['social'],
+      target_audience: undefined
+    },
+    gaps: {
+      missing_duration: intent === 'video' && !options?.durationSeconds,
+      missing_aspect_ratio: (intent === 'image' || intent === 'video') && !options?.aspectRatio,
+      missing_style_direction: prompt.length < 10,
+      missing_target_audience: true,
+      missing_platform_specs: !options?.platform,
+      missing_mood_tone: prompt.length < 10,
+      vague_requirements: prompt.length < 10,
+      needs_clarification: prompt.length < 10 ? ['More specific details about desired content'] : []
+    },
+    creative_reframing: {
+      alternative_interpretations: [
+        {
+          interpretation: `Create ${intent || 'content'} based on user description`,
+          rationale: 'User provided description for content creation',
+          confidence: 0.8
+        }
+      ],
+      suggested_enhancements: prompt.length < 10 ? ['Add more specific details about style and content'] : [],
+      potential_directions: [
+        {
+          direction: 'Professional Standard',
+          description: 'Apply professional styling and best practices',
+          required_assets: ['User content or AI generation']
+        }
+      ]
+    },
+    processing_metadata: {
+      analysis_timestamp: new Date().toISOString(),
+      processing_time_ms: 0,
+      model_used: 'fallback_analysis',
+      confidence_score: 0.8,
+      grammar_corrections_made: false,
+      normalization_applied: true
+    }
+  };
+}
+
+// Helper functions for fallback analysis
+function extractStyleModifiers(prompt: string): string[] {
+  const styles = [];
+  const lower = prompt.toLowerCase();
+  
+  if (lower.includes('minimal') || lower.includes('clean')) styles.push('minimal');
+  if (lower.includes('vintage') || lower.includes('retro')) styles.push('vintage');
+  if (lower.includes('modern') || lower.includes('contemporary')) styles.push('modern');
+  if (lower.includes('artistic') || lower.includes('creative')) styles.push('artistic');
+  if (lower.includes('professional') || lower.includes('business')) styles.push('professional');
+  
+  return styles.length > 0 ? styles : ['professional'];
+}
+
+function extractMoodModifiers(prompt: string): string[] {
+  const moods = [];
+  const lower = prompt.toLowerCase();
+  
+  if (lower.includes('calm') || lower.includes('peaceful')) moods.push('calm');
+  if (lower.includes('energetic') || lower.includes('dynamic')) moods.push('energetic');
+  if (lower.includes('serious') || lower.includes('formal')) moods.push('serious');
+  if (lower.includes('fun') || lower.includes('playful')) moods.push('playful');
+  if (lower.includes('elegant') || lower.includes('sophisticated')) moods.push('elegant');
+  
+  return moods.length > 0 ? moods : ['neutral'];
+}
+
+function extractThemeModifiers(prompt: string): string[] {
+  const themes = [];
+  const lower = prompt.toLowerCase();
+  
+  if (lower.includes('business') || lower.includes('corporate')) themes.push('business');
+  if (lower.includes('education') || lower.includes('learning')) themes.push('education');
+  if (lower.includes('entertainment') || lower.includes('fun')) themes.push('entertainment');
+  if (lower.includes('lifestyle') || lower.includes('personal')) themes.push('lifestyle');
+  
+  return themes.length > 0 ? themes : ['general'];
+}
+
+function extractTimePeriod(prompt: string): string | undefined {
+  const lower = prompt.toLowerCase();
+  
+  if (lower.includes('vintage') || lower.includes('retro')) return 'vintage';
+  if (lower.includes('modern') || lower.includes('contemporary')) return 'modern';
+  if (lower.includes('futuristic') || lower.includes('sci-fi')) return 'futuristic';
+  
+  return undefined;
+}
+
+function extractEmotions(prompt: string): string[] {
+  const emotions = [];
+  const lower = prompt.toLowerCase();
+  
+  if (lower.includes('happy') || lower.includes('joyful')) emotions.push('happy');
+  if (lower.includes('sad') || lower.includes('melancholy')) emotions.push('sad');
+  if (lower.includes('excited') || lower.includes('thrilled')) emotions.push('excited');
+  if (lower.includes('calm') || lower.includes('peaceful')) emotions.push('calm');
+  
+  return emotions.length > 0 ? emotions : ['neutral'];
+}
+
+function extractAestheticModifiers(prompt: string): string[] {
+  const aesthetics = [];
+  const lower = prompt.toLowerCase();
+  
+  if (lower.includes('minimalist') || lower.includes('clean')) aesthetics.push('minimalist');
+  if (lower.includes('colorful') || lower.includes('vibrant')) aesthetics.push('colorful');
+  if (lower.includes('monochrome') || lower.includes('black and white')) aesthetics.push('monochrome');
+  if (lower.includes('warm') || lower.includes('cozy')) aesthetics.push('warm');
+  
+  return aesthetics.length > 0 ? aesthetics : ['balanced'];
+}
+
+function extractGenreModifiers(prompt: string): string[] {
+  const genres = [];
+  const lower = prompt.toLowerCase();
+  
+  if (lower.includes('cinematic') || lower.includes('movie')) genres.push('cinematic');
+  if (lower.includes('documentary') || lower.includes('realistic')) genres.push('documentary');
+  if (lower.includes('commercial') || lower.includes('advertisement')) genres.push('commercial');
+  if (lower.includes('social') || lower.includes('instagram')) genres.push('social media');
+  
+  return genres.length > 0 ? genres : ['general'];
+}
+
+function extractTechnicalSpecs(prompt: string): string[] {
+  const specs = [];
+  const lower = prompt.toLowerCase();
+  
+  if (lower.includes('hd') || lower.includes('1080p')) specs.push('HD');
+  if (lower.includes('4k') || lower.includes('ultra hd')) specs.push('4K');
+  if (lower.includes('square') || lower.includes('1:1')) specs.push('square format');
+  if (lower.includes('vertical') || lower.includes('9:16')) specs.push('vertical format');
+  
+  return specs;
 }
 
 export async function GET() {

@@ -1,0 +1,219 @@
+{
+  "timestamp": "2025-09-18T16:25:35.774Z",
+  "summary": {
+    "total": 5,
+    "passed": 2,
+    "failed": 3,
+    "successRate": 40
+  },
+  "errors": [
+    "Finance Explainer - Medium Video: Validation failed: Missing music & audio plan section",
+    "Anime Mode - Creative Content: Validation failed: Missing human_readable_script",
+    "Commercial Ad - Persuasive Content: Validation failed: Missing voiceover guidance section, Missing music & audio plan section"
+  ],
+  "details": [
+    {
+      "scenario": "Educational Explainer - Short Video",
+      "success": true,
+      "responseTime": 73509,
+      "validation": {
+        "valid": true,
+        "errors": []
+      },
+      "result": {
+        "success": true,
+        "human_readable_script": "=== SCRIPT TITLE ===\nLearn Faster in 15s: The C‑L‑T Method\n\n=== SCRIPT METADATA ===\nProfile: educational_explainer\nDuration: 15 seconds\nOrientation: 9:16\nLanguage: English\nTotal Scenes: 5\nEstimated Word Count: 48\nPacing Style: Moderate, educational with pauses for comprehension\n\n=== SCENES ===\n\nScene 1 | Duration: 3s | Purpose: Hook attention with a clear promise\nNarration: \"Want to learn anything faster? Use the C-L-T method.\"\nVisuals: AI talking avatar, medium close-up, in a clean AI-generated classroom. Bold overlay_text appears center-safe: \"Learn Faster: C‑L‑T\". Subtle camera push-in.\nEffects: overlay_text, subtle zoom; Transition in: fade from black\nMusic: Light, educational bed enters soft, steady beat\nPacing: One crisp sentence; half-beat pause after “faster”\nMood: Energetic, assuring\nConsistency: Brand color accents on text; avatar lighting warm and even\n\nScene 2 | Duration: 3.5s | Purpose: Step 1—demonstrate “Chunk”\nNarration: \"Step one: Chunk—split the topic into two or three parts.\"\nVisuals: Cut to user_image_01 (Professional test image with good composition). Use on-screen brackets to divide the frame into labeled sections. Callouts: \"object\" and \"background\" appear as clean tags.\nEffects: highlight on each section, guided zoom-ins on areas; overlay_text: \"1) Chunk\"\nMusic: Continues; add soft click for each highlight\nPacing: Emphasize “Chunk” with a micro-pause after the word\nMood: Clear, methodical\nConsistency: Keep typography, color, and tagging style consistent with Scene 1\n\nScene 3 | Duration: 3.5s | Purpose: Step 2—demonstrate “Link”\nNarration: \"Step two: Link—connect each part to something you know.\"\nVisuals: Slide transition to AI-generated infographic: simple icons linking “object” ➜ “real-world example,” “background” ➜ “known context.” Animated line draws connections.\nEffects: slide transition, highlight on connecting lines, overlay_text: \"2) Link\"\nMusic: Gentle lift with a light arpeggio on the connection reveal\nPacing: Slight pause around “Link” and “know”\nMood: Insightful, connective\nConsistency: Maintain icon style and color grade; center-safe layout\n\nScene 4 | Duration: 3s | Purpose: Step 3—emotional/clarity peak with “Teach”\nNarration: \"Step three: Teach—explain it back in 30 seconds.\"\nVisuals: Dissolve to avatar close-up; split-screen pops briefly with a timer icon “00:30” and a small upward arrow chart labeled “Retention ↑”.\nEffects: dissolve transition, overlay_text: \"3) Teach\", subtle zoom-in on avatar\nMusic: Small motivational swell; then settle\nPacing: Firm delivery; brief pause after “Teach”\nMood: Motivating, confident\nConsistency: Avatar framing matches Scene 1 for cohesion\n\nScene 5 | Duration: 2s | Purpose: CTA and wrap\nNarration: \"Save this and follow for daily 15-second learning wins.\"\nVisuals: Clean end card; avatar gestures invitingly; tappable-style buttons: “Save • Follow”. Minimal brand mark bottom.\nEffects: overlay_text, gentle fade-out\nMusic: Resolve chord and fade\nPacing: Crisp, friendly cadence\nMood: Encouraging, action-oriented\nConsistency: Keep text within safe margins; same font and color\n\n=== VOICEOVER GUIDANCE ===\nNarration Style: Clear, instructional narration with step-by-step guidance\nPacing Notes: Aim ~3 words/second; micro-pauses after the keywords “Chunk,” “Link,” and “Teach.” Brief lift in energy on Scene 4 to mark the climax, then return to warm confidence for CTA.\nVoice Characteristics: Warm, friendly educator; neutral accent; bright articulation; medium energy; slight smile in tone; consistent timbre for brand continuity (suitable for AI voice cloning)\n\n=== MUSIC & AUDIO PLAN ===\nStyle: Light, educational background music—soft percussion, gentle marimba/pizzicato plucks, unobtrusive pads\nTransitions: Fade in at Scene 1; subtle dissolve across Scenes 2–4; gentle fade-out in Scene 5\nMood Progression: Calm and inviting at start; subtle lift in Scenes 2–3 during steps; small motivational swell at Scene 4 climax; clean resolve at outro\nSFX: Soft UI clicks on highlights in Scene 2; subtle whoosh on slide transition into Scene 3; discreet tick when the “00:30” timer appears in Scene 4\nAudio Mixing: Voice front and center; music −18 to −16 LUFS integrated, duck 3–4 dB under VO; clean noise floor\n\n=== PRODUCTION NOTES ===\nAsset Integration:\n- user_image_01: Feature in Scene 2 as the demonstration canvas. Apply guided zooms and highlight callouts to “object” and “background” to illustrate “Chunk.” Ensure the image remains sharp (native 9:16 crop or pillarbox with branded bars). Do not reuse in other scenes to maintain visual variety.\nVisual Flow:\n- Scene 1: Fade-in to AI avatar in an AI-generated modern classroom\n- Scene 2: Cut to user_image_01 with highlight/zoom and labeled sections\n- Scene 3: Slide transition to a clean AI-generated infographic showing connections\n- Scene 4: Dissolve to avatar close-up with timer and retention arrow overlay\n- Scene 5: Minimal end card; fade-out\nQuality Assurance:\n- 9:16 safe zones for all overlay_text and captions; keep critical text center-safe\n- Auto color grading for consistency; subtle vignette to focus attention\n- Burn-in captions recommended; high-contrast text for accessibility\n- Loudness: Master around −14 LUFS integrated; ensure VO intelligibility\n- Lip-sync ready for multilingual localization with AI talking avatar\n- Optional accessibility layer: sign-language AI avatar picture-in-picture\n2025 AI Content Trends Integration:\n- AI Talking Avatars: Use for consistent educator presence; enable lip-sync and gesture presets (nods on keywords “Chunk,” “Link,” “Teach”)\n- AI-Generated Environments: Classroom in Scene 1/4; infographic space in Scene 3\n- AI-Powered Motion Graphics: Auto-animated callouts, linking lines, and timer\n- AI Voice Cloning & Enhancement: Maintain brand voice across languages; apply clarity enhancement and de-essing\n- AI Content Personalization: Modular swaps—replace examples in Scene 3 for different learner profiles (visual, verbal); alternate CTAs for A/B testing\n- AI Video Editing & Trimming: Pre-mark cut points at scene boundaries for pace optimization\n- AI-Generated Charts/Infographics: Retention arrow and simple connection diagram stylized to brand\n- AI Audio Mastering: Automatic leveling, noise reduction, and gentle compression\n\n",
+        "script_metadata": {
+          "profile": "educational_explainer",
+          "duration_seconds": 15,
+          "orientation": "9:16",
+          "language": "English",
+          "total_scenes": 23,
+          "estimated_word_count": 904,
+          "pacing_style": "Moderate, educational with pauses for comprehension"
+        },
+        "quality_assessment": {
+          "overallScore": 1,
+          "grade": "A",
+          "issues": [],
+          "recommendations": []
+        },
+        "metadata": {
+          "scriptId": "script_1758212807410_psqchnou1",
+          "profile": "educational_explainer",
+          "processingTimeMs": 72058,
+          "timestamp": "2025-09-18T16:26:49.270Z"
+        }
+      },
+      "error": null
+    },
+    {
+      "scenario": "Finance Explainer - Medium Video",
+      "success": true,
+      "responseTime": 70050,
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Missing music & audio plan section"
+        ]
+      },
+      "result": {
+        "success": true,
+        "human_readable_script": "=== SCRIPT TITLE ===\nThe 3 Numbers That Move Your Money\n\n=== SCRIPT METADATA ===\nProfile: finance_explainer\nDuration: 30 seconds\nOrientation: 16:9\nLanguage: English\nTotal Scenes: 6\nEstimated Word Count: 95\nPacing Style: Steady, authoritative with emphasis on key numbers\n\n=== SCENES ===\n\nScene 1 | Duration: 3s | Purpose: Hook attention with clear promise\nNarration: \"In 30 seconds: the three numbers that move your money.\"\nVisuals: AI-generated corporate set; branded AI talking avatar in tight close-up. Bold on-screen text: “3 Numbers” with sleek ticker elements in the background.\nEffects: text_reveal, subtle data_highlight on “3”\nMusic: Corporate, uplifting—soft pulse begins\nPacing: Crisp intro; 0.25s pause after “30 seconds”\nMood: Confident, energetic\nConsistency: Avatar in brand colors; clean sans-serif typography\n\nScene 2 | Duration: 7s | Purpose: Explain Inflation (CPI) and impact\nNarration: \"Number one: Inflation. Higher CPI erodes buying power and can pressure bonds and growth stocks. Track the trend—not a single headline.\"\nVisuals: Over-the-shoulder dashboard view. Center: animated CPI line chart with 12-month window. Left tile uses user_image_01 (Professional test image with good composition; objects: object, background; quality 0.85) as a branded panel backdrop beside the chart, labeling “CPI Trend.” “Example Data” tag on the chart.\nEffects: chart_animation (line draws left-to-right), data_highlight on latest point, slide transition in tiles, text_reveal for “Inflation (CPI)”\nMusic: Adds light marimba layer for momentum\nPacing: Emphasize “Higher CPI,” brief 0.3s pause before “Track the trend”\nMood: Analytical, clear\nConsistency: Dashboard uses brand palette; avatar off-screen to vary visuals\n\nScene 3 | Duration: 7s | Purpose: Explain policy rates with a concrete mortgage example\nNarration: \"Number two: Policy rates. Example: a 1% drop can cut a $300k, 30‑year mortgage by roughly $190 per month.\"\nVisuals: Split-screen: right—avatar medium shot; left—rate path mini-line and a mortgage calculator UI. Slider drops 1% and the payment figure animates down by −$190 with a green tick.\nEffects: chart_animation, data_highlight on “−$190,” push transition from previous scene\nMusic: Subtle bass lift under the example moment\nPacing: Firm emphasis on “1%” and “$190 per month”\nMood: Practical, empowering\nConsistency: Avatar gestures small, precise; keep realism with tight lip-sync\n\nScene 4 | Duration: 8s | Purpose: Explain earnings growth as equity driver\nNarration: \"Number three: Earnings growth. Stocks ultimately follow profits. An 8% EPS climb—example—often supports indexes more than daily noise.\"\nVisuals: AI-generated trading floor environment. Bars animate quarter-over-quarter EPS, rising to “+8%” with an “Example Only” tag. Headlines blur in background to underscore “noise.”\nEffects: chart_animation (bar build), data_highlight on “+8%,” slide transition\nMusic: Strings layer adds lift; maintain corporate tone\nPacing: Pause around “example” to signal illustrative data\nMood: Focused, forward-looking\nConsistency: Charts match brand style; keep motion clean and accessible\n\nScene 5 | Duration: 3s | Purpose: Climax—unify the framework\nNarration: \"Put them together: CPI, rates, earnings—the signal amid the noise.\"\nVisuals: Abstract data sphere forms; three luminous dials labeled CPI, Rates, Earnings converge to a central “Signal” icon.\nEffects: data_highlight glow on “Signal,” subtle parallax, fade transition\nMusic: Brief swell to mini-peak\nPacing: Even cadence; resolve on “noise”\nMood: Resolute, clarifying\nConsistency: Avatar off-screen to spotlight graphics\n\nScene 6 | Duration: 2s | Purpose: CTA and brand lockup\nNarration: \"Follow for weekly 30‑second breakdowns.\"\nVisuals: Clean brand card; language toggle icons hint at multilingual voice. Lower corner legal: “Educational only, not financial advice.”\nEffects: text_reveal, fade out\nMusic: Quick resolve, clean tail\nPacing: Crisp, one clean line\nMood: Motivational, tidy finish\nConsistency: Logo, tagline, and color palette unified\n\n=== VOICEOVER GUIDANCE ===",
+        "script_metadata": {
+          "profile": "finance_explainer",
+          "duration_seconds": 30,
+          "orientation": "16:9",
+          "language": "English",
+          "total_scenes": 6,
+          "estimated_word_count": 575,
+          "pacing_style": "Steady, authoritative with emphasis on key numbers"
+        },
+        "quality_assessment": {
+          "overallScore": 0.85,
+          "grade": "B",
+          "issues": [
+            "Missing music and audio plan",
+            "Missing production notes"
+          ],
+          "recommendations": []
+        },
+        "metadata": {
+          "scriptId": "script_1758212877614_uj8bl51uy",
+          "profile": "finance_explainer",
+          "processingTimeMs": 69969,
+          "timestamp": "2025-09-18T16:27:59.855Z"
+        }
+      },
+      "error": "Validation failed: Missing music & audio plan section"
+    },
+    {
+      "scenario": "UGC Influencer - Long Video",
+      "success": true,
+      "responseTime": 67719,
+      "validation": {
+        "valid": true,
+        "errors": []
+      },
+      "result": {
+        "success": true,
+        "human_readable_script": "=== SCRIPT TITLE ===\nLong-Form UGC That Hooks Like Shorts (In 60 Seconds)\n\n=== SCRIPT METADATA ===\nProfile: ugc_influencer\nDuration: 60 seconds\nOrientation: 16:9\nLanguage: English\nTotal Scenes: 10\nEstimated Word Count: 165-175 words\nPacing Style: Fast-paced, energetic with natural pauses\n\n=== SCENES ===\n\nScene 1 | Duration: 3s | Purpose: Hook attention with a bold promise\nNarration: \"I make long UGC feel like a 60‑second binge. Here’s my blueprint.\"\nVisuals: Close-up selfie, center frame, bold text_overlay: “Long UGC = Watch Time.” AI-generated neon studio background pops in behind with a quick zoom.\nEffects: quick_cuts, color_pop, zoom-in, text_overlay\nMusic: Upbeat trap-pop hit, beat drop at the first word\nPacing: Punchy, immediate\nMood: Confident, exciting\nConsistency: Same outfit throughout; soft key light; brand colors teal/magenta\n\nScene 2 | Duration: 6s | Purpose: Establish 16:9 YouTube framing and promise value\nNarration: \"We’re in 16:9 for YouTube—think chapters, payoffs, and repeatable hooks.\"\nVisuals: Camera widens; animated chapter bars slide in on the bottom (AI-powered motion graphics): Hook, Story, Payoff.\nEffects: swipe transition, text_overlay callouts, motion graphics accent\nMusic: Continues, add hi-hat sparkle on each chapter reveal\nPacing: Crisp, one beat per keyword\nMood: Clarity, momentum\nConsistency: Maintain framing on tripod, eye-line consistent\n\nScene 3 | Duration: 7s | Purpose: Asset integration and visual anchor\nNarration: \"Anchor each chapter with a visual. Like this: user_image_01—professional test image with clean composition—becomes my hero frame.\"\nVisuals: Insert user_image_01 full-screen with a parallax push-in; on-screen labels: “Object” and “Background.” Rule-of-thirds grid fades in.\nEffects: zoom, text_overlay, color_pop on the object\nMusic: Sub-bass swell as image pushes in\nPacing: Slight pause on “hero frame”\nMood: Precise, visual\nConsistency: Use same color treatment on overlays for brand unity\n\nScene 4 | Duration: 8s | Purpose: Show AI-generated environments to keep attention\nNarration: \"Change scenes, not topics. I swap backgrounds—coffee shop, neon loft, rooftop—same message, fresh energy.\"\nVisuals: AI-generated environments cycle behind creator via smart background replacement; subject stays centered; seamless jump_cuts align to beat.\nEffects: jump_cut, AI green-screen removal, swipe between setups\nMusic: Add rhythmic clap layer; whoosh SFX on each swap\nPacing: Beat-matched cuts\nMood: Dynamic, playful\nConsistency: Identical framing and wardrobe to sell continuity\n\nScene 5 | Duration: 8s | Purpose: Personalization and audience targeting\nNarration: \"Personalize. Toggle examples for gamers, beauty, fitness—same framework, tailored stories.\"\nVisuals: On-screen AI content personalization panel slides up; buttons: “Gaming,” “Beauty,” “Fitness.” Tap to change B-roll overlays accordingly.\nEffects: UI pop animations, text_overlay tags, quick_cuts\nMusic: Light arpeggio synth accents per toggle\nPacing: Quick selects with micro-pauses after each\nMood: Inclusive, smart\nConsistency: Keep color-pop accents consistent per niche\n\nScene 6 | Duration: 8s | Purpose: Motion graphics for clarity and retention\nNarration: \"Use motion graphics to underline the point—one idea per scene, one takeaway per beat.\"\nVisuals: Animated checklist appears: “Hook. Value. Proof. Next Step.” Icons tick as lines are spoken; subtle kinetic typography underlines key words.\nEffects: AI-powered motion graphics, text_overlay, zoom emphasis\nMusic: Percussive ticks synced to checkmarks\nPacing: Even, legible; half-beat pauses on each check\nMood: Helpful, confident\nConsistency: Typography consistent with style guide\n\nScene 7 | Duration: 8s | Purpose: Voice versatility and pacing control\nNarration: \"Shift pace with voice. I drop the energy for impact… then ramp it back up.\"\nVisuals: Tight close-up; waveform overlay responds to voice levels; brief silence visualized as a dip.\nEffects: subtle zoom-in, audio-reactive graphics\nMusic: Track ducks under voice, then swells back up\nPacing: Intentional slow-down, then fast ramp\nMood: Controlled, persuasive\nConsistency: Same lighting; keep eye contact\n\nScene 8 | Duration: 7s | Purpose: Face-swap cameo for novelty and humor (ethical, opt-in)\nNarration: \"Then a quick cameo—face-swap to my ‘future mentor’ giving a one-liner: 'Deliver the payoff early.'\"\nVisuals: Seamless face swap to a stylized mentor avatar version of creator; text_overlay: “Face-swap Cameo (opt-in).”\nEffects: morph transition, color_pop on reveal, jump_cut back\nMusic: Comedic sting on cameo\nPacing: Snap in/out within two beats\nMood: Fun, memorable\nConsistency: Clear disclaimer tag; matching outfit on both faces\n\nScene 9 | Duration: 3s | Purpose: Climax—stack the value proposition\nNarration: \"Result? Longer videos, higher retention, and watch time that snowballs.\"\nVisuals: Graph rises (AI-generated data viz) with labels: Retention ↑, Watch Time ↑, Subs ↑.\nEffects: data visualization pop, zoom\nMusic: Crescendo hit\nPacing: Rapid, emphatic\nMood: Triumphant\nConsistency: Brand colors in the chart\n\nScene 10 | Duration: 2s | Purpose: Outro—call to action\nNarration: \"Drop 'BLUEPRINT' for my editable template. Let’s build your long-form binge.\"\nVisuals: On-screen CTA button; comment prompt; subtle end-card with social handle.\nEffects: swipe to end-card, text_overlay CTA\nMusic: Button click SFX; outro sting\nPacing: Clean, decisive\nMood: Inviting\nConsistency: End on logo lockup\n\n=== VOICEOVER GUIDANCE ===\nNarration Style: Casual, authentic, first-person storytelling\nPacing Notes: Start strong and quick; short micro-pauses after key phrases: “Hook. Value. Proof. Next step.” Slow down briefly in Scene 7 for contrast, then accelerate into Scenes 8–10. Keep sentences tight, punchy, and smile-through-voice.\nVoice Characteristics: Warm, energetic, confident with playful edges; articulate consonants; slight smile on hooks and CTAs; natural breaths at scene transitions.\n\n=== MUSIC & AUDIO PLAN ===\nStyle: Trendy, upbeat background tracks with trap-pop base, bright synths, and crisp percussion\nTransitions: jump_cut accents, swipe whooshes, and zoom zips aligned to cuts\nMood Progression: High-energy open, steady groove through middle, brief dip for emphasis in Scene 7, quick comedic sting in Scene 8, crescendo in Scene 9, crisp button in Scene 10\n\n=== PRODUCTION NOTES ===\nAsset Integration: Feature user_image_01 in Scene 3 as a hero frame demonstrating composition and visual anchoring; show labels “Object” and “Background” to reflect the asset description and call out its professional composition and 0.85 quality look. Do not overuse the asset; it appears once prominently.\nVisual Flow: Start with a tight hook, widen to chapters, showcase the asset, then escalate with AI-generated environments, personalization UI, motion graphics, voice pacing, a face-swap cameo, data payoff, and a clean CTA. Maintain 16:9 framing and consistent wardrobe/lighting for continuity.\nQuality Assurance: Keep effects purposeful and legible; ensure face-swap is ethical and clearly labeled “opt-in.” Balance color_pop with skin-tone accuracy via AI color grading. Use AI audio cleanup and mastering for consistent levels. Ensure captions are accurate and timed. Verify motion graphics do not obscure important facial expressions or the user_image_01 when displayed.",
+        "script_metadata": {
+          "profile": "ugc_influencer",
+          "duration_seconds": 60,
+          "orientation": "16:9",
+          "language": "English",
+          "total_scenes": 16,
+          "estimated_word_count": 1037,
+          "pacing_style": "Fast-paced, energetic with natural pauses"
+        },
+        "quality_assessment": {
+          "overallScore": 1,
+          "grade": "A",
+          "issues": [],
+          "recommendations": []
+        },
+        "metadata": {
+          "scriptId": "script_1758212945869_d5x3r8dgy",
+          "profile": "ugc_influencer",
+          "processingTimeMs": 67675,
+          "timestamp": "2025-09-18T16:29:08.086Z"
+        }
+      },
+      "error": null
+    },
+    {
+      "scenario": "Anime Mode - Creative Content",
+      "success": true,
+      "responseTime": 86275,
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Missing human_readable_script"
+        ]
+      },
+      "result": {
+        "success": true,
+        "human_readable_script": "",
+        "script_metadata": {
+          "profile": "anime_mode",
+          "duration_seconds": 30,
+          "orientation": "9:16",
+          "language": "English",
+          "total_scenes": 0,
+          "estimated_word_count": 1,
+          "pacing_style": "Dynamic with emotional peaks and valleys"
+        },
+        "quality_assessment": {
+          "overallScore": 0.1,
+          "grade": "F",
+          "issues": [
+            "Missing script title section",
+            "Missing scenes section",
+            "Missing voiceover guidance",
+            "Missing music and audio plan",
+            "Missing production notes",
+            "Too few scenes: 0 found, 6 expected",
+            "Not all user assets are integrated"
+          ],
+          "recommendations": [
+            "Consider adding more scenes for better pacing",
+            "Script could be more detailed for production teams",
+            "Add more specific visual effects guidance"
+          ]
+        },
+        "metadata": {
+          "scriptId": "script_1758213032533_37eepa6k0",
+          "profile": "anime_mode",
+          "processingTimeMs": 86234,
+          "timestamp": "2025-09-18T16:30:34.879Z"
+        }
+      },
+      "error": "Validation failed: Missing human_readable_script"
+    },
+    {
+      "scenario": "Commercial Ad - Persuasive Content",
+      "success": true,
+      "responseTime": 86519,
+      "validation": {
+        "valid": false,
+        "errors": [
+          "Missing voiceover guidance section",
+          "Missing music & audio plan section"
+        ]
+      },
+      "result": {
+        "success": true,
+        "human_readable_script": "=== SCRIPT TITLE ===\nVOLT X — 15 Seconds to an Upgrade\n\n=== SCRIPT METADATA ===\nProfile: ads_commercial\nDuration: 15 seconds\nOrientation: 16:9\nLanguage: English\nTotal Scenes: 5\nEstimated Word Count: 39–45 words\nPacing Style: Dynamic, attention-grabbing with urgency\n\n=== SCENES ===\n\nScene 1 | Duration: 3s | Purpose: Hook attention with instant product desire\nNarration: \"Meet VOLT X—the smartwatch that moves at your speed.\"\nVisuals: Extreme macro of VOLT X face powering on; AI-generated environments snap behind it: sunrise city → gym → boardroom, matching watch complications to each setting. Bold on-screen text pop: \"Upgrade Your Day.\"\nEffects: quick_cuts, text_pop, product_highlight; jump_cut between environments; subtle screen glow pulse on wake.\nMusic: Energetic commercial track hits with a sharp logo sting; percussive downbeat on the watch power-up.\nPacing: Rapid, snappy; 1-second beats across the three environments.\nMood: Bold, empowering.\nConsistency: Brand palette: Electric Blue (#2E6DFF), Jet Black (#111111), White (#FFFFFF); clean sans-serif typography consistent across text pops.\n\nScene 2 | Duration: 4s | Purpose: Showcase core features with AI flair\nNarration: \"Track smarter, pay faster, crush every goal—rain or shine.\"\nVisuals: Feature montage: wrist raise shows heart metrics; swipe reveals tap-to-pay; swipe reveals GPS pace ring; zoom out to waterproof test with splash. AI talking avatar appears briefly inside the watch face (brand spokesperson avatar), smiles and nods as the heart rate peaks.\nEffects: swipe transitions between features; zoom punch on waterproof splash; motion graphics data overlays synced to VO; product_highlight.\nMusic: Rhythm intensifies; light riser under the swipe sequence.\nPacing: One feature per beat; motion graphics lock to snare hits.\nMood: Tech-forward, confident.\nConsistency: Avatar design aligns with brand colors; data overlays use consistent line weights and iconography.\n\nScene 3 | Duration: 3s | Purpose: Social proof using provided asset\nNarration: \"Real users. Real results.\"\nVisuals: Smartphone UI scrolls through UGC gallery. user_image_01",
+        "script_metadata": {
+          "profile": "ads_commercial",
+          "duration_seconds": 15,
+          "orientation": "16:9",
+          "language": "English",
+          "total_scenes": 3,
+          "estimated_word_count": 304,
+          "pacing_style": "Dynamic, attention-grabbing with urgency"
+        },
+        "quality_assessment": {
+          "overallScore": 0.75,
+          "grade": "C",
+          "issues": [
+            "Missing voiceover guidance",
+            "Missing music and audio plan",
+            "Missing production notes"
+          ],
+          "recommendations": [
+            "Consider adding more scenes for better pacing"
+          ]
+        },
+        "metadata": {
+          "scriptId": "script_1758213119560_mmml81mcz",
+          "profile": "ads_commercial",
+          "processingTimeMs": 86474,
+          "timestamp": "2025-09-18T16:32:01.905Z"
+        }
+      },
+      "error": "Validation failed: Missing voiceover guidance section, Missing music & audio plan section"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "timestamp": "2025-09-18T13:33:42.053Z",
+  "summary": {
+    "total": 7,
+    "passed": 2,
+    "failed": 5,
+    "successRate": 28.57142857142857
+  },
+  "errors": [
+    "Incomplete string at end: Expected ',' or '}' after property value in JSON at position 206 (line 12 column 4)",
+    "Missing closing braces: Expected ',' or '}' after property value in JSON at position 206 (line 12 column 4)",
+    "Incomplete property after array: Expected ',' or '}' after property value in JSON at position 206 (line 12 column 4)",
+    "Mixed syntax errors: Expected ',' or '}' after property value in JSON at position 206 (line 12 column 4)",
+    "Real-world problematic case from error log: Expected ',' or '}' after property value in JSON at position 757 (line 28 column 8)"
+  ],
+  "details": [
+    {
+      "name": "Missing closing </json> tag",
+      "success": true,
+      "extracted": 208,
+      "parsed": true,
+      "error": null,
+      "expected": "Should extract and parse successfully"
+    },
+    {
+      "name": "Incomplete JSON with trailing comma",
+      "success": true,
+      "extracted": 211,
+      "parsed": true,
+      "error": null,
+      "expected": "Should fix trailing commas and parse successfully"
+    },
+    {
+      "name": "Incomplete string at end",
+      "success": false,
+      "extracted": 234,
+      "parsed": false,
+      "error": "Expected ',' or '}' after property value in JSON at position 206 (line 12 column 4)",
+      "expected": "Should fix incomplete string and parse successfully"
+    },
+    {
+      "name": "Missing closing braces",
+      "success": false,
+      "extracted": 206,
+      "parsed": false,
+      "error": "Expected ',' or '}' after property value in JSON at position 206 (line 12 column 4)",
+      "expected": "Should add missing closing braces and parse successfully"
+    },
+    {
+      "name": "Incomplete property after array",
+      "success": false,
+      "extracted": 211,
+      "parsed": false,
+      "error": "Expected ',' or '}' after property value in JSON at position 206 (line 12 column 4)",
+      "expected": "Should remove incomplete property and parse successfully"
+    },
+    {
+      "name": "Mixed syntax errors",
+      "success": false,
+      "extracted": 227,
+      "parsed": false,
+      "error": "Expected ',' or '}' after property value in JSON at position 206 (line 12 column 4)",
+      "expected": "Should fix multiple issues and parse successfully"
+    },
+    {
+      "name": "Real-world problematic case from error log",
+      "success": false,
+      "extracted": 1456,
+      "parsed": false,
+      "error": "Expected ',' or '}' after property value in JSON at position 757 (line 28 column 8)",
+      "expected": "Should handle the exact problematic case from the error log"
+    }
+  ]
+}

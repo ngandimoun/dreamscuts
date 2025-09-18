@@ -251,6 +251,8 @@ function buildAnalysisPrompt(query: string, options: {
 
 USER QUERY: "${query}"
 
+IMPORTANT: The user may mention media types (like "image" or "video") in their query, but this is often descriptive content rather than their actual intent. Focus on analyzing the creative content, style, and requirements rather than trying to determine the output type from the text alone.
+
 Provide a detailed JSON analysis following this exact structure:
 
 {
@@ -260,7 +262,7 @@ Provide a detailed JSON analysis following this exact structure:
     "primary_output_type": "[image|video|audio|mixed]",
     "confidence": [0.0-1.0],
     "secondary_types": ["[additional types if applicable]"],
-    "reasoning": "[explain why you classified this way]"
+    "reasoning": "[explain why you classified this way - note that UI selection takes precedence over text analysis]"
   },
   "modifiers": {
     "style": ["[visual/aesthetic styles mentioned or implied]"],
@@ -333,8 +335,10 @@ ANALYSIS GUIDELINES:
 4. Consider industry standards for missing specifications
 5. Be conservative with confidence scores - only use high confidence (>0.8) when very certain
 6. Extract both explicit and implicit requirements
-${options.enableDetailedModifierExtraction ? `7. Pay special attention to subtle style/mood/aesthetic cues
-8. Consider cultural and temporal contexts for complete modifier extraction` : ''}
+7. CRITICAL: When user mentions "image" or "video" in their query, treat this as descriptive content about what they want to create, not as their output type preference. The UI selection will override your intent detection.
+8. Focus on analyzing creative content, style, mood, and technical requirements rather than output type determination
+${options.enableDetailedModifierExtraction ? `9. Pay special attention to subtle style/mood/aesthetic cues
+10. Consider cultural and temporal contexts for complete modifier extraction` : ''}
 
 Respond ONLY with the JSON object, no additional text.`;
 }

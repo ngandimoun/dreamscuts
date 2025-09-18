@@ -1,0 +1,2586 @@
+{
+  "timestamp": "2025-09-18T14:02:52.355Z",
+  "summary": {
+    "total": 28,
+    "passed": 11,
+    "failed": 17,
+    "successRate": 39.285714285714285
+  },
+  "errors": [
+    "Duration Test - Extended (120s): fetch failed",
+    "Duration Test - Very Long (180s): fetch failed",
+    "Aspect Ratio Test - Portrait (9:16): fetch failed",
+    "Aspect Ratio Test - Landscape (16:9): fetch failed",
+    "Aspect Ratio Test - Square (1:1): fetch failed",
+    "Aspect Ratio Test - Standard (4:3): fetch failed",
+    "Platform Test - TikTok: fetch failed",
+    "Platform Test - Instagram Reels: fetch failed",
+    "Platform Test - YouTube Shorts: fetch failed",
+    "Platform Test - YouTube Long-form: fetch failed",
+    "Platform Test - LinkedIn: fetch failed",
+    "Platform Test - Facebook: fetch failed",
+    "Asset Integration Test - No Assets: fetch failed",
+    "Asset Integration Test - Single Image: fetch failed",
+    "Asset Integration Test - Multiple Images: fetch failed",
+    "Asset Integration Test - Mixed Media: fetch failed",
+    "Edge Case Test - Invalid Profile ID: Expected success but got failure: fetch failed"
+  ],
+  "details": [
+    {
+      "scenario": "Duration Test - Ultra Short (5s)",
+      "success": true,
+      "responseTime": 135471,
+      "validation": {
+        "valid": true,
+        "errors": []
+      },
+      "result": {
+        "success": true,
+        "script": {
+          "script_metadata": {
+            "profile": "educational_explainer",
+            "duration_seconds": 5,
+            "orientation": "landscape",
+            "language": "english",
+            "total_scenes": 2,
+            "estimated_word_count": 25,
+            "pacing_style": "methodical with learning pauses"
+          },
+          "scenes": [
+            {
+              "scene_id": "s1",
+              "duration": 3,
+              "narration": "Let's dive into deliver educational_explainer content effectively. I will break this down simply.",
+              "visual_anchor": "generated_scene_1",
+              "suggested_effects": [
+                {
+                  "type": "fade_in",
+                  "params": {
+                    "direction": "in",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "opening_theme",
+              "subtitles": "Let's dive into deliver educational_explainer content effectively.",
+              "scene_purpose": "Hook the audience with deliver educational_explainer content effectively and establish credibility",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "opening",
+                "visual_type": "wide_establishing_shot",
+                "camera_angle": "wide",
+                "lighting": "professional",
+                "composition": "rule_of_thirds",
+                "treatment_note": "Establish context and authority"
+              }
+            },
+            {
+              "scene_id": "s2",
+              "duration": 3,
+              "narration": "That's a wrap! We've covered deliver educational_explainer content effectively. Hope this was helpful!",
+              "visual_anchor": "generated_scene_2",
+              "suggested_effects": [
+                {
+                  "type": "fade_out",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "closing_theme",
+              "subtitles": "That's a wrap! We've covered deliver educational_explainer content effectively.",
+              "scene_purpose": "Deliver the final key message and create a memorable conclusion",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "closing",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            }
+          ],
+          "global_voiceover": {
+            "voices": [
+              {
+                "id": "fallback_narrator",
+                "style": "professional and clear",
+                "gender": "neutral",
+                "age_range": "adult",
+                "accent": "neutral",
+                "elevenlabs_voice_id": "professional_voice",
+                "voice_settings": {
+                  "stability": 0.8,
+                  "similarity_boost": 0.9,
+                  "style": 0.3,
+                  "use_speaker_boost": true
+                }
+              }
+            ],
+            "narration_style": "clear, professional delivery",
+            "pacing_notes": "Steady pace with emphasis on key points",
+            "audio_balance": {
+              "voice_volume": "primary",
+              "music_volume": "background",
+              "effects_volume": "subtle",
+              "ducking_enabled": true
+            },
+            "timing_control": {
+              "pause_between_sentences": "0.5s",
+              "emphasis_timing": "1.1x",
+              "breathing_room": "0.3s",
+              "sync_with_music": true
+            }
+          },
+          "music_plan": {
+            "style": "professional background music",
+            "transitions": [
+              "crossfade",
+              "bokeh_transition"
+            ],
+            "mood_progression": [
+              "opening",
+              "development",
+              "climax",
+              "resolution"
+            ],
+            "music_cues": [
+              {
+                "segment": "intro",
+                "duration": "0-2s",
+                "style": "welcoming",
+                "intensity": "low",
+                "instrumentation": "gentle piano + strings",
+                "emotion": "approachable",
+                "tempo": "calm"
+              },
+              {
+                "segment": "development",
+                "duration": "2-8s",
+                "style": "instructional",
+                "intensity": "medium",
+                "instrumentation": "piano, strings",
+                "emotion": "focused",
+                "tempo": "steady"
+              }
+            ],
+            "audio_engine": "elevenlabs",
+            "emotion_tracking": true
+          },
+          "asset_integration": {
+            "user_assets_used": [],
+            "generated_content_needed": [
+              "background_music",
+              "transition_effects",
+              "primary_visuals",
+              "supporting_graphics"
+            ],
+            "visual_flow": [
+              "opening_shot",
+              "main_content",
+              "closing_shot"
+            ]
+          },
+          "quality_assurance": {
+            "duration_compliance": true,
+            "asset_utilization": "Generated content optimized for maximum engagement",
+            "narrative_coherence": "Clear progression through deliver educational_explainer content effectively with logical flow",
+            "profile_alignment": "Perfectly matches educational explainer style with Energetic and engaging tone"
+          },
+          "consistency": {
+            "character_faces": "locked",
+            "voice_style": "consistent",
+            "tone": "Energetic and engaging",
+            "visual_continuity": "maintained",
+            "brand_consistency": "enforced",
+            "consistency_rules": {
+              "character_faces": "locked",
+              "voice_style": "consistent",
+              "tone": "Energetic and engaging",
+              "visual_continuity": "maintained",
+              "brand_consistency": "enforced",
+              "color_palette": "professional colors",
+              "font_consistency": "clean, modern typography",
+              "logo_usage": "minimal, non-intrusive",
+              "style_continuity": "professional, clear communication"
+            }
+          },
+          "scene_enrichment": {
+            "progression": [
+              {
+                "role": "opening",
+                "visual": "wide_establishing_shot",
+                "asset": "generated_opening",
+                "treatment": "fade_in",
+                "note": "Establish context for Deliver educational_explainer content effectively"
+              },
+              {
+                "role": "main",
+                "visual": "medium_focus_shot",
+                "asset": "generated_content",
+                "treatment": "cinematic_zoom",
+                "note": "Deliver core content about Deliver educational_explainer content effectively"
+              }
+            ],
+            "visual_variety_required": true,
+            "distinct_treatment_per_scene": true,
+            "complementary_generation_allowed": true,
+            "narrative_flow": "Professional progression through deliver educational_explainer content effectively with Energetic and engaging tone"
+          }
+        },
+        "quality_assessment": {
+          "overallScore": 0.3500000000000001,
+          "grade": "D",
+          "issues": [
+            "Insufficient scenes for professional narrative structure (minimum: 3 scenes)",
+            "Missing emotional climax or key moment",
+            "Missing structured music arcs for professional production",
+            "Missing ElevenLabs 2025-compatible structured music cues",
+            "Missing proper visual progression (opening → main → closing)"
+          ],
+          "recommendations": [
+            "Add more scenes for richer narrative development",
+            "Add more music transition cues for smoother production",
+            "Implement ElevenLabs 2025-compatible structured music cues for advanced audio production",
+            "Create proper visual progression from opening to main to closing for engaging narrative flow"
+          ]
+        },
+        "metadata": {
+          "scriptId": "fallback_script_1758204307825",
+          "profile": "educational_explainer",
+          "processingTimeMs": 135217,
+          "timestamp": "2025-09-18T14:05:07.825Z",
+          "fallback": true
+        }
+      },
+      "error": null
+    },
+    {
+      "scenario": "Duration Test - Short (10s)",
+      "success": true,
+      "responseTime": 142468,
+      "validation": {
+        "valid": true,
+        "errors": []
+      },
+      "result": {
+        "success": true,
+        "script": {
+          "script_metadata": {
+            "profile": "educational_explainer",
+            "duration_seconds": 10,
+            "orientation": "landscape",
+            "language": "english",
+            "total_scenes": 4,
+            "estimated_word_count": 50,
+            "pacing_style": "methodical with learning pauses"
+          },
+          "scenes": [
+            {
+              "scene_id": "s1",
+              "duration": 3,
+              "narration": "Let's dive into deliver educational_explainer content effectively. I will break this down simply.",
+              "visual_anchor": "generated_scene_1",
+              "suggested_effects": [
+                {
+                  "type": "fade_in",
+                  "params": {
+                    "direction": "in",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "opening_theme",
+              "subtitles": "Let's dive into deliver educational_explainer content effectively.",
+              "scene_purpose": "Hook the audience with deliver educational_explainer content effectively and establish credibility",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "opening",
+                "visual_type": "wide_establishing_shot",
+                "camera_angle": "wide",
+                "lighting": "professional",
+                "composition": "rule_of_thirds",
+                "treatment_note": "Establish context and authority"
+              }
+            },
+            {
+              "scene_id": "s2",
+              "duration": 3,
+              "narration": "Let me show you how this works. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_2",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Let me show you how this works.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s3",
+              "duration": 3,
+              "narration": "This is where it gets interesting. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_3",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "This is where it gets interesting.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s4",
+              "duration": 3,
+              "narration": "That's a wrap! We've covered deliver educational_explainer content effectively. Hope this was helpful!",
+              "visual_anchor": "generated_scene_4",
+              "suggested_effects": [
+                {
+                  "type": "fade_out",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "closing_theme",
+              "subtitles": "That's a wrap! We've covered deliver educational_explainer content effectively.",
+              "scene_purpose": "Deliver the final key message and create a memorable conclusion",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "closing",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            }
+          ],
+          "global_voiceover": {
+            "voices": [
+              {
+                "id": "fallback_narrator",
+                "style": "professional and clear",
+                "gender": "neutral",
+                "age_range": "adult",
+                "accent": "neutral",
+                "elevenlabs_voice_id": "professional_voice",
+                "voice_settings": {
+                  "stability": 0.8,
+                  "similarity_boost": 0.9,
+                  "style": 0.3,
+                  "use_speaker_boost": true
+                }
+              }
+            ],
+            "narration_style": "clear, professional delivery",
+            "pacing_notes": "Steady pace with emphasis on key points",
+            "audio_balance": {
+              "voice_volume": "primary",
+              "music_volume": "background",
+              "effects_volume": "subtle",
+              "ducking_enabled": true
+            },
+            "timing_control": {
+              "pause_between_sentences": "0.5s",
+              "emphasis_timing": "1.1x",
+              "breathing_room": "0.3s",
+              "sync_with_music": true
+            }
+          },
+          "music_plan": {
+            "style": "professional background music",
+            "transitions": [
+              "crossfade",
+              "bokeh_transition"
+            ],
+            "mood_progression": [
+              "opening",
+              "development",
+              "climax",
+              "resolution"
+            ],
+            "music_cues": [
+              {
+                "segment": "intro",
+                "duration": "0-2s",
+                "style": "welcoming",
+                "intensity": "low",
+                "instrumentation": "gentle piano + strings",
+                "emotion": "approachable",
+                "tempo": "calm"
+              },
+              {
+                "segment": "development",
+                "duration": "2-8s",
+                "style": "instructional",
+                "intensity": "medium",
+                "instrumentation": "piano, strings",
+                "emotion": "focused",
+                "tempo": "steady"
+              }
+            ],
+            "audio_engine": "elevenlabs",
+            "emotion_tracking": true
+          },
+          "asset_integration": {
+            "user_assets_used": [],
+            "generated_content_needed": [
+              "background_music",
+              "transition_effects",
+              "primary_visuals",
+              "supporting_graphics"
+            ],
+            "visual_flow": [
+              "opening_shot",
+              "main_content",
+              "closing_shot"
+            ]
+          },
+          "quality_assurance": {
+            "duration_compliance": true,
+            "asset_utilization": "Generated content optimized for maximum engagement",
+            "narrative_coherence": "Clear progression through deliver educational_explainer content effectively with logical flow",
+            "profile_alignment": "Perfectly matches educational explainer style with Energetic and engaging tone"
+          },
+          "consistency": {
+            "character_faces": "locked",
+            "voice_style": "consistent",
+            "tone": "Energetic and engaging",
+            "visual_continuity": "maintained",
+            "brand_consistency": "enforced",
+            "consistency_rules": {
+              "character_faces": "locked",
+              "voice_style": "consistent",
+              "tone": "Energetic and engaging",
+              "visual_continuity": "maintained",
+              "brand_consistency": "enforced",
+              "color_palette": "professional colors",
+              "font_consistency": "clean, modern typography",
+              "logo_usage": "minimal, non-intrusive",
+              "style_continuity": "professional, clear communication"
+            }
+          },
+          "scene_enrichment": {
+            "progression": [
+              {
+                "role": "opening",
+                "visual": "wide_establishing_shot",
+                "asset": "generated_opening",
+                "treatment": "fade_in",
+                "note": "Establish context for Deliver educational_explainer content effectively"
+              },
+              {
+                "role": "main",
+                "visual": "medium_focus_shot",
+                "asset": "generated_content",
+                "treatment": "cinematic_zoom",
+                "note": "Deliver core content about Deliver educational_explainer content effectively"
+              }
+            ],
+            "visual_variety_required": true,
+            "distinct_treatment_per_scene": true,
+            "complementary_generation_allowed": true,
+            "narrative_flow": "Professional progression through deliver educational_explainer content effectively with Energetic and engaging tone"
+          }
+        },
+        "quality_assessment": {
+          "overallScore": 0.4,
+          "grade": "D",
+          "issues": [
+            "Duration mismatch: 12s vs 10s (tolerance: ±1s)",
+            "Missing emotional climax or key moment",
+            "Missing structured music arcs for professional production",
+            "Missing ElevenLabs 2025-compatible structured music cues"
+          ],
+          "recommendations": [
+            "Add more music transition cues for smoother production",
+            "Implement ElevenLabs 2025-compatible structured music cues for advanced audio production"
+          ]
+        },
+        "metadata": {
+          "scriptId": "fallback_script_1758204450524",
+          "profile": "educational_explainer",
+          "processingTimeMs": 142423,
+          "timestamp": "2025-09-18T14:07:30.524Z",
+          "fallback": true
+        }
+      },
+      "error": null
+    },
+    {
+      "scenario": "Duration Test - Medium Short (15s)",
+      "success": true,
+      "responseTime": 130510,
+      "validation": {
+        "valid": true,
+        "errors": []
+      },
+      "result": {
+        "success": true,
+        "script": {
+          "script_metadata": {
+            "profile": "educational_explainer",
+            "duration_seconds": 15,
+            "orientation": "landscape",
+            "language": "english",
+            "total_scenes": 6,
+            "estimated_word_count": 75,
+            "pacing_style": "methodical with learning pauses"
+          },
+          "scenes": [
+            {
+              "scene_id": "s1",
+              "duration": 3,
+              "narration": "Let's dive into deliver educational_explainer content effectively. I will break this down simply.",
+              "visual_anchor": "generated_scene_1",
+              "suggested_effects": [
+                {
+                  "type": "fade_in",
+                  "params": {
+                    "direction": "in",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "opening_theme",
+              "subtitles": "Let's dive into deliver educational_explainer content effectively.",
+              "scene_purpose": "Hook the audience with deliver educational_explainer content effectively and establish credibility",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "opening",
+                "visual_type": "wide_establishing_shot",
+                "camera_angle": "wide",
+                "lighting": "professional",
+                "composition": "rule_of_thirds",
+                "treatment_note": "Establish context and authority"
+              }
+            },
+            {
+              "scene_id": "s2",
+              "duration": 3,
+              "narration": "Let me show you how this works. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_2",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Let me show you how this works.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s3",
+              "duration": 3,
+              "narration": "This is where it gets interesting. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_3",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "This is where it gets interesting.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s4",
+              "duration": 3,
+              "narration": "The important part is. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_4",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "The important part is.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s5",
+              "duration": 3,
+              "narration": "Here's what you need to understand. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_5",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's what you need to understand.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s6",
+              "duration": 3,
+              "narration": "That's a wrap! We've covered deliver educational_explainer content effectively. Hope this was helpful!",
+              "visual_anchor": "generated_scene_6",
+              "suggested_effects": [
+                {
+                  "type": "fade_out",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "closing_theme",
+              "subtitles": "That's a wrap! We've covered deliver educational_explainer content effectively.",
+              "scene_purpose": "Deliver the final key message and create a memorable conclusion",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "closing",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            }
+          ],
+          "global_voiceover": {
+            "voices": [
+              {
+                "id": "fallback_narrator",
+                "style": "professional and clear",
+                "gender": "neutral",
+                "age_range": "adult",
+                "accent": "neutral",
+                "elevenlabs_voice_id": "professional_voice",
+                "voice_settings": {
+                  "stability": 0.8,
+                  "similarity_boost": 0.9,
+                  "style": 0.3,
+                  "use_speaker_boost": true
+                }
+              }
+            ],
+            "narration_style": "clear, professional delivery",
+            "pacing_notes": "Steady pace with emphasis on key points",
+            "audio_balance": {
+              "voice_volume": "primary",
+              "music_volume": "background",
+              "effects_volume": "subtle",
+              "ducking_enabled": true
+            },
+            "timing_control": {
+              "pause_between_sentences": "0.5s",
+              "emphasis_timing": "1.1x",
+              "breathing_room": "0.3s",
+              "sync_with_music": true
+            }
+          },
+          "music_plan": {
+            "style": "professional background music",
+            "transitions": [
+              "crossfade",
+              "bokeh_transition"
+            ],
+            "mood_progression": [
+              "opening",
+              "development",
+              "climax",
+              "resolution"
+            ],
+            "music_cues": [
+              {
+                "segment": "intro",
+                "duration": "0-2s",
+                "style": "welcoming",
+                "intensity": "low",
+                "instrumentation": "gentle piano + strings",
+                "emotion": "approachable",
+                "tempo": "calm"
+              },
+              {
+                "segment": "development",
+                "duration": "2-8s",
+                "style": "instructional",
+                "intensity": "medium",
+                "instrumentation": "piano, strings",
+                "emotion": "focused",
+                "tempo": "steady"
+              }
+            ],
+            "audio_engine": "elevenlabs",
+            "emotion_tracking": true
+          },
+          "asset_integration": {
+            "user_assets_used": [],
+            "generated_content_needed": [
+              "background_music",
+              "transition_effects",
+              "primary_visuals",
+              "supporting_graphics"
+            ],
+            "visual_flow": [
+              "opening_shot",
+              "main_content",
+              "closing_shot"
+            ]
+          },
+          "quality_assurance": {
+            "duration_compliance": true,
+            "asset_utilization": "Generated content optimized for maximum engagement",
+            "narrative_coherence": "Clear progression through deliver educational_explainer content effectively with logical flow",
+            "profile_alignment": "Perfectly matches educational explainer style with Energetic and engaging tone"
+          },
+          "consistency": {
+            "character_faces": "locked",
+            "voice_style": "consistent",
+            "tone": "Energetic and engaging",
+            "visual_continuity": "maintained",
+            "brand_consistency": "enforced",
+            "consistency_rules": {
+              "character_faces": "locked",
+              "voice_style": "consistent",
+              "tone": "Energetic and engaging",
+              "visual_continuity": "maintained",
+              "brand_consistency": "enforced",
+              "color_palette": "professional colors",
+              "font_consistency": "clean, modern typography",
+              "logo_usage": "minimal, non-intrusive",
+              "style_continuity": "professional, clear communication"
+            }
+          },
+          "scene_enrichment": {
+            "progression": [
+              {
+                "role": "opening",
+                "visual": "wide_establishing_shot",
+                "asset": "generated_opening",
+                "treatment": "fade_in",
+                "note": "Establish context for Deliver educational_explainer content effectively"
+              },
+              {
+                "role": "main",
+                "visual": "medium_focus_shot",
+                "asset": "generated_content",
+                "treatment": "cinematic_zoom",
+                "note": "Deliver core content about Deliver educational_explainer content effectively"
+              }
+            ],
+            "visual_variety_required": true,
+            "distinct_treatment_per_scene": true,
+            "complementary_generation_allowed": true,
+            "narrative_flow": "Professional progression through deliver educational_explainer content effectively with Energetic and engaging tone"
+          }
+        },
+        "quality_assessment": {
+          "overallScore": 0.4,
+          "grade": "D",
+          "issues": [
+            "Duration mismatch: 18s vs 15s (tolerance: ±1s)",
+            "Missing emotional climax or key moment",
+            "Missing structured music arcs for professional production",
+            "Missing ElevenLabs 2025-compatible structured music cues"
+          ],
+          "recommendations": [
+            "Consider multiple character voices for longer content",
+            "Add more music transition cues for smoother production",
+            "Implement ElevenLabs 2025-compatible structured music cues for advanced audio production"
+          ]
+        },
+        "metadata": {
+          "scriptId": "fallback_script_1758204581248",
+          "profile": "educational_explainer",
+          "processingTimeMs": 130471,
+          "timestamp": "2025-09-18T14:09:41.248Z",
+          "fallback": true
+        }
+      },
+      "error": null
+    },
+    {
+      "scenario": "Duration Test - Standard (30s)",
+      "success": true,
+      "responseTime": 125877,
+      "validation": {
+        "valid": true,
+        "errors": []
+      },
+      "result": {
+        "success": true,
+        "script": {
+          "script_metadata": {
+            "profile": "educational_explainer",
+            "duration_seconds": 30,
+            "orientation": "landscape",
+            "language": "english",
+            "total_scenes": 12,
+            "estimated_word_count": 150,
+            "pacing_style": "methodical with learning pauses"
+          },
+          "scenes": [
+            {
+              "scene_id": "s1",
+              "duration": 3,
+              "narration": "Let's dive into deliver educational_explainer content effectively. I will break this down simply.",
+              "visual_anchor": "generated_scene_1",
+              "suggested_effects": [
+                {
+                  "type": "fade_in",
+                  "params": {
+                    "direction": "in",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "opening_theme",
+              "subtitles": "Let's dive into deliver educational_explainer content effectively.",
+              "scene_purpose": "Hook the audience with deliver educational_explainer content effectively and establish credibility",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "opening",
+                "visual_type": "wide_establishing_shot",
+                "camera_angle": "wide",
+                "lighting": "professional",
+                "composition": "rule_of_thirds",
+                "treatment_note": "Establish context and authority"
+              }
+            },
+            {
+              "scene_id": "s2",
+              "duration": 3,
+              "narration": "Let me show you how this works. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_2",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Let me show you how this works.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s3",
+              "duration": 3,
+              "narration": "This is where it gets interesting. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_3",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "This is where it gets interesting.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s4",
+              "duration": 3,
+              "narration": "The important part is. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_4",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "The important part is.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s5",
+              "duration": 3,
+              "narration": "Here's what you need to understand. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_5",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's what you need to understand.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s6",
+              "duration": 3,
+              "narration": "Here's the key insight. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_6",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's the key insight.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s7",
+              "duration": 3,
+              "narration": "Let me show you how this works. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_7",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Let me show you how this works.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s8",
+              "duration": 3,
+              "narration": "This is where it gets interesting. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_8",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "This is where it gets interesting.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s9",
+              "duration": 3,
+              "narration": "The important part is. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_9",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "The important part is.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s10",
+              "duration": 3,
+              "narration": "Here's what you need to understand. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_10",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's what you need to understand.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s11",
+              "duration": 3,
+              "narration": "Here's the key insight. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_11",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's the key insight.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s12",
+              "duration": 3,
+              "narration": "That's a wrap! We've covered deliver educational_explainer content effectively. Hope this was helpful!",
+              "visual_anchor": "generated_scene_12",
+              "suggested_effects": [
+                {
+                  "type": "fade_out",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "closing_theme",
+              "subtitles": "That's a wrap! We've covered deliver educational_explainer content effectively.",
+              "scene_purpose": "Deliver the final key message and create a memorable conclusion",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "closing",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            }
+          ],
+          "global_voiceover": {
+            "voices": [
+              {
+                "id": "fallback_narrator",
+                "style": "professional and clear",
+                "gender": "neutral",
+                "age_range": "adult",
+                "accent": "neutral",
+                "elevenlabs_voice_id": "professional_voice",
+                "voice_settings": {
+                  "stability": 0.8,
+                  "similarity_boost": 0.9,
+                  "style": 0.3,
+                  "use_speaker_boost": true
+                }
+              }
+            ],
+            "narration_style": "clear, professional delivery",
+            "pacing_notes": "Steady pace with emphasis on key points",
+            "audio_balance": {
+              "voice_volume": "primary",
+              "music_volume": "background",
+              "effects_volume": "subtle",
+              "ducking_enabled": true
+            },
+            "timing_control": {
+              "pause_between_sentences": "0.5s",
+              "emphasis_timing": "1.1x",
+              "breathing_room": "0.3s",
+              "sync_with_music": true
+            }
+          },
+          "music_plan": {
+            "style": "professional background music",
+            "transitions": [
+              "crossfade",
+              "bokeh_transition"
+            ],
+            "mood_progression": [
+              "opening",
+              "development",
+              "climax",
+              "resolution"
+            ],
+            "music_cues": [
+              {
+                "segment": "intro",
+                "duration": "0-2s",
+                "style": "welcoming",
+                "intensity": "low",
+                "instrumentation": "gentle piano + strings",
+                "emotion": "approachable",
+                "tempo": "calm"
+              },
+              {
+                "segment": "development",
+                "duration": "2-8s",
+                "style": "instructional",
+                "intensity": "medium",
+                "instrumentation": "piano, strings",
+                "emotion": "focused",
+                "tempo": "steady"
+              }
+            ],
+            "audio_engine": "elevenlabs",
+            "emotion_tracking": true
+          },
+          "asset_integration": {
+            "user_assets_used": [],
+            "generated_content_needed": [
+              "background_music",
+              "transition_effects",
+              "primary_visuals",
+              "supporting_graphics"
+            ],
+            "visual_flow": [
+              "opening_shot",
+              "main_content",
+              "closing_shot"
+            ]
+          },
+          "quality_assurance": {
+            "duration_compliance": true,
+            "asset_utilization": "Generated content optimized for maximum engagement",
+            "narrative_coherence": "Clear progression through deliver educational_explainer content effectively with logical flow",
+            "profile_alignment": "Perfectly matches educational explainer style with Energetic and engaging tone"
+          },
+          "consistency": {
+            "character_faces": "locked",
+            "voice_style": "consistent",
+            "tone": "Energetic and engaging",
+            "visual_continuity": "maintained",
+            "brand_consistency": "enforced",
+            "consistency_rules": {
+              "character_faces": "locked",
+              "voice_style": "consistent",
+              "tone": "Energetic and engaging",
+              "visual_continuity": "maintained",
+              "brand_consistency": "enforced",
+              "color_palette": "professional colors",
+              "font_consistency": "clean, modern typography",
+              "logo_usage": "minimal, non-intrusive",
+              "style_continuity": "professional, clear communication"
+            }
+          },
+          "scene_enrichment": {
+            "progression": [
+              {
+                "role": "opening",
+                "visual": "wide_establishing_shot",
+                "asset": "generated_opening",
+                "treatment": "fade_in",
+                "note": "Establish context for Deliver educational_explainer content effectively"
+              },
+              {
+                "role": "main",
+                "visual": "medium_focus_shot",
+                "asset": "generated_content",
+                "treatment": "cinematic_zoom",
+                "note": "Deliver core content about Deliver educational_explainer content effectively"
+              }
+            ],
+            "visual_variety_required": true,
+            "distinct_treatment_per_scene": true,
+            "complementary_generation_allowed": true,
+            "narrative_flow": "Professional progression through deliver educational_explainer content effectively with Energetic and engaging tone"
+          }
+        },
+        "quality_assessment": {
+          "overallScore": 0.4,
+          "grade": "D",
+          "issues": [
+            "Duration mismatch: 36s vs 30s (tolerance: ±1s)",
+            "Missing emotional climax or key moment",
+            "Missing structured music arcs for professional production",
+            "Missing ElevenLabs 2025-compatible structured music cues"
+          ],
+          "recommendations": [
+            "Consider multiple character voices for longer content",
+            "Add more music transition cues for smoother production",
+            "Implement ElevenLabs 2025-compatible structured music cues for advanced audio production"
+          ]
+        },
+        "metadata": {
+          "scriptId": "fallback_script_1758204707331",
+          "profile": "educational_explainer",
+          "processingTimeMs": 125841,
+          "timestamp": "2025-09-18T14:11:47.331Z",
+          "fallback": true
+        }
+      },
+      "error": null
+    },
+    {
+      "scenario": "Duration Test - Long (60s)",
+      "success": true,
+      "responseTime": 129994,
+      "validation": {
+        "valid": true,
+        "errors": []
+      },
+      "result": {
+        "success": true,
+        "script": {
+          "script_metadata": {
+            "profile": "educational_explainer",
+            "duration_seconds": 60,
+            "orientation": "landscape",
+            "language": "english",
+            "total_scenes": 24,
+            "estimated_word_count": 300,
+            "pacing_style": "methodical with learning pauses"
+          },
+          "scenes": [
+            {
+              "scene_id": "s1",
+              "duration": 3,
+              "narration": "Let's dive into deliver educational_explainer content effectively. I will break this down simply.",
+              "visual_anchor": "generated_scene_1",
+              "suggested_effects": [
+                {
+                  "type": "fade_in",
+                  "params": {
+                    "direction": "in",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "opening_theme",
+              "subtitles": "Let's dive into deliver educational_explainer content effectively.",
+              "scene_purpose": "Hook the audience with deliver educational_explainer content effectively and establish credibility",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "opening",
+                "visual_type": "wide_establishing_shot",
+                "camera_angle": "wide",
+                "lighting": "professional",
+                "composition": "rule_of_thirds",
+                "treatment_note": "Establish context and authority"
+              }
+            },
+            {
+              "scene_id": "s2",
+              "duration": 3,
+              "narration": "Let me show you how this works. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_2",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Let me show you how this works.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s3",
+              "duration": 3,
+              "narration": "This is where it gets interesting. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_3",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "This is where it gets interesting.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s4",
+              "duration": 3,
+              "narration": "The important part is. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_4",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "The important part is.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s5",
+              "duration": 3,
+              "narration": "Here's what you need to understand. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_5",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's what you need to understand.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s6",
+              "duration": 3,
+              "narration": "Here's the key insight. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_6",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's the key insight.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s7",
+              "duration": 3,
+              "narration": "Let me show you how this works. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_7",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Let me show you how this works.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s8",
+              "duration": 3,
+              "narration": "This is where it gets interesting. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_8",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "This is where it gets interesting.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s9",
+              "duration": 3,
+              "narration": "The important part is. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_9",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "The important part is.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s10",
+              "duration": 3,
+              "narration": "Here's what you need to understand. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_10",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's what you need to understand.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s11",
+              "duration": 3,
+              "narration": "Here's the key insight. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_11",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's the key insight.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s12",
+              "duration": 3,
+              "narration": "Let me show you how this works. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_12",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Let me show you how this works.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s13",
+              "duration": 3,
+              "narration": "This is where it gets interesting. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_13",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "This is where it gets interesting.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s14",
+              "duration": 3,
+              "narration": "The important part is. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_14",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "The important part is.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s15",
+              "duration": 3,
+              "narration": "Here's what you need to understand. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_15",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's what you need to understand.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s16",
+              "duration": 3,
+              "narration": "Here's the key insight. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_16",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's the key insight.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s17",
+              "duration": 3,
+              "narration": "Let me show you how this works. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_17",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Let me show you how this works.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s18",
+              "duration": 3,
+              "narration": "This is where it gets interesting. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_18",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "This is where it gets interesting.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s19",
+              "duration": 3,
+              "narration": "The important part is. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_19",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "The important part is.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s20",
+              "duration": 3,
+              "narration": "Here's what you need to understand. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_20",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's what you need to understand.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s21",
+              "duration": 3,
+              "narration": "Here's the key insight. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_21",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Here's the key insight.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s22",
+              "duration": 3,
+              "narration": "Let me show you how this works. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_22",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "Let me show you how this works.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s23",
+              "duration": 3,
+              "narration": "This is where it gets interesting. In deliver educational_explainer content effectively, this is crucial.",
+              "visual_anchor": "generated_scene_23",
+              "suggested_effects": [
+                {
+                  "type": "cinematic_zoom",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "main_theme",
+              "subtitles": "This is where it gets interesting.",
+              "scene_purpose": "Develop the core content with clear explanations and visual impact",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "main",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            },
+            {
+              "scene_id": "s24",
+              "duration": 3,
+              "narration": "That's a wrap! We've covered deliver educational_explainer content effectively. Hope this was helpful!",
+              "visual_anchor": "generated_scene_24",
+              "suggested_effects": [
+                {
+                  "type": "fade_out",
+                  "params": {
+                    "direction": "out",
+                    "duration": "1s",
+                    "easing": "ease-in-out",
+                    "scale_factor": 1.1
+                  }
+                }
+              ],
+              "music_cue": "closing_theme",
+              "subtitles": "That's a wrap! We've covered deliver educational_explainer content effectively.",
+              "scene_purpose": "Deliver the final key message and create a memorable conclusion",
+              "emotional_tone": "Energetic and engaging",
+              "visual_treatment": {
+                "role": "closing",
+                "visual_type": "medium_focus_shot",
+                "camera_angle": "medium",
+                "lighting": "professional",
+                "composition": "dynamic",
+                "treatment_note": "Focus on main content delivery"
+              }
+            }
+          ],
+          "global_voiceover": {
+            "voices": [
+              {
+                "id": "fallback_narrator",
+                "style": "professional and clear",
+                "gender": "neutral",
+                "age_range": "adult",
+                "accent": "neutral",
+                "elevenlabs_voice_id": "professional_voice",
+                "voice_settings": {
+                  "stability": 0.8,
+                  "similarity_boost": 0.9,
+                  "style": 0.3,
+                  "use_speaker_boost": true
+                }
+              }
+            ],
+            "narration_style": "clear, professional delivery",
+            "pacing_notes": "Steady pace with emphasis on key points",
+            "audio_balance": {
+              "voice_volume": "primary",
+              "music_volume": "background",
+              "effects_volume": "subtle",
+              "ducking_enabled": true
+            },
+            "timing_control": {
+              "pause_between_sentences": "0.5s",
+              "emphasis_timing": "1.1x",
+              "breathing_room": "0.3s",
+              "sync_with_music": true
+            }
+          },
+          "music_plan": {
+            "style": "professional background music",
+            "transitions": [
+              "crossfade",
+              "bokeh_transition"
+            ],
+            "mood_progression": [
+              "opening",
+              "development",
+              "climax",
+              "resolution"
+            ],
+            "music_cues": [
+              {
+                "segment": "intro",
+                "duration": "0-2s",
+                "style": "welcoming",
+                "intensity": "low",
+                "instrumentation": "gentle piano + strings",
+                "emotion": "approachable",
+                "tempo": "calm"
+              },
+              {
+                "segment": "development",
+                "duration": "2-8s",
+                "style": "instructional",
+                "intensity": "medium",
+                "instrumentation": "piano, strings",
+                "emotion": "focused",
+                "tempo": "steady"
+              }
+            ],
+            "audio_engine": "elevenlabs",
+            "emotion_tracking": true
+          },
+          "asset_integration": {
+            "user_assets_used": [],
+            "generated_content_needed": [
+              "background_music",
+              "transition_effects",
+              "primary_visuals",
+              "supporting_graphics"
+            ],
+            "visual_flow": [
+              "opening_shot",
+              "main_content",
+              "closing_shot"
+            ]
+          },
+          "quality_assurance": {
+            "duration_compliance": true,
+            "asset_utilization": "Generated content optimized for maximum engagement",
+            "narrative_coherence": "Clear progression through deliver educational_explainer content effectively with logical flow",
+            "profile_alignment": "Perfectly matches educational explainer style with Energetic and engaging tone"
+          },
+          "consistency": {
+            "character_faces": "locked",
+            "voice_style": "consistent",
+            "tone": "Energetic and engaging",
+            "visual_continuity": "maintained",
+            "brand_consistency": "enforced",
+            "consistency_rules": {
+              "character_faces": "locked",
+              "voice_style": "consistent",
+              "tone": "Energetic and engaging",
+              "visual_continuity": "maintained",
+              "brand_consistency": "enforced",
+              "color_palette": "professional colors",
+              "font_consistency": "clean, modern typography",
+              "logo_usage": "minimal, non-intrusive",
+              "style_continuity": "professional, clear communication"
+            }
+          },
+          "scene_enrichment": {
+            "progression": [
+              {
+                "role": "opening",
+                "visual": "wide_establishing_shot",
+                "asset": "generated_opening",
+                "treatment": "fade_in",
+                "note": "Establish context for Deliver educational_explainer content effectively"
+              },
+              {
+                "role": "main",
+                "visual": "medium_focus_shot",
+                "asset": "generated_content",
+                "treatment": "cinematic_zoom",
+                "note": "Deliver core content about Deliver educational_explainer content effectively"
+              }
+            ],
+            "visual_variety_required": true,
+            "distinct_treatment_per_scene": true,
+            "complementary_generation_allowed": true,
+            "narrative_flow": "Professional progression through deliver educational_explainer content effectively with Energetic and engaging tone"
+          }
+        },
+        "quality_assessment": {
+          "overallScore": 0.4,
+          "grade": "D",
+          "issues": [
+            "Duration mismatch: 72s vs 60s (tolerance: ±1s)",
+            "Missing emotional climax or key moment",
+            "Missing structured music arcs for professional production",
+            "Missing ElevenLabs 2025-compatible structured music cues"
+          ],
+          "recommendations": [
+            "Consider multiple character voices for longer content",
+            "Add more music transition cues for smoother production",
+            "Implement ElevenLabs 2025-compatible structured music cues for advanced audio production"
+          ]
+        },
+        "metadata": {
+          "scriptId": "fallback_script_1758204837479",
+          "profile": "educational_explainer",
+          "processingTimeMs": 129844,
+          "timestamp": "2025-09-18T14:13:57.479Z",
+          "fallback": true
+        }
+      },
+      "error": null
+    },
+    {
+      "scenario": "Duration Test - Extended (120s)",
+      "success": false,
+      "responseTime": 81713,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Duration Test - Very Long (180s)",
+      "success": false,
+      "responseTime": 40,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Aspect Ratio Test - Portrait (9:16)",
+      "success": false,
+      "responseTime": 4,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Aspect Ratio Test - Landscape (16:9)",
+      "success": false,
+      "responseTime": 9,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Aspect Ratio Test - Square (1:1)",
+      "success": false,
+      "responseTime": 5,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Aspect Ratio Test - Standard (4:3)",
+      "success": false,
+      "responseTime": 2,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Platform Test - TikTok",
+      "success": false,
+      "responseTime": 2,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Platform Test - Instagram Reels",
+      "success": false,
+      "responseTime": 2,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Platform Test - YouTube Shorts",
+      "success": false,
+      "responseTime": 3,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Platform Test - YouTube Long-form",
+      "success": false,
+      "responseTime": 3,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Platform Test - LinkedIn",
+      "success": false,
+      "responseTime": 3,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Platform Test - Facebook",
+      "success": false,
+      "responseTime": 3,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Asset Integration Test - No Assets",
+      "success": false,
+      "responseTime": 4,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Asset Integration Test - Single Image",
+      "success": false,
+      "responseTime": 3,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Asset Integration Test - Multiple Images",
+      "success": false,
+      "responseTime": 2,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Asset Integration Test - Mixed Media",
+      "success": false,
+      "responseTime": 2,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "fetch failed"
+    },
+    {
+      "scenario": "Edge Case Test - Empty Request Body",
+      "success": false,
+      "responseTime": 2,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": null
+    },
+    {
+      "scenario": "Edge Case Test - Invalid Duration (0s)",
+      "success": false,
+      "responseTime": 3,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": null
+    },
+    {
+      "scenario": "Edge Case Test - Invalid Duration (negative)",
+      "success": false,
+      "responseTime": 3,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": null
+    },
+    {
+      "scenario": "Edge Case Test - Invalid Duration (too long)",
+      "success": false,
+      "responseTime": 3,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": null
+    },
+    {
+      "scenario": "Edge Case Test - Invalid Aspect Ratio",
+      "success": false,
+      "responseTime": 2,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": null
+    },
+    {
+      "scenario": "Edge Case Test - Invalid Platform",
+      "success": false,
+      "responseTime": 2,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": null
+    },
+    {
+      "scenario": "Edge Case Test - Invalid Profile ID",
+      "success": false,
+      "responseTime": 4,
+      "validation": {
+        "valid": false,
+        "errors": []
+      },
+      "result": null,
+      "error": "Expected success but got failure: fetch failed"
+    }
+  ],
+  "performance": {
+    "averageResponseTime": 26647.821428571428,
+    "minResponseTime": 2,
+    "maxResponseTime": 142468,
+    "responseTimeHistory": [
+      135471,
+      142468,
+      130510,
+      125877,
+      129994,
+      81713,
+      40,
+      4,
+      9,
+      5,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      3,
+      4,
+      3,
+      2,
+      2,
+      2,
+      3,
+      3,
+      3,
+      2,
+      2,
+      4
+    ]
+  }
+}
