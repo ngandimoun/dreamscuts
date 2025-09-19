@@ -1,0 +1,185 @@
+{
+  "id": "fal-ai-veo3-fast-image-to-video",
+  "name": "Fal AI Veo3 Fast Image-to-Video",
+  "description": "Generate videos by animating an input image using Google's Veo 3 Fast model with 50% price drop. Now with a 50% price drop. Generate videos from your image prompts using Veo 3 fast.",
+  "version": "v3.0-fast",
+  "provider": "Google",
+  "category": "video-generation",
+  "type": "image-to-video",
+  "endpoint": "fal-ai/veo3/fast/image-to-video",
+  "capabilities": [
+    "image-to-video-generation",
+    "natural-motion-animations",
+    "realistic-animations",
+    "text-prompt-control",
+    "audio-generation",
+    "multiple-aspect-ratios",
+    "high-resolution-output",
+    "safety-filters"
+  ],
+  "features": {
+    "inputFormats": ["jpg", "jpeg", "png", "webp", "gif", "avif"],
+    "outputFormats": ["mp4"],
+    "maxInputSize": "8MB",
+    "supportedAspectRatios": ["auto", "16:9", "9:16"],
+    "supportedDurations": ["8s"],
+    "supportedResolutions": ["720p", "1080p"],
+    "audioGeneration": true,
+    "safetyFilters": true
+  },
+  "pricing": {
+    "currency": "USD",
+    "audioOff": {
+      "rate": 0.10,
+      "unit": "per second",
+      "description": "$0.10 per second when audio is disabled"
+    },
+    "audioOn": {
+      "rate": 0.15,
+      "unit": "per second", 
+      "description": "$0.15 per second when audio is enabled"
+    },
+    "examples": [
+      {
+        "duration": "5s",
+        "audio": true,
+        "cost": 0.75,
+        "description": "5-second video with audio costs $0.75"
+      },
+      {
+        "duration": "8s",
+        "audio": false,
+        "cost": 0.80,
+        "description": "8-second video without audio costs $0.80"
+      }
+    ],
+    "costSavings": "50% price drop compared to standard Veo3"
+  },
+  "technicalSpecs": {
+    "architecture": "Google Veo 3 Fast",
+    "inferenceTime": "Fast",
+    "quality": "Professional",
+    "resolution": {
+      "max": "1080p",
+      "default": "720p"
+    },
+    "aspectRatio": {
+      "default": "auto",
+      "supported": ["auto", "16:9", "9:16"]
+    },
+    "duration": {
+      "fixed": "8s"
+    },
+    "audio": {
+      "supported": true,
+      "synchronized": true
+    }
+  },
+  "useCases": [
+    "social-media-content",
+    "marketing-videos",
+    "product-demonstrations",
+    "character-animations",
+    "lifestyle-content",
+    "educational-videos",
+    "entertainment-content",
+    "brand-promotions"
+  ],
+  "prompting": {
+    "guidelines": {
+      "required": [
+        "Action: How the image should be animated",
+        "Style: Desired animation style"
+      ],
+      "optional": [
+        "Camera motion: How camera should move",
+        "Ambiance: Desired mood and atmosphere"
+      ]
+    },
+    "examples": [
+      {
+        "prompt": "A woman looks into the camera, breathes in, then exclaims energetically, \"have you guys checked out Veo3 Image-to-Video on Fal? It's incredible!\"",
+        "description": "Character animation with speech and emotion"
+      },
+      {
+        "prompt": "A person walking through a forest with leaves falling around them",
+        "description": "Environmental animation with natural elements"
+      },
+      {
+        "prompt": "A chef cooking in a modern kitchen, stirring a pot with steam rising",
+        "description": "Action animation with environmental effects"
+      }
+    ],
+    "tips": [
+      "Be specific about the animation you want",
+      "Describe the movement and actions clearly",
+      "Include style preferences for consistency",
+      "Mention camera movements for dynamic shots",
+      "Add ambiance details for mood setting"
+    ]
+  },
+  "limitations": [
+    "Input images up to 8MB in size",
+    "720p output resolution (1080p available)",
+    "16:9 aspect ratio (auto-cropped if not)",
+    "8-second duration only",
+    "Safety filters applied to input and output"
+  ],
+  "integration": {
+    "executor": "FalAiVeo3FastImageToVideoExecutor",
+    "file": "executors/fal-ai-veo3-fast-image-to-video.ts",
+    "import": "import { FalAiVeo3FastImageToVideoExecutor } from './executors/fal-ai-veo3-fast-image-to-video'",
+    "instantiation": "new FalAiVeo3FastImageToVideoExecutor(apiKey)"
+  },
+  "documentation": {
+    "usage": "docs/fal-ai-veo3-fast-image-to-video-usage.md",
+    "api": "https://fal.ai/models/fal-ai/veo3/fast/image-to-video",
+    "examples": "examples/fal-ai-veo3-fast-image-to-video-examples.ts"
+  },
+  "comparison": {
+    "vsVeo3Standard": {
+      "cost": "50% cheaper",
+      "speed": "Faster inference",
+      "quality": "Professional grade",
+      "features": "Same capabilities"
+    },
+    "vsVeo3TextToVideo": {
+      "input": "Image + text vs text only",
+      "control": "More precise control",
+      "consistency": "Better visual consistency",
+      "useCase": "Image animation vs text generation"
+    }
+  },
+  "bestPractices": [
+    "Use high-quality input images (720p or higher)",
+    "Ensure 16:9 aspect ratio for best results",
+    "Be specific in animation prompts",
+    "Consider audio generation for engagement",
+    "Use appropriate resolution for your use case",
+    "Test with different aspect ratios",
+    "Include style and ambiance details"
+  ],
+  "troubleshooting": {
+    "commonIssues": [
+      {
+        "issue": "Poor animation quality",
+        "solution": "Use higher resolution input images and be more specific in prompts"
+      },
+      {
+        "issue": "Aspect ratio mismatch",
+        "solution": "Use 'auto' aspect ratio or ensure input is 16:9"
+      },
+      {
+        "issue": "Audio not generated",
+        "solution": "Ensure generate_audio is set to true"
+      }
+    ]
+  },
+  "metadata": {
+    "created": "2024-12-19",
+    "lastUpdated": "2024-12-19",
+    "version": "1.0.0",
+    "status": "active",
+    "tags": ["veo3", "fast", "image-to-video", "google", "animation", "cost-effective"]
+  }
+}

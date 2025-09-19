@@ -39,6 +39,7 @@ export * from './fal-ai-film-video';
 export * from './fal-ai-rife-video';
 export * from './fal-ai-wan-v2-2-a14b-image-to-video-turbo';
 export * from './fal-ai-veo3-image-to-video';
+export * from './fal-ai-veo3-fast-image-to-video';
 export * from './fal-ai-wan-v2-2-a14b-video-to-video';
 export * from './fal-ai-wan-v2-2-5b-text-to-video-fast-wan';
 export * from './fal-ai-minimax-hailuo-02-fast-image-to-video';
