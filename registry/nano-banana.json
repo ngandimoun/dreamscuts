@@ -1,0 +1,306 @@
+{
+  "id": "nano-banana",
+  "name": "Nano Banana",
+  "description": "Advanced AI video generation model for creating dynamic video content with precise frame control. Perfect for generating video frames, camera movements, and creative video sequences with high-quality output.",
+  "version": "v1.0",
+  "provider": "Nano Banana",
+  "category": "video-generation",
+  "type": "text-to-video",
+  "endpoint": "nano-banana",
+  "capabilities": [
+    "text-to-video-generation",
+    "image-to-video-generation",
+    "frame-sequence-generation",
+    "camera-movement-control",
+    "dynamic-scene-generation",
+    "high-quality-output",
+    "creative-video-effects",
+    "precise-frame-control"
+  ],
+  "features": {
+    "inputFormats": ["text", "image", "video"],
+    "outputFormats": ["mp4", "mov", "webm"],
+    "maxInputSize": "No specific limit mentioned",
+    "supportedAspectRatios": ["16:9", "9:16", "4:5", "1:1"],
+    "supportedDurations": ["5s", "10s", "15s", "30s"],
+    "supportedResolutions": ["720p", "1080p", "4K"],
+    "cameraMovements": ["tracking", "panning", "zooming", "orbital", "dolly", "crane"],
+    "styleOptions": ["cinematic", "photographic", "artistic", "raw", "vintage"]
+  },
+  "pricing": {
+    "currency": "USD",
+    "rate": "Variable",
+    "unit": "per generation",
+    "description": "Pricing varies based on duration and quality settings",
+    "examples": [
+      {
+        "duration": "5 seconds",
+        "quality": "720p",
+        "cost": "Standard rate",
+        "description": "5-second video at 720p resolution"
+      },
+      {
+        "duration": "10 seconds",
+        "quality": "1080p",
+        "cost": "Premium rate",
+        "description": "10-second video at 1080p resolution"
+      }
+    ],
+    "costOptimization": [
+      "Use shorter durations for cost efficiency",
+      "Choose appropriate resolution for your needs",
+      "Batch process multiple videos",
+      "Use efficient prompt techniques"
+    ]
+  },
+  "technicalSpecs": {
+    "architecture": "Nano Banana AI Model",
+    "processingMethod": "AI-powered video generation",
+    "frameRate": "24fps, 30fps, 60fps",
+    "colorDepth": "8-bit, 10-bit",
+    "compression": "H.264, H.265",
+    "audioSupport": "Optional audio generation",
+    "batchProcessing": "Supported"
+  },
+  "useCases": [
+    {
+      "category": "Frame Generation",
+      "examples": [
+        "First frame generation",
+        "Last frame generation",
+        "Key frame creation",
+        "Video sequence planning"
+      ]
+    },
+    {
+      "category": "Creative Content",
+      "examples": [
+        "Cinematic video creation",
+        "Artistic video effects",
+        "Creative storytelling",
+        "Visual art projects"
+      ]
+    },
+    {
+      "category": "Camera Movement",
+      "examples": [
+        "Tracking shots",
+        "Camera movements",
+        "Dynamic perspectives",
+        "Cinematic camera work"
+      ]
+    },
+    {
+      "category": "Professional Video",
+      "examples": [
+        "Commercial video production",
+        "Marketing content",
+        "Presentation videos",
+        "Training materials"
+      ]
+    }
+  ],
+  "inputSchema": {
+    "type": "object",
+    "required": ["prompt"],
+    "properties": {
+      "prompt": {
+        "type": "string",
+        "description": "Detailed text prompt describing the video to generate"
+      },
+      "style": {
+        "type": "string",
+        "description": "Visual style for the video (e.g., 'cinematic', 'photographic', 'raw')",
+        "enum": ["cinematic", "photographic", "artistic", "raw", "vintage", "modern"]
+      },
+      "aspect_ratio": {
+        "type": "string",
+        "description": "Aspect ratio for the video",
+        "enum": ["16:9", "9:16", "4:5", "1:1"]
+      },
+      "duration": {
+        "type": "string",
+        "description": "Duration of the generated video",
+        "enum": ["5s", "10s", "15s", "30s"]
+      },
+      "resolution": {
+        "type": "string",
+        "description": "Output resolution",
+        "enum": ["720p", "1080p", "4K"]
+      },
+      "camera_movement": {
+        "type": "string",
+        "description": "Type of camera movement",
+        "enum": ["tracking", "panning", "zooming", "orbital", "dolly", "crane", "static"]
+      },
+      "negative_prompt": {
+        "type": "string",
+        "description": "Elements to avoid in the generated video"
+      },
+      "seed": {
+        "type": "integer",
+        "description": "Random seed for reproducible results"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "video": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL where the generated video can be downloaded"
+          },
+          "content_type": {
+            "type": "string",
+            "description": "MIME type of the generated video file"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "Name of the generated video file"
+          },
+          "file_size": {
+            "type": "integer",
+            "description": "Size of the generated video file in bytes"
+          },
+          "duration": {
+            "type": "number",
+            "description": "Duration of the video in seconds"
+          },
+          "resolution": {
+            "type": "string",
+            "description": "Resolution of the generated video"
+          }
+        }
+      }
+    }
+  },
+  "bestPractices": [
+    {
+      "category": "Prompt Writing",
+      "tips": [
+        "Be specific about camera movements and angles",
+        "Describe the visual style and mood clearly",
+        "Include details about lighting and atmosphere",
+        "Specify the subject and their actions",
+        "Use cinematic terminology for better results"
+      ]
+    },
+    {
+      "category": "Frame Generation",
+      "tips": [
+        "Use 'first frame' or 'last frame' in prompts for specific frame generation",
+        "Describe the camera position and angle clearly",
+        "Specify the visual composition and framing",
+        "Include details about the subject's pose and expression",
+        "Use reference images when possible"
+      ]
+    },
+    {
+      "category": "Camera Movement",
+      "tips": [
+        "Use specific camera movement terms (tracking, panning, zooming)",
+        "Describe the speed and smoothness of movement",
+        "Specify the starting and ending positions",
+        "Include details about the subject being tracked",
+        "Consider the emotional impact of camera movement"
+      ]
+    },
+    {
+      "category": "Style and Quality",
+      "tips": [
+        "Choose appropriate style for your content type",
+        "Use negative prompts to avoid unwanted elements",
+        "Experiment with different aspect ratios",
+        "Consider the target platform and audience",
+        "Test different durations for optimal results"
+      ]
+    }
+  ],
+  "limitations": [
+    "Processing time varies with video length and complexity",
+    "May require multiple attempts for optimal results",
+    "Quality depends on prompt specificity and clarity",
+    "Limited to supported aspect ratios and durations"
+  ],
+  "integration": {
+    "clientLibrary": "Custom API client",
+    "authentication": "API Key",
+    "endpoints": {
+      "generate": "POST /api/v1/nano-banana/generate",
+      "status": "GET /api/v1/nano-banana/status/{id}",
+      "result": "GET /api/v1/nano-banana/result/{id}"
+    }
+  },
+  "examples": {
+    "basic": {
+      "description": "Basic video generation",
+      "code": `
+const result = await nanoBanana.generate({
+  prompt: "A woman walking through a forest with sunlight filtering through trees",
+  style: "cinematic",
+  aspect_ratio: "16:9",
+  duration: "10s",
+  resolution: "1080p"
+});
+      `
+    },
+    "frameGeneration": {
+      "description": "Generate specific video frames",
+      "code": `
+const firstFrame = await nanoBanana.generate({
+  prompt: "First frame: A woman standing in a room, looking at the camera",
+  style: "photographic",
+  aspect_ratio: "4:5",
+  duration: "5s"
+});
+
+const lastFrame = await nanoBanana.generate({
+  prompt: "Last frame: View from the top of the room, looking down at the woman",
+  style: "photographic",
+  aspect_ratio: "4:5",
+  duration: "5s"
+});
+      `
+    },
+    "cameraMovement": {
+      "description": "Generate video with specific camera movement",
+      "code": `
+const result = await nanoBanana.generate({
+  prompt: "Camera tracks the woman as she moves through the room",
+  style: "cinematic",
+  aspect_ratio: "16:9",
+  duration: "10s",
+  camera_movement: "tracking",
+  resolution: "1080p"
+});
+      `
+    }
+  },
+  "workflowExamples": {
+    "frameToVideo": {
+      "title": "Frame-to-Video Workflow",
+      "description": "Create video from first and last frames using Nano Banana",
+      "steps": [
+        "Generate first frame with Nano Banana",
+        "Generate last frame with Nano Banana", 
+        "Use frames with video generation tools like Kling or Midjourney",
+        "Apply camera movement prompts for smooth transitions"
+      ]
+    },
+    "cinematicCreation": {
+      "title": "Cinematic Video Creation",
+      "description": "Create professional cinematic videos",
+      "steps": [
+        "Write detailed cinematic prompt",
+        "Specify camera movements and angles",
+        "Choose appropriate style and resolution",
+        "Use negative prompts to avoid unwanted elements",
+        "Generate and refine as needed"
+      ]
+    }
+  }
+}

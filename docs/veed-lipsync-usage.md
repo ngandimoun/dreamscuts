@@ -1,333 +1,482 @@
-# Veed Lipsync Usage Guide
+# VEED Lipsync Usage Guide
 
 ## Overview
 
-The **Veed Lipsync** model is a powerful tool for generating realistic lipsync from any audio using VEED's latest technology. This model creates perfectly synchronized video content where audio and video are aligned, making it ideal for content creation, localization, dubbing, and accessibility applications.
+The **VEED Lipsync** model (`veed/lipsync`) is an advanced AI-powered tool that generates realistic lipsync from any audio using VEED's latest model. This model creates high-quality synchronized speech videos, making it ideal for dubbing, voice-overs, and multilingual content creation.
 
-## Key Features
+### Key Features
 
-- **Realistic Lipsync Generation**: Advanced AI-powered mouth movement synchronization
-- **Audio-Video Synchronization**: Perfect alignment between audio and video content
-- **Flexible Input Support**: Works with any video and audio formats
-- **Cost-Effective Pricing**: $0.40 per minute of video content
-- **Queue Support**: Asynchronous processing for longer videos
-- **Real-time Progress Monitoring**: Track generation progress with detailed logs
+- **Realistic Lipsync Generation**: High-quality audio-video synchronization
+- **Multilingual Support**: Works with various languages and accents
+- **Commercial Use**: Suitable for professional and commercial applications
+- **High-Quality Output**: Professional-grade results
+- **Easy Integration**: Simple API with comprehensive documentation
+- **Cost-Effective**: $0.4 per minute of processed video
+- **Multiple Formats**: Supports various video and audio formats
 
-## Basic Usage
+### Model Information
 
-### Simple Lipsync Generation
+- **Name**: VEED Lipsync
+- **Provider**: VEED
+- **Model ID**: `veed/lipsync`
+- **Type**: Lipsync Generation
+- **Version**: v1.0
+
+## Quick Start
+
+### Installation
+
+```bash
+npm install --save @fal-ai/client
+```
+
+### Basic Usage
+
+```typescript
+import { fal } from "@fal-ai/client";
+
+// Set your API key
+fal.config({
+  credentials: "YOUR_FAL_KEY"
+});
+
+// Generate lipsync video
+const result = await fal.subscribe("veed/lipsync", {
+  input: {
+    video_url: "https://example.com/video.mp4",
+    audio_url: "https://example.com/audio.mp3"
+  }
+});
+
+console.log(result.data.video.url);
+```
+
+## API Reference
+
+### Input Parameters
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `video_url` | string | Yes | URL of the input video file. Supported formats: mp4, mov, webm, m4v, gif |
+| `audio_url` | string | Yes | URL of the input audio file. Supported formats: mp3, ogg, wav, m4a, aac |
+
+### Output Format
+
+```typescript
+{
+  "video": {
+    "url": "https://example.com/generated-video.mp4",
+    "content_type": "video/mp4",
+    "file_name": "generated-video.mp4",
+    "file_size": 12345678
+  }
+}
+```
+
+## Usage Examples
+
+### Basic Lipsync Generation
 
 ```typescript
 import { VeedLipsyncExecutor } from './executors/veed-lipsync';
 
-const executor = new VeedLipsyncExecutor();
+const executor = new VeedLipsyncExecutor('YOUR_API_KEY');
 
 const result = await executor.generateLipsync({
   video_url: "https://example.com/video.mp4",
   audio_url: "https://example.com/audio.mp3"
 });
 
-console.log('Generated lipsync video URL:', result.video.url);
+console.log('Generated video URL:', result.video.url);
 ```
 
-### With Queue Processing
-
-For longer videos or when you need to handle multiple requests:
+### With Progress Tracking
 
 ```typescript
-// Submit to queue
-const { requestId } = await executor.submitToQueue({
-  video_url: "https://example.com/long_video.mp4",
-  audio_url: "https://example.com/narration.mp3"
+const result = await executor.generateLipsync({
+  video_url: "https://example.com/video.mp4",
+  audio_url: "https://example.com/audio.mp3"
+}, {
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  }
+});
+```
+
+### Queue-Based Processing
+
+```typescript
+// Submit request to queue
+const { request_id } = await executor.submitLipsyncRequest({
+  video_url: "https://example.com/long-video.mp4",
+  audio_url: "https://example.com/audio.mp3"
+}, {
+  webhookUrl: "https://your-webhook.url/for/results"
 });
 
 // Check status
-const status = await executor.checkStatus(requestId);
-console.log('Status:', status.status);
+const status = await executor.getRequestStatus(request_id, { logs: true });
 
 // Get result when complete
-if (status.status === 'COMPLETED') {
-  const result = await executor.getResult(requestId);
-  console.log('Video URL:', result.video.url);
-}
+const result = await executor.getRequestResult(request_id);
 ```
 
-## Input Parameters
+## Use Cases
 
-### Required Parameters
+### Content Creation
 
-- **`video_url`** (string): URL of the input video file
-- **`audio_url`** (string): URL of the input audio file
-
-### Input Requirements
-
-- **Video**: Should contain clear facial features for optimal lipsync results
-- **Audio**: Clear, well-recorded audio that matches the intended language
-- **URLs**: Must be publicly accessible and valid URLs
-- **Formats**: Supports common video and audio formats
-
-## Advanced Usage
-
-### Batch Processing
-
-Process multiple videos with different audio tracks:
-
+#### YouTube Video Dubbing
 ```typescript
-const videoAudioPairs = [
-  {
-    video_url: "https://example.com/video1.mp4",
-    audio_url: "https://example.com/audio1.mp3"
-  },
-  {
-    video_url: "https://example.com/video2.mp4",
-    audio_url: "https://example.com/audio2.mp3"
-  }
-];
-
-const results = [];
-
-for (const pair of videoAudioPairs) {
-  const result = await executor.generateLipsync(pair);
-  results.push(result);
-}
-
-console.log(`Processed ${results.length} videos`);
-```
-
-### Cost Estimation
-
-Estimate costs before processing:
-
-```typescript
-// Estimate cost for a 5-minute video
-const estimatedCost = executor.calculateCost(5);
-console.log(`Estimated cost: $${estimatedCost.toFixed(2)}`);
-
-// For a 10-minute video
-const longVideoCost = executor.calculateCost(10);
-console.log(`Long video cost: $${longVideoCost.toFixed(2)}`);
-```
-
-### Input Validation
-
-Validate inputs before processing:
-
-```typescript
-const validation = executor.validateInput({
-  video_url: "https://example.com/video.mp4",
-  audio_url: "https://example.com/audio.mp3"
+const youtubeDubbing = await executor.generateLipsync({
+  video_url: "https://example.com/original-video.mp4",
+  audio_url: "https://example.com/spanish-audio.mp3"
 });
-
-if (!validation.isValid) {
-  console.error('Validation errors:', validation.errors);
-  // Handle errors appropriately
-} else {
-  // Proceed with generation
-  const result = await executor.generateLipsync({
-    video_url: "https://example.com/video.mp4",
-    audio_url: "https://example.com/audio.mp3"
-  });
-}
 ```
 
-## Use Case Examples
-
-### 1. Content Creation
-Create engaging social media content with synchronized audio:
-
+#### Social Media Content
 ```typescript
 const socialMediaContent = await executor.generateLipsync({
-  video_url: "https://example.com/raw_video.mp4",
-  audio_url: "https://example.com/script_audio.mp3"
+  video_url: "https://example.com/influencer-video.mp4",
+  audio_url: "https://example.com/voice-over.mp3"
 });
 ```
 
-### 2. Video Localization
-Translate videos to different languages:
+### Localization
 
+#### Multilingual Content
 ```typescript
-const localizedVideo = await executor.generateLipsync({
-  video_url: "https://example.com/english_video.mp4",
-  audio_url: "https://example.com/spanish_narration.mp3"
+const multilingualContent = await executor.generateLipsync({
+  video_url: "https://example.com/english-video.mp4",
+  audio_url: "https://example.com/french-audio.mp3"
 });
 ```
 
-### 3. Educational Content
-Create training videos with professional narration:
-
+#### International Marketing
 ```typescript
-const trainingVideo = await executor.generateLipsync({
-  video_url: "https://example.com/demo_video.mp4",
-  audio_url: "https://example.com/training_narration.mp3"
+const internationalMarketing = await executor.generateLipsync({
+  video_url: "https://example.com/us-marketing-video.mp4",
+  audio_url: "https://example.com/german-marketing-audio.mp3"
 });
 ```
 
-### 4. Marketing Presentations
-Synchronize product demos with marketing messages:
+### Accessibility
 
+#### Adding Speech to Silent Videos
 ```typescript
-const marketingVideo = await executor.generateLipsync({
-  video_url: "https://example.com/product_demo.mp4",
-  audio_url: "https://example.com/marketing_script.mp3"
+const silentVideoSpeech = await executor.generateLipsync({
+  video_url: "https://example.com/silent-presentation.mp4",
+  audio_url: "https://example.com/descriptive-audio.mp3"
 });
+```
+
+#### Audio Description
+```typescript
+const audioDescription = await executor.generateLipsync({
+  video_url: "https://example.com/visual-story.mp4",
+  audio_url: "https://example.com/audio-description.mp3"
+});
+```
+
+### Professional Applications
+
+#### Corporate Training
+```typescript
+const corporateTraining = await executor.generateLipsync({
+  video_url: "https://example.com/training-content.mp4",
+  audio_url: "https://example.com/training-narration.mp3"
+});
+```
+
+#### Product Demonstrations
+```typescript
+const productDemonstration = await executor.generateLipsync({
+  video_url: "https://example.com/product-demo.mp4",
+  audio_url: "https://example.com/product-explanation.mp3"
+});
+```
+
+## Cost Calculation
+
+### Pricing Structure
+- **Rate**: $0.4 per minute of processed video
+- **Example**: 5-minute video costs $2.00
+
+### Cost Calculation Function
+```typescript
+const cost = executor.calculateCost(5); // 5 minutes = $2.00
+console.log(`Cost: $${cost}`);
+```
+
+### Processing Time Estimation
+```typescript
+const processingTime = executor.estimateProcessingTime(5); // 5 minutes
+console.log(`Estimated processing time: ${processingTime}`);
 ```
 
 ## Best Practices
 
-### Video Quality
-- Use high-resolution videos with clear facial features
-- Ensure good lighting and minimal background noise
-- Avoid rapid camera movements during speech segments
-- Use videos with clear, unobstructed faces
+### Input Preparation
 
-### Audio Quality
-- Record audio in a quiet environment
-- Use clear, well-articulated speech
-- Match audio language to video content
-- Ensure consistent audio levels throughout
+1. **Video Quality**
+   - Use high-quality video with clear facial features
+   - Ensure good lighting on the subject's face
+   - Use videos with minimal background noise
+   - Ensure subject is facing the camera
+
+2. **Audio Quality**
+   - Use clear, high-quality audio
+   - Match audio length to video duration
+   - Use audio with clear speech and minimal background music
+   - Ensure proper audio format compatibility
+
+3. **File Formats**
+   - **Video**: MP4, MOV, WebM, M4V, GIF
+   - **Audio**: MP3, OGG, WAV, M4A, AAC
 
 ### Cost Optimization
-- Consider video duration for cost management
-- Use queue system for longer videos
-- Batch process multiple videos when possible
-- Monitor generation progress to avoid unnecessary costs
 
-### Technical Considerations
-- Use publicly accessible URLs for inputs
-- Validate URLs before submission
-- Handle errors gracefully with proper error handling
-- Use the queue system for videos longer than 2-3 minutes
+1. **Process Shorter Clips**
+   - Break long videos into shorter segments
+   - Process only necessary portions
+   - Use appropriate video resolution
 
-## Error Handling
+2. **Batch Processing**
+   - Process multiple videos together
+   - Use queue system for efficiency
+   - Plan content to minimize processing time
 
-### Input Validation Errors
+3. **Quality vs. Cost**
+   - Balance quality requirements with cost
+   - Use efficient video formats (MP4 recommended)
+   - Consider processing time vs. cost trade-offs
 
-```typescript
-try {
-  const validation = executor.validateInput({
-    video_url: "invalid-url",
-    audio_url: ""
-  });
+### Quality Enhancement
 
-  if (!validation.isValid) {
-    console.error('Validation errors:', validation.errors);
-    // Handle validation errors
-  }
-} catch (error) {
-  console.error('Validation failed:', error);
-}
-```
+1. **Source Materials**
+   - Use high-resolution source materials
+   - Ensure clear facial expressions
+   - Use natural lighting for better results
 
-### Generation Errors
+2. **Audio-Video Sync**
+   - Ensure audio and video are properly synchronized
+   - Test with different audio qualities
+   - Use professional-grade audio when possible
 
-```typescript
-try {
-  const result = await executor.generateLipsync({
-    video_url: "https://example.com/video.mp4",
-    audio_url: "https://example.com/audio.mp3"
-  });
-} catch (error) {
-  console.error('Lipsync generation failed:', error.error);
-  if (error.details) {
-    console.error('Details:', error.details);
-  }
-}
-```
-
-### Queue Status Errors
-
-```typescript
-try {
-  const status = await executor.checkStatus(requestId);
-  console.log('Status:', status.status);
-} catch (error) {
-  console.error('Status check failed:', error.error);
-}
-```
+3. **Technical Considerations**
+   - Monitor processing status for long-running jobs
+   - Implement proper error handling and retries
+   - Use webhooks for asynchronous processing
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Invalid URLs**
-   - Ensure URLs are publicly accessible
-   - Check for CORS restrictions
-   - Verify file formats are supported
-   - Test URLs in a browser
+#### Poor Lipsync Quality
+**Problem**: Lipsync quality is poor or unnatural
+**Solutions**:
+- Use higher quality source video with clear facial features
+- Ensure good lighting on the subject's face
+- Use clear, high-quality audio
+- Ensure subject is facing the camera
 
-2. **Poor Lipsync Quality**
-   - Use videos with clear facial features
-   - Ensure good lighting conditions
-   - Avoid background noise in video
-   - Use clear, well-recorded audio
+#### Processing Failure
+**Problem**: Lipsync generation fails or times out
+**Solutions**:
+- Check that video and audio URLs are accessible
+- Verify file formats are supported
+- Ensure audio and video lengths match
+- Use queue system for long videos
 
-3. **Generation Failures**
-   - Check input validation results
-   - Verify file accessibility
-   - Ensure proper file formats
-   - Monitor generation logs
+#### Audio-Video Mismatch
+**Problem**: Audio and video are not properly synchronized
+**Solutions**:
+- Ensure audio and video lengths match exactly
+- Use high-quality source materials
+- Check for audio delays or timing issues
+- Verify audio format compatibility
 
-4. **Cost Issues**
-   - Calculate costs before processing
-   - Use queue system for longer videos
-   - Monitor generation progress
-   - Consider video duration optimization
+#### File Format Issues
+**Problem**: Unsupported file format errors
+**Solutions**:
+- Use supported video formats: MP4, MOV, WebM, M4V, GIF
+- Use supported audio formats: MP3, OGG, WAV, M4A, AAC
+- Convert files to supported formats if necessary
+- Check file URLs are accessible and valid
 
-### Performance Tips
+### Error Handling
 
-- Use appropriate video quality for your needs
-- Process shorter videos for faster results
-- Use queue system for longer content
-- Monitor generation progress with logs
-- Handle errors gracefully with retry logic
+```typescript
+try {
+  const result = await executor.generateLipsync({
+    video_url: videoUrl,
+    audio_url: audioUrl
+  });
+  console.log('Success:', result.video.url);
+} catch (error) {
+  console.error('Error:', error.message);
+  // Handle error appropriately
+}
+```
 
-## API Reference
+## Advanced Usage
 
-### Class: VeedLipsyncExecutor
+### Batch Processing
 
-#### Methods
+```typescript
+const videoAudioPairs = [
+  { videoUrl: "https://example.com/video1.mp4", audioUrl: "https://example.com/audio1.mp3" },
+  { videoUrl: "https://example.com/video2.mp4", audioUrl: "https://example.com/audio2.mp3" },
+  { videoUrl: "https://example.com/video3.mp4", audioUrl: "https://example.com/audio3.mp3" }
+];
 
-- **`generateLipsync(input)`**: Generate lipsync synchronously
-- **`submitToQueue(input)`**: Submit to queue for async processing
-- **`checkStatus(requestId)`**: Check queue status
-- **`getResult(requestId)`**: Get completed result
-- **`calculateCost(durationMinutes)`**: Estimate generation cost
-- **`validateInput(input)`**: Validate input parameters
+const results = await Promise.all(
+  videoAudioPairs.map(async (pair) => {
+    try {
+      return await executor.generateLipsync({
+        video_url: pair.videoUrl,
+        audio_url: pair.audioUrl
+      });
+    } catch (error) {
+      console.error('Failed to process:', pair.videoUrl, error.message);
+      return null;
+    }
+  })
+);
+```
 
-#### Properties
+### Webhook Integration
 
-- **`modelEndpoint`**: The VEED lipsync model endpoint
+```typescript
+const { request_id } = await executor.submitLipsyncRequest({
+  video_url: "https://example.com/video.mp4",
+  audio_url: "https://example.com/audio.mp3"
+}, {
+  webhookUrl: "https://your-app.com/webhook/lipsync-complete"
+});
 
-### Input Interface: VeedLipsyncInput
+// Your webhook endpoint will receive the result when processing is complete
+```
 
-- **`video_url`**: URL of the input video file
-- **`audio_url`**: URL of the input audio file
+### Progress Monitoring
 
-### Output Interface: VeedLipsyncOutput
+```typescript
+const { request_id } = await executor.submitLipsyncRequest({
+  video_url: "https://example.com/video.mp4",
+  audio_url: "https://example.com/audio.mp3"
+});
 
-- **`video`**: Object containing video URL and metadata
-  - **`url`**: Download URL for the generated video
-  - **`content_type`**: MIME type of the video file
-  - **`file_name`**: Name of the generated file
-  - **`file_size`**: Size of the file in bytes
+// Poll for status updates
+const checkStatus = async () => {
+  const status = await executor.getRequestStatus(request_id, { logs: true });
+  
+  if (status.status === "COMPLETED") {
+    const result = await executor.getRequestResult(request_id);
+    console.log('Processing complete:', result.video.url);
+  } else if (status.status === "FAILED") {
+    console.error('Processing failed:', status.error);
+  } else {
+    console.log('Processing in progress...');
+    setTimeout(checkStatus, 5000); // Check again in 5 seconds
+  }
+};
 
-## Cost Structure
+checkStatus();
+```
 
-The model uses a **per-minute pricing model**:
+## Integration Examples
 
-- **Cost per minute**: $0.40
-- **No setup fees or additional charges**
-- **Cost scales linearly with video duration**
+### React Component
 
-### Example Calculations
+```typescript
+import React, { useState } from 'react';
+import { VeedLipsyncExecutor } from './executors/veed-lipsync';
 
-- 1-minute video: $0.40
-- 5-minute video: $2.00
-- 10-minute video: $4.00
-- 30-minute video: $12.00
+const LipsyncGenerator: React.FC = () => {
+  const [videoUrl, setVideoUrl] = useState('');
+  const [audioUrl, setAudioUrl] = useState('');
+  const [result, setResult] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleGenerate = async () => {
+    setLoading(true);
+    try {
+      const executor = new VeedLipsyncExecutor(process.env.REACT_APP_FAL_KEY!);
+      const result = await executor.generateLipsync({
+        video_url: videoUrl,
+        audio_url: audioUrl
+      });
+      setResult(result.video.url);
+    } catch (error) {
+      console.error('Error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        placeholder="Video URL"
+        value={videoUrl}
+        onChange={(e) => setVideoUrl(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Audio URL"
+        value={audioUrl}
+        onChange={(e) => setAudioUrl(e.target.value)}
+      />
+      <button onClick={handleGenerate} disabled={loading}>
+        {loading ? 'Generating...' : 'Generate Lipsync'}
+      </button>
+      {result && (
+        <video controls src={result} style={{ width: '100%', maxWidth: '500px' }} />
+      )}
+    </div>
+  );
+};
+```
+
+### Node.js Server
+
+```typescript
+import express from 'express';
+import { VeedLipsyncExecutor } from './executors/veed-lipsync';
+
+const app = express();
+app.use(express.json());
+
+const executor = new VeedLipsyncExecutor(process.env.FAL_KEY!);
+
+app.post('/api/lipsync', async (req, res) => {
+  try {
+    const { video_url, audio_url } = req.body;
+    
+    const result = await executor.generateLipsync({
+      video_url,
+      audio_url
+    });
+    
+    res.json({ success: true, video_url: result.video.url });
+  } catch (error) {
+    res.status(500).json({ 
+      success: false, 
+      error: error.message 
+    });
+  }
+});
+
+app.listen(3000, () => {
+  console.log('Server running on port 3000');
+});
+```
 
 ## Conclusion
 
-The Veed Lipsync model offers powerful capabilities for creating perfectly synchronized video content. By understanding the input requirements, optimizing for quality, and managing costs effectively, you can create professional lipsync videos for various applications including content creation, localization, education, and marketing.
+VEED Lipsync provides a powerful and cost-effective solution for generating realistic lipsync videos. With its support for multiple formats, high-quality output, and easy integration, it's perfect for content creation, localization, accessibility, and professional applications.
 
-For more information about VEED's platform and available models, visit the [VEED documentation](https://veed.io/docs).
+The model's $0.4 per minute pricing makes it accessible for various use cases, from individual content creators to large-scale commercial applications. By following the best practices outlined in this guide, you can achieve optimal results while managing costs effectively.

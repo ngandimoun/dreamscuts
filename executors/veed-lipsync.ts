@@ -1,180 +1,349 @@
 import { fal } from '@fal-ai/client';
 
-// Input schema for Veed Lipsync
+// Model endpoint
+const MODEL_ENDPOINT = 'veed/lipsync';
+
+// Input interface
 export interface VeedLipsyncInput {
   video_url: string;
   audio_url: string;
 }
 
-// Output schema for Veed Lipsync
+// Output interface
 export interface VeedLipsyncOutput {
   video: {
     url: string;
-    content_type?: string;
+    content_type: string;
     file_name?: string;
     file_size?: number;
   };
 }
 
-// Error types
+// Error interface
 export interface VeedLipsyncError {
   error: string;
-  details?: string;
+  message: string;
+  details?: any;
 }
 
-// Model endpoint
-const MODEL_ENDPOINT = 'veed/lipsync';
+// Result type
+export type VeedLipsyncResult = VeedLipsyncOutput | VeedLipsyncError;
+
+// ============================================================================
+// MAIN EXECUTOR CLASS
+// ============================================================================
 
 export class VeedLipsyncExecutor {
-  private modelEndpoint: string;
+  private apiKey: string;
 
-  constructor() {
-    this.modelEndpoint = MODEL_ENDPOINT;
+  constructor(apiKey: string) {
+    this.apiKey = apiKey;
+    fal.config({ credentials: apiKey });
   }
 
   /**
-   * Generate lipsync using Veed Lipsync
+   * Generate lipsync video using VEED's model via fal.subscribe
+   * This method handles the complete lipsync generation process synchronously
    */
-  async generateLipsync(input: VeedLipsyncInput): Promise<VeedLipsyncOutput> {
+  async generateLipsync(
+    input: VeedLipsyncInput,
+    options?: {
+      logs?: boolean;
+      onQueueUpdate?: (update: any) => void;
+    }
+  ): Promise<VeedLipsyncOutput> {
     try {
-      const result = await fal.subscribe(this.modelEndpoint, {
-        input,
-        logs: true,
-        onQueueUpdate: (update) => {
-          if (update.status === "IN_PROGRESS") {
-            update.logs?.forEach((log) => console.log(log.message));
-          }
+      this.validateInput(input);
+
+      const result = await fal.subscribe(MODEL_ENDPOINT, {
+        input: {
+          video_url: input.video_url,
+          audio_url: input.audio_url
         },
+        logs: options?.logs || false,
+        onQueueUpdate: options?.onQueueUpdate
       });
 
-      return {
-        video: {
-          url: (result as any).video?.url || '',
-          content_type: (result as any).video?.content_type,
-          file_name: (result as any).video?.file_name,
-          file_size: (result as any).video?.file_size,
-        }
-      };
+      return result.data as VeedLipsyncOutput;
     } catch (error) {
-      throw this.handleError(error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new Error(`VEED Lipsync generation failed: ${errorMessage}`);
     }
   }
 
   /**
-   * Submit lipsync generation to queue for long-running requests
+   * Submit a lipsync generation request to the queue (asynchronous)
+   * Use this for long-running requests or when you want to handle the queue manually
    */
-  async submitToQueue(input: VeedLipsyncInput): Promise<{ requestId: string }> {
+  async submitLipsyncRequest(
+    input: VeedLipsyncInput,
+    options?: {
+      webhookUrl?: string;
+    }
+  ): Promise<{ request_id: string }> {
     try {
-      const { request_id } = await fal.queue.submit(this.modelEndpoint, {
-        input,
+      this.validateInput(input);
+
+      const result = await fal.queue.submit(MODEL_ENDPOINT, {
+        input: {
+          video_url: input.video_url,
+          audio_url: input.audio_url
+        },
+        webhookUrl: options?.webhookUrl
       });
 
-      return { requestId: request_id };
+      return { request_id: result.request_id };
     } catch (error) {
-      throw this.handleError(error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new Error(`VEED Lipsync request submission failed: ${errorMessage}`);
     }
   }
 
   /**
-   * Check the status of a queued request
+   * Check the status of a queued lipsync request
    */
-  async checkStatus(requestId: string): Promise<any> {
+  async getRequestStatus(
+    requestId: string,
+    options?: {
+      logs?: boolean;
+    }
+  ): Promise<any> {
     try {
-      const status = await fal.queue.status(this.modelEndpoint, {
+      const status = await fal.queue.status(MODEL_ENDPOINT, {
         requestId,
-        logs: true,
+        logs: options?.logs || false
       });
 
       return status;
     } catch (error) {
-      throw this.handleError(error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new Error(`Failed to get request status: ${errorMessage}`);
     }
   }
 
   /**
-   * Get the result of a completed queued request
+   * Get the result of a completed lipsync request
    */
-  async getResult(requestId: string): Promise<VeedLipsyncOutput> {
+  async getRequestResult(requestId: string): Promise<VeedLipsyncOutput> {
     try {
-      const result = await fal.queue.result(this.modelEndpoint, {
-        requestId,
+      const result = await fal.queue.result(MODEL_ENDPOINT, {
+        requestId
       });
 
-      return {
-        video: {
-          url: (result as any).video?.url || '',
-          content_type: (result as any).video?.content_type,
-          file_name: (result as any).video?.file_name,
-          file_size: (result as any).video?.file_size,
-        }
-      };
+      return result.data as VeedLipsyncOutput;
     } catch (error) {
-      throw this.handleError(error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      throw new Error(`Failed to get request result: ${errorMessage}`);
     }
   }
 
   /**
-   * Calculate estimated cost for lipsync generation
+   * Calculate the cost for lipsync generation based on video duration
    */
-  calculateCost(durationMinutes: number): number {
-    // Cost is $0.4 per minute
-    const costPerMinute = 0.4;
-    return costPerMinute * durationMinutes;
+  calculateCost(videoDurationMinutes: number): number {
+    const ratePerMinute = 0.4; // $0.4 per minute
+    return videoDurationMinutes * ratePerMinute;
+  }
+
+  /**
+   * Estimate processing time based on video duration
+   */
+  estimateProcessingTime(videoDurationMinutes: number): string {
+    // Rough estimation: 1-2 minutes processing per minute of video
+    const processingTimeMinutes = Math.max(1, videoDurationMinutes * 1.5);
+    
+    if (processingTimeMinutes < 1) {
+      return 'Less than 1 minute';
+    } else if (processingTimeMinutes < 60) {
+      return `Approximately ${Math.ceil(processingTimeMinutes)} minutes`;
+    } else {
+      const hours = Math.floor(processingTimeMinutes / 60);
+      const minutes = Math.ceil(processingTimeMinutes % 60);
+      return `Approximately ${hours} hour${hours > 1 ? 's' : ''} and ${minutes} minute${minutes > 1 ? 's' : ''}`;
+    }
   }
 
   /**
    * Validate input parameters
    */
-  validateInput(input: VeedLipsyncInput): { isValid: boolean; errors: string[] } {
-    const errors: string[] = [];
-
-    if (!input.video_url || input.video_url.trim().length === 0) {
-      errors.push('Video URL is required');
+  private validateInput(input: VeedLipsyncInput): void {
+    if (!input.video_url) {
+      throw new Error('Video URL is required');
     }
 
-    if (!input.audio_url || input.audio_url.trim().length === 0) {
-      errors.push('Audio URL is required');
+    if (!input.audio_url) {
+      throw new Error('Audio URL is required');
     }
 
-    // Basic URL validation
-    try {
-      new URL(input.video_url);
-    } catch {
-      errors.push('Video URL must be a valid URL');
+    if (!this.isValidUrl(input.video_url)) {
+      throw new Error('Invalid video URL format');
     }
 
-    try {
-      new URL(input.audio_url);
-    } catch {
-      errors.push('Audio URL must be a valid URL');
+    if (!this.isValidUrl(input.audio_url)) {
+      throw new Error('Invalid audio URL format');
     }
 
-    return {
-      isValid: errors.length === 0,
-      errors,
-    };
+    // Validate video file format
+    const videoFormats = ['.mp4', '.mov', '.webm', '.m4v', '.gif'];
+    const videoExtension = this.getFileExtension(input.video_url);
+    if (!videoFormats.includes(videoExtension)) {
+      throw new Error(`Unsupported video format: ${videoExtension}. Supported formats: ${videoFormats.join(', ')}`);
+    }
+
+    // Validate audio file format
+    const audioFormats = ['.mp3', '.ogg', '.wav', '.m4a', '.aac'];
+    const audioExtension = this.getFileExtension(input.audio_url);
+    if (!audioFormats.includes(audioExtension)) {
+      throw new Error(`Unsupported audio format: ${audioExtension}. Supported formats: ${audioFormats.join(', ')}`);
+    }
   }
 
   /**
-   * Handle errors consistently
+   * Check if URL is valid
    */
-  private handleError(error: any): VeedLipsyncError {
-    if (error instanceof Error) {
-      return {
-        error: error.message,
-        details: error.stack,
-      };
+  private isValidUrl(url: string): boolean {
+    try {
+      new URL(url);
+      return true;
+    } catch {
+      return false;
     }
+  }
 
-    if (typeof error === 'string') {
-      return {
-        error,
-      };
+  /**
+   * Get file extension from URL
+   */
+  private getFileExtension(url: string): string {
+    try {
+      const urlObj = new URL(url);
+      const pathname = urlObj.pathname;
+      const lastDotIndex = pathname.lastIndexOf('.');
+      
+      if (lastDotIndex === -1) {
+        return '';
+      }
+      
+      return pathname.substring(lastDotIndex).toLowerCase();
+    } catch {
+      return '';
     }
+  }
 
+  /**
+   * Get supported video formats
+   */
+  getSupportedVideoFormats(): string[] {
+    return ['mp4', 'mov', 'webm', 'm4v', 'gif'];
+  }
+
+  /**
+   * Get supported audio formats
+   */
+  getSupportedAudioFormats(): string[] {
+    return ['mp3', 'ogg', 'wav', 'm4a', 'aac'];
+  }
+
+  /**
+   * Get model information
+   */
+  getModelInfo(): {
+    name: string;
+    provider: string;
+    endpoint: string;
+    pricing: {
+      rate: number;
+      unit: string;
+    };
+  } {
     return {
-      error: 'An unknown error occurred',
-      details: JSON.stringify(error),
+      name: 'VEED Lipsync',
+      provider: 'VEED',
+      endpoint: MODEL_ENDPOINT,
+      pricing: {
+        rate: 0.4,
+        unit: 'per minute'
+      }
     };
   }
 }
+
+// ============================================================================
+// CONVENIENCE FUNCTIONS
+// ============================================================================
+
+/**
+ * Create a new VeedLipsyncExecutor instance
+ */
+export function createVeedLipsyncExecutor(apiKey: string): VeedLipsyncExecutor {
+  return new VeedLipsyncExecutor(apiKey);
+}
+
+/**
+ * Quick lipsync generation function
+ */
+export async function generateLipsync(
+  apiKey: string,
+  videoUrl: string,
+  audioUrl: string,
+  options?: {
+    logs?: boolean;
+    onQueueUpdate?: (update: any) => void;
+  }
+): Promise<VeedLipsyncOutput> {
+  const executor = new VeedLipsyncExecutor(apiKey);
+  return await executor.generateLipsync(
+    {
+      video_url: videoUrl,
+      audio_url: audioUrl
+    },
+    options
+  );
+}
+
+/**
+ * Submit lipsync request to queue
+ */
+export async function submitLipsyncRequest(
+  apiKey: string,
+  videoUrl: string,
+  audioUrl: string,
+  options?: {
+    webhookUrl?: string;
+  }
+): Promise<{ request_id: string }> {
+  const executor = new VeedLipsyncExecutor(apiKey);
+  return await executor.submitLipsyncRequest(
+    {
+      video_url: videoUrl,
+      audio_url: audioUrl
+    },
+    options
+  );
+}
+
+/**
+ * Calculate lipsync cost
+ */
+export function calculateLipsyncCost(videoDurationMinutes: number): number {
+  const ratePerMinute = 0.4;
+  return videoDurationMinutes * ratePerMinute;
+}
+
+/**
+ * Estimate processing time
+ */
+export function estimateLipsyncProcessingTime(videoDurationMinutes: number): string {
+  const processingTimeMinutes = Math.max(1, videoDurationMinutes * 1.5);
+  
+  if (processingTimeMinutes < 1) {
+    return 'Less than 1 minute';
+  } else if (processingTimeMinutes < 60) {
+    return `Approximately ${Math.ceil(processingTimeMinutes)} minutes`;
+  } else {
+    const hours = Math.floor(processingTimeMinutes / 60);
+    const minutes = Math.ceil(processingTimeMinutes % 60);
+    return `Approximately ${hours} hour${hours > 1 ? 's' : ''} and ${minutes} minute${minutes > 1 ? 's' : ''}`;
+  }
+}
+
+export default VeedLipsyncExecutor;

@@ -1,0 +1,253 @@
+{
+  "id": "veed-lipsync",
+  "name": "VEED Lipsync",
+  "description": "Generate realistic lipsync from any audio using VEED's latest model. Perfect for creating synchronized speech videos, dubbing, and voice-over content.",
+  "version": "v1.0",
+  "provider": "VEED",
+  "category": "video-processing",
+  "type": "lipsync",
+  "endpoint": "veed/lipsync",
+  "capabilities": [
+    "realistic-lipsync-generation",
+    "audio-video-synchronization",
+    "speech-synchronization",
+    "dubbing",
+    "voice-over",
+    "multilingual-support",
+    "high-quality-output",
+    "commercial-use"
+  ],
+  "features": {
+    "inputFormats": {
+      "video": ["mp4", "mov", "webm", "m4v", "gif"],
+      "audio": ["mp3", "ogg", "wav", "m4a", "aac"]
+    },
+    "outputFormats": ["mp4"],
+    "maxInputSize": "No specific limit mentioned",
+    "supportedLanguages": ["Multiple languages supported"],
+    "processingTime": "Varies based on video length",
+    "quality": "High-quality realistic lipsync"
+  },
+  "pricing": {
+    "currency": "USD",
+    "rate": 0.4,
+    "unit": "per minute",
+    "description": "$0.4 per minute of processed video",
+    "examples": [
+      {
+        "duration": "1 minute",
+        "cost": 0.4,
+        "description": "1-minute video costs $0.40"
+      },
+      {
+        "duration": "5 minutes",
+        "cost": 2.0,
+        "description": "5-minute video costs $2.00"
+      },
+      {
+        "duration": "10 minutes",
+        "cost": 4.0,
+        "description": "10-minute video costs $4.00"
+      }
+    ],
+    "costOptimization": [
+      "Process shorter clips for cost efficiency",
+      "Batch process multiple short videos",
+      "Use appropriate video resolution",
+      "Optimize audio quality for better results"
+    ]
+  },
+  "technicalSpecs": {
+    "architecture": "VEED Lipsync AI Model",
+    "processingMethod": "AI-powered lipsync generation",
+    "synchronizationAccuracy": "High precision audio-video sync",
+    "supportedResolutions": ["Multiple resolutions supported"],
+    "frameRate": "Maintains original video frame rate",
+    "audioQuality": "Supports various audio formats and qualities"
+  },
+  "useCases": [
+    {
+      "category": "Content Creation",
+      "examples": [
+        "YouTube video dubbing",
+        "Social media content creation",
+        "Educational video narration",
+        "Marketing video voice-overs"
+      ]
+    },
+    {
+      "category": "Localization",
+      "examples": [
+        "Multilingual video content",
+        "International marketing videos",
+        "Educational content translation",
+        "Entertainment content dubbing"
+      ]
+    },
+    {
+      "category": "Accessibility",
+      "examples": [
+        "Adding speech to silent videos",
+        "Creating accessible content",
+        "Voice-over for presentations",
+        "Audio description videos"
+      ]
+    },
+    {
+      "category": "Professional",
+      "examples": [
+        "Corporate training videos",
+        "Product demonstration videos",
+        "Conference presentation videos",
+        "Professional development content"
+      ]
+    }
+  ],
+  "inputSchema": {
+    "type": "object",
+    "required": ["video_url", "audio_url"],
+    "properties": {
+      "video_url": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL of the input video file. Supported formats: mp4, mov, webm, m4v, gif"
+      },
+      "audio_url": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL of the input audio file. Supported formats: mp3, ogg, wav, m4a, aac"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "video": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL where the generated lipsync video can be downloaded"
+          },
+          "content_type": {
+            "type": "string",
+            "description": "MIME type of the generated video file"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "Name of the generated video file"
+          },
+          "file_size": {
+            "type": "integer",
+            "description": "Size of the generated video file in bytes"
+          }
+        }
+      }
+    }
+  },
+  "bestPractices": [
+    {
+      "category": "Input Preparation",
+      "tips": [
+        "Use high-quality video with clear facial features",
+        "Ensure good lighting on the subject's face",
+        "Use clear, high-quality audio for best results",
+        "Match audio length to video duration"
+      ]
+    },
+    {
+      "category": "Cost Optimization",
+      "tips": [
+        "Process shorter clips to reduce costs",
+        "Batch process multiple videos together",
+        "Use appropriate video resolution",
+        "Optimize audio quality for better synchronization"
+      ]
+    },
+    {
+      "category": "Quality Enhancement",
+      "tips": [
+        "Use videos with clear facial expressions",
+        "Ensure subject is facing the camera",
+        "Use natural lighting for better results",
+        "Test with different audio qualities"
+      ]
+    }
+  ],
+  "limitations": [
+    "Requires clear facial features in the video",
+    "Works best with frontal face shots",
+    "Audio and video lengths should match",
+    "Processing time varies with video length"
+  ],
+  "integration": {
+    "clientLibrary": "@fal-ai/client",
+    "authentication": "API Key (FAL_KEY)",
+    "endpoints": {
+      "subscribe": "fal.subscribe('veed/lipsync', { input: { video_url, audio_url } })",
+      "queue": "fal.queue.submit('veed/lipsync', { input: { video_url, audio_url } })"
+    }
+  },
+  "examples": {
+    "basic": {
+      "description": "Basic lipsync generation",
+      "code": `
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("veed/lipsync", {
+  input: {
+    video_url: "https://example.com/video.mp4",
+    audio_url: "https://example.com/audio.mp3"
+  }
+});
+
+console.log(result.data.video.url);
+      `
+    },
+    "withLogs": {
+      "description": "Lipsync generation with progress logs",
+      "code": `
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("veed/lipsync", {
+  input: {
+    video_url: "https://example.com/video.mp4",
+    audio_url: "https://example.com/audio.mp3"
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  }
+});
+      `
+    },
+    "queue": {
+      "description": "Queue-based processing for long videos",
+      "code": `
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("veed/lipsync", {
+  input: {
+    video_url: "https://example.com/video.mp4",
+    audio_url: "https://example.com/audio.mp3"
+  },
+  webhookUrl: "https://your-webhook.url/for/results"
+});
+
+// Check status
+const status = await fal.queue.status("veed/lipsync", {
+  requestId: request_id,
+  logs: true
+});
+
+// Get result when complete
+const result = await fal.queue.result("veed/lipsync", {
+  requestId: request_id
+});
+      `
+    }
+  }
+}

@@ -13,7 +13,7 @@ export const AutoCorrectorConfigSchema = z.object({
 export type AutoCorrectorConfig = z.infer<typeof AutoCorrectorConfigSchema>;
 
 // Service types
-export type ServiceType = 'together' | 'replicate' | 'fal' | 'openai' | 'anthropic';
+export type ServiceType = 'together' | 'replicate' | 'fal' | 'openai' | 'anthropic' | 'shotstack';
 
 // Error types
 export interface ServiceError {
@@ -71,6 +71,7 @@ export class AutoCorrector {
     this.fallbackChain.set('fal', ['replicate', 'together', 'openai']);
     this.fallbackChain.set('openai', ['anthropic', 'together', 'replicate']);
     this.fallbackChain.set('anthropic', ['openai', 'together', 'replicate']);
+    this.fallbackChain.set('shotstack', []); // Shotstack has no direct fallbacks
   }
 
   /**
