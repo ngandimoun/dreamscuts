@@ -1,0 +1,199 @@
+﻿{
+    "briefId":  "dq_mftrox1t_hbxoxr",
+    "createdAt":  "2025-09-21T14:03:03.747Z",
+    "request":  {
+                    "query":  "???????? ????? ??????????? ?? ??????????? ???????????",
+                    "assets":  [
+
+                               ],
+                    "intent":  "video",
+                    "outputImages":  1,
+                    "outputVideoSeconds":  5,
+                    "preferences":  {
+                                        "aspect_ratio":  "Smart Auto",
+                                        "platform_target":  "social"
+                                    }
+                },
+    "analysis":  {
+                     "comprehensive":  {
+                                           "id":  "dq_mftrox1t_hbxoxr",
+                                           "createdAt":  "2025-09-21T14:03:03.747Z",
+                                           "userId":  "legacy_user",
+                                           "userPrompt":  "???????? ????? ??????????? ?? ??????????? ???????????",
+                                           "intent":  "video",
+                                           "options":  {
+                                                           "durationSeconds":  5,
+                                                           "aspectRatio":  "Smart Auto",
+                                                           "imageCount":  1,
+                                                           "platform":  "social"
+                                                       },
+                                           "assets":  [
+
+                                                      ],
+                                           "final_analysis":  null,
+                                           "globalAnalysis":  {
+                                                                  "goal":  "Create a 5s Smart Auto video content for social platform featuring: \"???????? ????? ??????????? ?? ??????????? ???????????\"",
+                                                                  "constraints":  {
+                                                                                      "durationSeconds":  5,
+                                                                                      "aspectRatio":  "Smart Auto",
+                                                                                      "imageCount":  1,
+                                                                                      "platform":  "social",
+                                                                                      "resolution":  "",
+                                                                                      "qualityLevel":  "high"
+                                                                                  },
+                                                                  "assetRoles":  {
+
+                                                                                 },
+                                                                  "conflicts":  [
+
+                                                                                ],
+                                                                  "identifiedChallenges":  [
+
+                                                                                           ],
+                                                                  "creativeDirection":  {
+
+                                                                                        }
+                                                              },
+                                           "creativeOptions":  [
+                                                                   {
+                                                                       "id":  "opt_query_A",
+                                                                       "title":  "?????",
+                                                                       "short":  "Alternative creative approach",
+                                                                       "reasons":  [
+                                                                                       "creative variation"
+                                                                                   ],
+                                                                       "estimatedWorkload":  "high",
+                                                                       "confidence":  0.4,
+                                                                       "source":  "query_analysis"
+                                                                   }
+                                                               ],
+                                           "recommendedPipeline":  {
+                                                                       "preprocessing":  [
+
+                                                                                         ],
+                                                                       "generationModels":  {
+
+                                                                                            },
+                                                                       "integration":  "combine assets via Shotstack API with timing from voiceover",
+                                                                       "estimatedTime":  "unknown",
+                                                                       "successProbability":  0.8
+                                                                   },
+                                           "warnings":  [
+                                                            "Target audience not specified - optimizing for general viewers"
+                                                        ],
+                                           "processingInsights":  {
+                                                                      "totalProcessingTimeMs":  7282,
+                                                                      "stepBreakdown":  {
+                                                                                            "queryAnalysis":  "completed",
+                                                                                            "assetAnalysis":  "completed",
+                                                                                            "creativeSynthesis":  "skipped",
+                                                                                            "finalSummarization":  "skipped"
+                                                                                        },
+                                                                      "qualityMetrics":  {
+                                                                                             "overallConfidence":  0,
+                                                                                             "analysisQuality":  0,
+                                                                                             "completionStatus":  "partial"
+                                                                                         }
+                                                                  }
+                                       },
+                     "final_analysis":  null
+                 },
+    "plan":  {
+                 "assetProcessing":  {
+
+                                     },
+                 "creativeOptions":  [
+                                         {
+                                             "id":  "opt_query_A",
+                                             "title":  "?????",
+                                             "short":  "Alternative creative approach",
+                                             "reasons":  [
+                                                             "creative variation"
+                                                         ],
+                                             "estimatedWorkload":  "high",
+                                             "confidence":  0.4,
+                                             "source":  "query_analysis"
+                                         }
+                                     ],
+                 "costEstimate":  0
+             },
+    "status":  "analyzed",
+    "id":  "dq_mftrox1t_hbxoxr",
+    "userId":  "legacy_user",
+    "userPrompt":  "???????? ????? ??????????? ?? ??????????? ???????????",
+    "intent":  "video",
+    "options":  {
+                    "durationSeconds":  5,
+                    "aspectRatio":  "Smart Auto",
+                    "imageCount":  1,
+                    "platform":  "social"
+                },
+    "assets":  [
+
+               ],
+    "final_analysis":  null,
+    "globalAnalysis":  {
+                           "goal":  "Create a 5s Smart Auto video content for social platform featuring: \"???????? ????? ??????????? ?? ??????????? ???????????\"",
+                           "constraints":  {
+                                               "durationSeconds":  5,
+                                               "aspectRatio":  "Smart Auto",
+                                               "imageCount":  1,
+                                               "platform":  "social",
+                                               "resolution":  "",
+                                               "qualityLevel":  "high"
+                                           },
+                           "assetRoles":  {
+
+                                          },
+                           "conflicts":  [
+
+                                         ],
+                           "identifiedChallenges":  [
+
+                                                    ],
+                           "creativeDirection":  {
+
+                                                 }
+                       },
+    "creativeOptions":  [
+                            {
+                                "id":  "opt_query_A",
+                                "title":  "?????",
+                                "short":  "Alternative creative approach",
+                                "reasons":  [
+                                                "creative variation"
+                                            ],
+                                "estimatedWorkload":  "high",
+                                "confidence":  0.4,
+                                "source":  "query_analysis"
+                            }
+                        ],
+    "recommendedPipeline":  {
+                                "preprocessing":  [
+
+                                                  ],
+                                "generationModels":  {
+
+                                                     },
+                                "integration":  "combine assets via Shotstack API with timing from voiceover",
+                                "estimatedTime":  "unknown",
+                                "successProbability":  0.8
+                            },
+    "warnings":  [
+                     "Target audience not specified - optimizing for general viewers"
+                 ],
+    "processingInsights":  {
+                               "totalProcessingTimeMs":  7282,
+                               "stepBreakdown":  {
+                                                     "queryAnalysis":  "completed",
+                                                     "assetAnalysis":  "completed",
+                                                     "creativeSynthesis":  "skipped",
+                                                     "finalSummarization":  "skipped"
+                                                 },
+                               "qualityMetrics":  {
+                                                      "overallConfidence":  0,
+                                                      "analysisQuality":  0,
+                                                      "completionStatus":  "partial"
+                                                  }
+                           }
+}

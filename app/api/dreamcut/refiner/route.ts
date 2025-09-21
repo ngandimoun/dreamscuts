@@ -540,17 +540,25 @@ export async function POST(req: NextRequest) {
       }
     }
     
+    // Debug: Check what language detection data is available
+    console.log('🔍 [Refiner] Language detection debug:', {
+      hasPromptAnalysis: !!analyzerData.prompt_analysis,
+      hasProcessingMetadata: !!analyzerData.prompt_analysis?.processing_metadata,
+      detectedLanguageFromMetadata: analyzerData.prompt_analysis?.processing_metadata?.detected_language,
+      originalPrompt: analyzerData.user_request?.original_prompt
+    });
+    
+    // Detect language from the original user query (needed for both creative profile and database)
+    const detectedLanguage = analyzerData.prompt_analysis?.processing_metadata?.detected_language || 
+                            detectLanguageFromText(analyzerData.user_request.original_prompt) || 
+                            'en';
+    
+    console.log('🌍 [Refiner] Detected language:', detectedLanguage);
+    
     // Apply language-aware creative profile if detected
     let finalRefinerJson = validatedRefinerJson;
     if (creativeProfile) {
       console.log('🎨 [Refiner] Applying language-aware creative profile:', creativeProfile.name);
-      
-      // Detect language from the original user query
-      const detectedLanguage = analyzerData.prompt_analysis?.processing_metadata?.detected_language || 
-                              detectLanguageFromText(analyzerData.user_request.original_prompt) || 
-                              'en';
-      
-      console.log('🌍 [Refiner] Detected language:', detectedLanguage);
       
       // Generate language-aware creative direction
       const languageAwareDirection = generateLanguageAwareCreativeDirection(

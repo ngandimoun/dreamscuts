@@ -449,7 +449,15 @@ export function generateLanguageAwareCreativeDirection(
 } {
   const profile = getLanguageAwareCreativeProfile(profileId, detectedLanguage);
   
-  // Customize based on user query while maintaining language
+  // Check if we fell back to English templates (no static template for this language)
+  const isUsingEnglishFallback = profile.language === 'en' && detectedLanguage !== 'en';
+  
+  if (isUsingEnglishFallback) {
+    // Smart dynamic translation: Generate language-appropriate creative direction
+    return generateDynamicLanguageCreativeDirection(userQuery, detectedLanguage, profileId);
+  }
+  
+  // Use existing static template logic for languages with templates
   const queryLower = userQuery.toLowerCase();
   
   // Adjust core concept based on query content
@@ -463,6 +471,78 @@ export function generateLanguageAwareCreativeDirection(
     visual_approach: profile.visual_approach,
     style_direction: profile.style_direction,
     mood_guidance: profile.mood_guidance
+  };
+}
+
+/**
+ * Generate dynamic language-appropriate creative direction for languages without static templates
+ * This leverages the LLM's natural language capabilities to create culturally appropriate content
+ */
+function generateDynamicLanguageCreativeDirection(
+  userQuery: string,
+  detectedLanguage: string,
+  profileId: string
+): {
+  core_concept: string;
+  visual_approach: string;
+  style_direction: string;
+  mood_guidance: string;
+} {
+  // Get English base template for structure
+  const englishProfile = getLanguageAwareCreativeProfile(profileId, 'en');
+  
+  // Create dynamic language-appropriate content based on the user query and detected language
+  // This will be processed by the LLM in the refiner to create culturally appropriate creative direction
+  
+  const languageNames: Record<string, string> = {
+    'bg': 'Bulgarian',
+    'ru': 'Russian',
+    'uk': 'Ukrainian',
+    'pl': 'Polish',
+    'cs': 'Czech',
+    'sk': 'Slovak',
+    'hr': 'Croatian',
+    'sr': 'Serbian',
+    'sl': 'Slovenian',
+    'et': 'Estonian',
+    'lv': 'Latvian',
+    'lt': 'Lithuanian',
+    'fi': 'Finnish',
+    'sv': 'Swedish',
+    'no': 'Norwegian',
+    'da': 'Danish',
+    'is': 'Icelandic',
+    'tr': 'Turkish',
+    'he': 'Hebrew',
+    'th': 'Thai',
+    'vi': 'Vietnamese',
+    'ms': 'Malay',
+    'tl': 'Filipino',
+    'sw': 'Swahili',
+    'af': 'Afrikaans',
+    'eu': 'Basque',
+    'ca': 'Catalan',
+    'gl': 'Galician',
+    'cy': 'Welsh',
+    'ga': 'Irish',
+    'mt': 'Maltese',
+    'ro': 'Romanian',
+    'el': 'Greek',
+    'mk': 'Macedonian',
+    'sq': 'Albanian',
+    'bs': 'Bosnian',
+    'me': 'Montenegrin'
+  };
+  
+  const languageName = languageNames[detectedLanguage] || detectedLanguage;
+  
+  // Create dynamic creative direction that will be processed by the LLM
+  // The LLM will naturally translate and adapt this to the detected language
+  return {
+    core_concept: `Create engaging and informative content in ${languageName} that effectively communicates the key message: "${userQuery}". Focus on clear, culturally appropriate presentation that resonates with ${languageName}-speaking audiences.`,
+    visual_approach: `Use dynamic visual storytelling techniques appropriate for ${languageName} cultural context. Incorporate relevant visual metaphors, color schemes, and design elements that align with ${languageName} aesthetic preferences and cultural values.`,
+    style_direction: `Maintain a professional yet approachable tone suitable for ${languageName} communication style. Ensure visual hierarchy and pacing that matches ${languageName} reading patterns and cultural expectations.`,
+    mood_guidance: `Create content that feels authentic and engaging for ${languageName}-speaking viewers. Balance professionalism with cultural sensitivity, ensuring the content feels natural and compelling in the ${languageName} language context.`
   };
 }
 
@@ -498,7 +578,7 @@ export function detectLanguageFromText(text: string): string {
     return 'hi';
   }
   
-  // For Latin-based languages, let the LLM detect in the prompt
-  // This is more reliable than complex regex patterns
+  // For Latin-based languages (Czech, Latvian, Spanish, French, etc.), 
+  // let the LLM handle detection in prompts - this is more reliable than regex
   return 'auto';
 }

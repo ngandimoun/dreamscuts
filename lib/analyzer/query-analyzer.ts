@@ -558,6 +558,13 @@ async function parseAndValidateAnalysis(
     // Debug log to verify language detection
     console.log(`[QueryAnalyzer] Language detection result: ${detectedLanguage} for query: "${originalQuery.substring(0, 50)}..."`);
     
+    // Debug: Check what processing_metadata is being set
+    console.log(`[QueryAnalyzer] Processing metadata debug:`, {
+      detectedLanguage: detectedLanguage,
+      processingMetadata: parsedResponse.processing_metadata,
+      hasProcessingMetadata: !!parsedResponse.processing_metadata
+    });
+    
     // Validate against schema
     const validated = QueryAnalysisSchema.safeParse(parsedResponse);
     
@@ -568,6 +575,13 @@ async function parseAndValidateAnalysis(
         error: `Analysis validation failed: ${JSON.stringify(validated.error.format())}`
       };
     }
+    
+    // Debug: Check what the validated data contains
+    console.log(`[QueryAnalyzer] Validated data debug:`, {
+      hasProcessingMetadata: !!validated.data.processing_metadata,
+      detectedLanguage: validated.data.processing_metadata?.detected_language,
+      processingMetadataKeys: validated.data.processing_metadata ? Object.keys(validated.data.processing_metadata) : []
+    });
     
     return {
       success: true,
