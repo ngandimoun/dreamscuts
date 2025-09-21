@@ -13,6 +13,7 @@
  */
 
 import { z } from 'zod';
+import { detectLanguageFromText } from './language-aware-creative-profiles';
 
 // Together AI model executors
 import { executeTogetherAILlama31405B, createLlama31405BPrompt, LLAMA31_405B_SYSTEM_PROMPTS } from '../../executors/together-ai-llama-3-1-405b';
@@ -94,7 +95,9 @@ export const QueryAnalysisSchema = z.object({
     model_used: z.string(),
     confidence_score: z.number().min(0).max(1),
     grammar_corrections_made: z.boolean(),
-    normalization_applied: z.boolean()
+    normalization_applied: z.boolean(),
+    detected_language: z.string().optional(),
+    language_confidence: z.number().min(0).max(1).optional()
   })
 });
 
@@ -217,15 +220,19 @@ export async function analyzeUserQuery(
  * Normalize and clean the user query
  */
 async function normalizeQuery(query: string, enableGrammarCorrection: boolean): Promise<string> {
+  // Preserve Unicode characters and normalize text properly
   let normalized = query.trim();
   
-  // Basic normalization
+  // Ensure proper Unicode normalization (NFD to NFC)
+  normalized = normalized.normalize('NFC');
+  
+  // Basic normalization while preserving Unicode characters
   normalized = normalized.replace(/\s+/g, ' '); // Multiple spaces to single space
   normalized = normalized.replace(/([.!?])\s*$/, '$1'); // Ensure proper ending punctuation
   
   if (enableGrammarCorrection) {
-    // Simple grammar corrections that don't require LLM
-    normalized = normalized.replace(/\bi\b/g, 'I'); // Capitalize "i"
+    // Simple grammar corrections that preserve Unicode characters
+    normalized = normalized.replace(/\bi\b/g, 'I'); // Capitalize "i" (only for English)
     normalized = normalized.replace(/(\w+)\s+\1\b/g, '$1'); // Remove duplicate words
     
     // If the query is very short or has obvious issues, we might want to enhance it
@@ -247,9 +254,16 @@ function buildAnalysisPrompt(query: string, options: {
   enableCreativeReframing: boolean;
   enableDetailedModifierExtraction: boolean;
 }): string {
-  return `You are a professional creative project analyzer. Analyze the following user query and extract comprehensive information about their creative intent.
+  return `You are a professional creative project analyzer with advanced language detection capabilities. Analyze the following user query and extract comprehensive information about their creative intent.
 
 USER QUERY: "${query}"
+
+LANGUAGE DETECTION CAPABILITIES:
+- Detect the primary language of the user query automatically
+- Analyze content in the detected language and provide all responses in that same language
+- Support multiple languages including English, Spanish, French, German, Italian, Portuguese, Chinese, Japanese, Korean, Arabic, Hindi, and more
+- Maintain cultural context and language-specific nuances in analysis
+- Ensure all extracted information respects the original language and cultural context
 
 IMPORTANT: The user may mention media types (like "image" or "video") in their query, but this is often descriptive content rather than their actual intent. Focus on analyzing the creative content, style, and requirements rather than trying to determine the output type from the text alone.
 
@@ -324,7 +338,9 @@ Provide a detailed JSON analysis following this exact structure:
     "model_used": "[model name]",
     "confidence_score": [0.0-1.0 overall confidence in analysis],
     "grammar_corrections_made": [true/false],
-    "normalization_applied": [true/false]
+    "normalization_applied": [true/false],
+    "detected_language": "[primary language detected from query]",
+    "language_confidence": [0.0-1.0 confidence in language detection]
   }
 }
 
@@ -337,8 +353,11 @@ ANALYSIS GUIDELINES:
 6. Extract both explicit and implicit requirements
 7. CRITICAL: When user mentions "image" or "video" in their query, treat this as descriptive content about what they want to create, not as their output type preference. The UI selection will override your intent detection.
 8. Focus on analyzing creative content, style, mood, and technical requirements rather than output type determination
-${options.enableDetailedModifierExtraction ? `9. Pay special attention to subtle style/mood/aesthetic cues
-10. Consider cultural and temporal contexts for complete modifier extraction` : ''}
+9. LANGUAGE DETECTION: Automatically detect the primary language of the user query and provide all analysis in that same language
+10. CULTURAL CONTEXT: Consider cultural nuances and language-specific expressions when analyzing creative intent
+11. MULTILINGUAL SUPPORT: Ensure all extracted modifiers, constraints, and recommendations are culturally appropriate for the detected language
+${options.enableDetailedModifierExtraction ? `12. Pay special attention to subtle style/mood/aesthetic cues
+13. Consider cultural and temporal contexts for complete modifier extraction` : ''}
 
 Respond ONLY with the JSON object, no additional text.`;
 }
@@ -519,14 +538,25 @@ async function parseAndValidateAnalysis(
     
     // Fill in metadata that LLM might not have populated correctly
     parsedResponse.original_prompt = originalQuery;
+    // Use LLM's language detection from the prompt (more reliable than regex)
+    const detectedLanguage = parsedResponse.processing_metadata?.detected_language || 
+                            detectLanguageFromText(originalQuery) || 
+                            'en';
+    
+    // Ensure our language detection is properly set
     parsedResponse.processing_metadata = {
-      ...parsedResponse.processing_metadata,
       analysis_timestamp: new Date().toISOString(),
       processing_time_ms: processingTime,
       model_used: modelUsed,
+      confidence_score: parsedResponse.processing_metadata?.confidence_score || 0.8,
       grammar_corrections_made: originalQuery !== normalizedQuery,
-      normalization_applied: true
+      normalization_applied: true,
+      detected_language: detectedLanguage,
+      language_confidence: parsedResponse.processing_metadata?.language_confidence || 0.9
     };
+    
+    // Debug log to verify language detection
+    console.log(`[QueryAnalyzer] Language detection result: ${detectedLanguage} for query: "${originalQuery.substring(0, 50)}..."`);
     
     // Validate against schema
     const validated = QueryAnalysisSchema.safeParse(parsedResponse);

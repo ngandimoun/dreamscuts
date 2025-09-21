@@ -18,6 +18,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { getLanguageAwareCreativeProfile, detectLanguageFromText } from '@/lib/analyzer/language-aware-creative-profiles';
 import { callLLM } from '@/lib/llm';
 import fs from 'fs';
 import path from 'path';
@@ -140,6 +141,8 @@ const ScriptResponseSchema = z.object({
     duration_seconds: z.number(),
     orientation: z.string(),
     language: z.string(),
+    detected_language: z.string().optional(),
+    language_confidence: z.number().min(0).max(1).optional(),
     total_scenes: z.number(),
     estimated_word_count: z.number(),
     pacing_style: z.string()
@@ -236,14 +239,32 @@ const CREATIVE_PROFILE_SCRIPTS = {
 // Generate clean, human-readable script prompt
 function generateHumanReadableScriptPrompt(input: ScriptEnhancerInput): string {
   const profileId = input.refiner_extensions?.creative_profile?.profileId || 'educational_explainer';
+  
+  // Detect language from the original user query
+  const detectedLanguage = input.user_request.original_prompt ? 
+    detectLanguageFromText(input.user_request.original_prompt) : 'en';
+  
+  // Get language-aware creative profile
+  const languageAwareProfile = getLanguageAwareCreativeProfile(profileId, detectedLanguage);
+  
+  // Fallback to local profile if language-aware profile not available
   const profileScript = CREATIVE_PROFILE_SCRIPTS[profileId as keyof typeof CREATIVE_PROFILE_SCRIPTS] || CREATIVE_PROFILE_SCRIPTS.educational_explainer;
+  
   const duration = input.user_request.duration_seconds;
   const aspectRatio = input.user_request.aspect_ratio;
   const platform = input.user_request.platform;
 
-  return `You are a professional script writer creating a studio-quality, human-readable script for a ${duration}-second video.
+  return `You are a professional script writer with advanced multilingual capabilities creating a studio-quality, human-readable script for a ${duration}-second video.
 
-TASK: Create a professional, cinematic script that creative teams can immediately use for production.
+LANGUAGE DETECTION & MULTILINGUAL SUPPORT:
+- Automatically detect the primary language from the user's original prompt
+- Create the ENTIRE script in the same language as the user's original query
+- Support multiple languages including English, Spanish, French, German, Italian, Portuguese, Chinese, Japanese, Korean, Arabic, Hindi, and more
+- Maintain cultural context and language-specific nuances in all script elements
+- Ensure dialogue, narration, and production notes are culturally appropriate for the detected language
+- Adapt technical terms and creative concepts to the detected language and culture
+
+TASK: Create a professional, cinematic script that creative teams can immediately use for production in the user's detected language.
 
 VIDEO SPECIFICATIONS:
 - Duration: ${duration} seconds
@@ -303,48 +324,48 @@ ${input.assets.length > 0 ?
 }
 
 SCRIPT FORMAT REQUIREMENTS:
-Create a professional script with this EXACT structure:
+Create a professional script with this EXACT structure in the user's detected language:
 
 === SCRIPT TITLE ===
-[Brief, compelling title for the video]
+[Brief, compelling title for the video in the user's language]
 
 === SCRIPT METADATA ===
 Profile: ${profileId}
 Duration: ${duration} seconds
 Orientation: ${aspectRatio}
-Language: English
+Language: [detected language from user's original prompt]
 Total Scenes: [number of scenes]
 Estimated Word Count: [estimated words]
 Pacing Style: ${profileScript.pacing}
 
 === SCENES ===
 
-Scene 1 | Duration: [X]s | Purpose: [scene purpose]
-Narration: "[exact narration text]"
-Visuals: [visual anchor description]
-Effects: [suggested effects list]
-Music: [music cue description]
-Pacing: [pacing notes]
-Mood: [emotional tone]
-Consistency: [consistency notes]
+Scene 1 | Duration: [X]s | Purpose: [scene purpose in user's language]
+Narration: "[exact narration text in user's language]"
+Visuals: [visual anchor description in user's language]
+Effects: [suggested effects list in user's language]
+Music: [music cue description in user's language]
+Pacing: [pacing notes in user's language]
+Mood: [emotional tone in user's language]
+Consistency: [consistency notes in user's language]
 
-Scene 2 | Duration: [X]s | Purpose: [scene purpose]
-[Continue pattern for all scenes...]
+Scene 2 | Duration: [X]s | Purpose: [scene purpose in user's language]
+[Continue pattern for all scenes in user's language...]
 
 === VOICEOVER GUIDANCE ===
-Narration Style: ${profileScript.style}
-Pacing Notes: [detailed pacing guidance for voice actor]
-Voice Characteristics: [voice details, tone, energy level]
+Narration Style: ${profileScript.style} (adapted for user's language)
+Pacing Notes: [detailed pacing guidance for voice actor in user's language]
+Voice Characteristics: [voice details, tone, energy level in user's language]
 
 === MUSIC & AUDIO PLAN ===
-Style: ${profileScript.music}
+Style: ${profileScript.music} (culturally appropriate for user's language/region)
 Transitions: ${profileScript.transitions.join(', ')}
-Mood Progression: [emotional arc from start to finish]
+Mood Progression: [emotional arc from start to finish in user's language]
 
 === PRODUCTION NOTES ===
-Asset Integration: [how user assets are used in the script]
-Visual Flow: [scene progression and visual continuity]
-Quality Assurance: [compliance notes and requirements]
+Asset Integration: [how user assets are used in the script in user's language]
+Visual Flow: [scene progression and visual continuity in user's language]
+Quality Assurance: [compliance notes and requirements in user's language]
 
 2025 AI CONTENT TRENDS INTEGRATION:
 Consider incorporating these cutting-edge AI features that are trending in 2025:
@@ -465,6 +486,9 @@ CRITICAL REQUIREMENTS:
 - Make it cinematic and engaging
 - Consider 2025 AI trends where they enhance the content naturally
 - Focus on modern, cutting-edge content that leverages available AI technology
+- LANGUAGE REQUIREMENT: Create the ENTIRE script in the user's detected language from their original prompt
+- CULTURAL ADAPTATION: Ensure all content is culturally appropriate for the user's language and region
+- MULTILINGUAL CONSISTENCY: Maintain consistent language usage throughout all script sections
 
 MANDATORY SECTIONS - MUST INCLUDE ALL:
 1. === SCRIPT TITLE ===
@@ -647,14 +671,23 @@ export async function POST(req: NextRequest) {
     const sceneCount = sceneMatches ? sceneMatches.length : 0;
     const wordCount = humanReadableScript.split(/\s+/).length;
     
+    // Extract detected language from script metadata if available
+    const languageMatch = humanReadableScript.match(/Language:\s*([^\n]+)/);
+    const detectedLanguage = languageMatch ? languageMatch[1].trim() : 'English';
+    
+    // Get language-aware creative profile for pacing
+    const languageAwareProfile = getLanguageAwareCreativeProfile(profileId, detectedLanguage);
+    
     const script_metadata = {
       profile: profileId,
       duration_seconds: input.user_request.duration_seconds,
       orientation: input.user_request.aspect_ratio,
-      language: 'English',
+      language: detectedLanguage,
+      detected_language: detectedLanguage,
+      language_confidence: 0.9, // High confidence since it's explicitly set in the script
       total_scenes: sceneCount,
       estimated_word_count: wordCount,
-      pacing_style: CREATIVE_PROFILE_SCRIPTS[profileId as keyof typeof CREATIVE_PROFILE_SCRIPTS]?.pacing || 'moderate'
+      pacing_style: languageAwareProfile.pacing || CREATIVE_PROFILE_SCRIPTS[profileId as keyof typeof CREATIVE_PROFILE_SCRIPTS]?.pacing || 'moderate'
     };
     
     // Store in Supabase
@@ -669,7 +702,14 @@ export async function POST(req: NextRequest) {
         duration_seconds: input.user_request.duration_seconds,
         script_data: { human_readable_script: humanReadableScript, script_metadata: script_metadata },
         quality_assessment: qualityAssessment,
-        processing_time_ms: Date.now() - startTime
+        processing_time_ms: Date.now() - startTime,
+        // Add language detection data
+        detected_language: detectedLanguage,
+        language_code: detectedLanguage === 'auto' ? null : detectedLanguage,
+        language_confidence: 0.9,
+        language_provider: 'detectLanguageFromText',
+        language_detected_by: 'script-enhancer',
+        is_language_reliable: detectedLanguage !== 'auto' && detectedLanguage !== 'en'
       });
 
     if (insertError) {

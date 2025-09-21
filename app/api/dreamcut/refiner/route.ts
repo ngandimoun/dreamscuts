@@ -29,6 +29,7 @@ import {
   detectSessionMode,
   generateNarrativeSpine,
   getDefaultScaffolding,
+  normalizeRefinerOutput,
   type AnalyzerInput,
   type RefinerOutput
 } from '@/lib/analyzer/refiner-schema';
@@ -36,6 +37,7 @@ import { assessRefinerQuality, validateRefinerQuality } from '@/lib/analyzer/ref
 import { callLLMLegacy, validateLLMJSON } from '@/lib/llm';
 import { generateRefinerPrompt, getPromptStats } from '@/lib/analyzer/refiner-prompt-library';
 import { detectCreativeProfile, detectCreativeProfileEnhanced, applyCreativeProfile } from '@/lib/analyzer/creative-profiles';
+import { getLanguageAwareCreativeProfile, generateLanguageAwareCreativeDirection, detectLanguageFromText } from '@/lib/analyzer/language-aware-creative-profiles';
 import { createClient } from '@supabase/supabase-js';
 
 // Initialize Supabase client
@@ -342,10 +344,37 @@ export async function POST(req: NextRequest) {
       }
     }
 
+    // Safeguard: Ensure refiner_extensions has correct structure
+    if (llmJson.refiner_extensions) {
+      // Fix narrative_spine core field if it's a string
+      if (llmJson.refiner_extensions.narrative_spine && 
+          typeof llmJson.refiner_extensions.narrative_spine.core === 'string') {
+        const coreString = llmJson.refiner_extensions.narrative_spine.core;
+        llmJson.refiner_extensions.narrative_spine.core = [coreString];
+        console.log('🔧 [Refiner] Fixed narrative_spine.core from string to array');
+      }
+      
+      // Fix default_scaffolding core fields if they're strings
+      if (llmJson.refiner_extensions.default_scaffolding) {
+        Object.keys(llmJson.refiner_extensions.default_scaffolding).forEach(profileId => {
+          const scaffolding = llmJson.refiner_extensions.default_scaffolding[profileId];
+          if (scaffolding && typeof scaffolding.core === 'string') {
+            const coreString = scaffolding.core;
+            scaffolding.core = [coreString];
+            console.log(`🔧 [Refiner] Fixed default_scaffolding.${profileId}.core from string to array`);
+          }
+        });
+      }
+    }
+
+    // Normalize multilingual enum values to English before validation
+    console.log('🔧 [Refiner] Normalizing multilingual enum values...');
+    const normalizedJson = normalizeRefinerOutput(llmJson);
+    
     // Enhanced schema validation with detailed error reporting and auto-fixes
     let validatedRefinerJson: RefinerOutput;
     try {
-      validatedRefinerJson = RefinerSchema.parse(llmJson);
+      validatedRefinerJson = RefinerSchema.parse(normalizedJson);
       console.log('🔧 [Refiner] Schema validation successful');
     } catch (schemaError: any) {
       console.error('🔧 [Refiner] Schema validation failed:', {
@@ -355,7 +384,7 @@ export async function POST(req: NextRequest) {
       });
       
       // Attempt to fix common schema issues
-      let fixedJson = { ...llmJson };
+      let fixedJson = { ...normalizedJson };
       let fixAttempted = false;
       
       // Check if we have ZodError with issues
@@ -364,6 +393,54 @@ export async function POST(req: NextRequest) {
         
         // Process each issue
         schemaError.issues.forEach((issue: any) => {
+          // Handle invalid type issues (expecting array, received string)
+          if (issue.code === 'invalid_type' && issue.path && issue.expected === 'array' && issue.received === 'string') {
+            const path = issue.path;
+            
+            // Fix array field issues where string was provided instead of array
+            const fieldName = path[path.length - 1];
+            const isArrayField = ['core', 'suggested_improvements', 'objects_detected', 'recommended_edits', 
+                                 'reasons', 'workflow_steps', 'primary_assets', 'reference_only_assets', 
+                                 'keywords', 'rules', 'elevation_applied'].includes(fieldName);
+            
+            if (isArrayField) {
+              console.log(`🔧 [Refiner] Fixing invalid ${fieldName} field type: expected array, received string`);
+              
+              // Navigate to the correct location in the JSON
+              let target = fixedJson;
+              for (let i = 0; i < path.length - 1; i++) {
+                if (target && typeof target === 'object') {
+                  target = target[path[i]];
+                } else {
+                  target = null;
+                  break;
+                }
+              }
+              
+              if (target && typeof target === 'object' && typeof target[fieldName] === 'string') {
+                // Convert string to array by splitting on common delimiters or wrapping in array
+                const fieldString = target[fieldName];
+                let fieldArray: string[];
+                
+                // Try to split on common delimiters first
+                if (fieldString.includes(';')) {
+                  fieldArray = fieldString.split(';').map(s => s.trim()).filter(s => s.length > 0);
+                } else if (fieldString.includes('\n')) {
+                  fieldArray = fieldString.split('\n').map(s => s.trim()).filter(s => s.length > 0);
+                } else if (fieldString.includes(',')) {
+                  fieldArray = fieldString.split(',').map(s => s.trim()).filter(s => s.length > 0);
+                } else {
+                  // If no delimiters, wrap the single string in an array
+                  fieldArray = [fieldString];
+                }
+                
+                target[fieldName] = fieldArray;
+                fixAttempted = true;
+                console.log(`🔧 [Refiner] Converted ${fieldName} string to array with ${fieldArray.length} elements`);
+              }
+            }
+          }
+          
           // Handle invalid enum values
           if (issue.code === 'invalid_enum_value' && issue.path) {
             const path = issue.path;
@@ -418,7 +495,7 @@ export async function POST(req: NextRequest) {
             llmJson = fixedJson; // Update the JSON with our fixes
           } catch (retryError) {
             console.log('🔧 [Refiner] Schema validation still failed after fixes');
-            console.log('🔧 [Refiner] Invalid JSON structure:', JSON.stringify(llmJson, null, 2));
+            console.log('🔧 [Refiner] Invalid JSON structure:', JSON.stringify(normalizedJson, null, 2));
             
             return NextResponse.json(
               { 
@@ -431,7 +508,7 @@ export async function POST(req: NextRequest) {
           }
         } else {
           console.log('🔧 [Refiner] No automatic fixes available for these issues');
-          console.log('🔧 [Refiner] Invalid JSON structure:', JSON.stringify(llmJson, null, 2));
+          console.log('🔧 [Refiner] Invalid JSON structure:', JSON.stringify(normalizedJson, null, 2));
           
           return NextResponse.json(
             { 
@@ -450,7 +527,7 @@ export async function POST(req: NextRequest) {
           recoverable: false
         };
         
-        console.error('🔧 [Refiner] Invalid JSON structure:', JSON.stringify(llmJson, null, 2));
+        console.error('🔧 [Refiner] Invalid JSON structure:', JSON.stringify(normalizedJson, null, 2));
         
         return NextResponse.json(
           { 
@@ -463,12 +540,35 @@ export async function POST(req: NextRequest) {
       }
     }
     
-    // Apply creative profile if detected
+    // Apply language-aware creative profile if detected
     let finalRefinerJson = validatedRefinerJson;
     if (creativeProfile) {
-      console.log('🎨 [Refiner] Applying creative profile:', creativeProfile.name);
-      finalRefinerJson = applyCreativeProfile(validatedRefinerJson, creativeProfile);
-      console.log('🎨 [Refiner] Creative profile applied successfully');
+      console.log('🎨 [Refiner] Applying language-aware creative profile:', creativeProfile.name);
+      
+      // Detect language from the original user query
+      const detectedLanguage = analyzerData.prompt_analysis?.processing_metadata?.detected_language || 
+                              detectLanguageFromText(analyzerData.user_request.original_prompt) || 
+                              'en';
+      
+      console.log('🌍 [Refiner] Detected language:', detectedLanguage);
+      
+      // Generate language-aware creative direction
+      const languageAwareDirection = generateLanguageAwareCreativeDirection(
+        analyzerData.user_request.original_prompt,
+        detectedLanguage,
+        creativeProfile.id
+      );
+      
+      // Apply language-aware creative direction
+      finalRefinerJson = {
+        ...validatedRefinerJson,
+        creative_direction: {
+          ...validatedRefinerJson.creative_direction,
+          ...languageAwareDirection
+        }
+      };
+      
+      console.log('🎨 [Refiner] Language-aware creative profile applied successfully');
     }
     
     // Asset utilization extensions are already added before schema validation
@@ -555,6 +655,13 @@ export async function POST(req: NextRequest) {
               alternative_profiles_count: profileDetection.alternativeProfiles.length
             }
           } : {}),
+          // Add language detection data
+          detected_language: detectedLanguage,
+          language_code: detectedLanguage === 'auto' ? null : detectedLanguage,
+          language_confidence: analyzerData.prompt_analysis?.processing_metadata?.language_confidence || 0.9,
+          language_provider: analyzerData.prompt_analysis?.processing_metadata?.detected_language ? 'llm' : 'fallback',
+          language_detected_by: analyzerData.prompt_analysis?.processing_metadata?.detected_language ? 'query-analyzer-llm' : 'detectLanguageFromText',
+          is_language_reliable: detectedLanguage !== 'auto' && detectedLanguage !== 'en',
           created_at: new Date().toISOString(),
         });
       

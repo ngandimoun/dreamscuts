@@ -30,7 +30,20 @@ export const AnalyzerInputSchema = z.object({
       needs_charts: z.boolean().optional(),
       needs_diagrams: z.boolean().optional(),
       needs_educational_content: z.boolean().optional(),
-      content_complexity: z.enum(['very_simple', 'simple', 'moderate', 'complex']).optional(),
+      content_complexity: z.enum([
+        // English
+        'very_simple', 'simple', 'moderate', 'complex',
+        // French
+        'très_simple', 'simple', 'modéré', 'complexe',
+        // Spanish
+        'muy_simple', 'simple', 'moderado', 'complejo',
+        // German
+        'sehr_einfach', 'einfach', 'mäßig', 'komplex',
+        // Italian
+        'molto_semplice', 'semplice', 'moderato', 'complesso',
+        // Portuguese
+        'muito_simples', 'simples', 'moderado', 'complexo'
+      ]).optional(),
       requires_visual_aids: z.boolean().optional(),
       is_instructional: z.boolean().optional(),
       needs_data_visualization: z.boolean().optional(),
@@ -61,7 +74,20 @@ export const AnalyzerInputSchema = z.object({
     title: z.string(),
     short: z.string().optional(),
     reasons: z.array(z.string()).optional(),
-    estimatedWorkload: z.enum(['low', 'medium', 'high']).optional(),
+    estimatedWorkload: z.enum([
+      // English
+      'low', 'medium', 'high',
+      // French
+      'faible', 'moyen', 'élevé',
+      // Spanish
+      'bajo', 'medio', 'alto',
+      // German
+      'niedrig', 'mittel', 'hoch',
+      // Italian
+      'basso', 'medio', 'alto',
+      // Portuguese
+      'baixo', 'médio', 'alto'
+    ]).optional(),
   })).optional(),
   creative_direction: z.object({
     core_concept: z.string().optional(),
@@ -78,18 +104,57 @@ export const AnalyzerInputSchema = z.object({
   quality_metrics: z.object({
     overall_confidence: z.number().min(0).max(1).optional(),
     analysis_quality: z.number().min(1).max(10).optional(),
-    completion_status: z.enum(['complete', 'partial', 'failed']).optional(),
+    completion_status: z.enum([
+      // English
+      'complete', 'partial', 'failed',
+      // French
+      'complet', 'partiel', 'échoué',
+      // Spanish
+      'completo', 'parcial', 'fallido',
+      // German
+      'vollständig', 'teilweise', 'fehlgeschlagen',
+      // Italian
+      'completo', 'parziale', 'fallito',
+      // Portuguese
+      'completo', 'parcial', 'falhou'
+    ]).optional(),
     feasibility_score: z.number().min(0).max(1).optional(),
   }).optional(),
   challenges: z.array(z.object({
     type: z.string(),
     description: z.string(),
-    impact: z.enum(['minor', 'moderate', 'major']).optional(),
+    impact: z.enum([
+      // English
+      'minor', 'moderate', 'major',
+      // French
+      'mineur', 'modéré', 'majeur',
+      // Spanish
+      'menor', 'moderado', 'mayor',
+      // German
+      'gering', 'mäßig', 'groß',
+      // Italian
+      'minore', 'moderato', 'maggiore',
+      // Portuguese
+      'menor', 'moderado', 'maior'
+    ]).optional(),
   })).optional(),
   recommendations: z.array(z.object({
     type: z.string(),
     recommendation: z.string(),
-    priority: z.enum(['required', 'recommended', 'REQUIRED', 'RECOMMENDED']).optional(),
+    priority: z.enum([
+      // English
+      'required', 'recommended', 'REQUIRED', 'RECOMMENDED',
+      // French
+      'requis', 'recommandé', 'REQUIS', 'RECOMMANDÉ',
+      // Spanish
+      'requerido', 'recomendado', 'REQUERIDO', 'RECOMENDADO',
+      // German
+      'erforderlich', 'empfohlen', 'ERFORDERLICH', 'EMPFOHLEN',
+      // Italian
+      'richiesto', 'raccomandato', 'RICHIESTA', 'RACCOMANDATO',
+      // Portuguese
+      'necessário', 'recomendado', 'NECESSÁRIO', 'RECOMENDADO'
+    ]).optional(),
   })).optional(),
 }).passthrough(); // Allow additional fields from existing pipeline
 
@@ -115,10 +180,18 @@ export const RefinerSchema = z.object({
       needs_diagrams: z.boolean(),
       needs_educational_content: z.boolean(),
       content_complexity: z.enum([
-        "very_simple",
-        "simple",
-        "moderate",
-        "complex",
+        // English
+        "very_simple", "simple", "moderate", "complex",
+        // French
+        "très_simple", "simple", "modéré", "complexe",
+        // Spanish
+        "muy_simple", "simple", "moderado", "complejo",
+        // German
+        "sehr_einfach", "einfach", "mäßig", "komplex",
+        // Italian
+        "molto_semplice", "semplice", "moderato", "complesso",
+        // Portuguese
+        "muito_simples", "simples", "moderado", "complexo"
       ]),
       requires_visual_aids: z.boolean(),
       is_instructional: z.boolean(),
@@ -145,7 +218,20 @@ export const RefinerSchema = z.object({
           z.string(), // Allow simple string recommendations
           z.object({
             action: z.string(),
-            priority: z.enum(["required", "recommended", "REQUIRED", "RECOMMENDED"]),
+            priority: z.enum([
+              // English
+              "required", "recommended", "REQUIRED", "RECOMMENDED",
+              // French
+              "requis", "recommandé", "REQUIS", "RECOMMANDÉ",
+              // Spanish
+              "requerido", "recomendado", "REQUERIDO", "RECOMENDADO",
+              // German
+              "erforderlich", "empfohlen", "ERFORDERLICH", "EMPFOHLEN",
+              // Italian
+              "richiesto", "raccomandato", "RICHIESTA", "RACCOMANDATO",
+              // Portuguese
+              "necessário", "recomendado", "NECESSÁRIO", "RECOMENDADO"
+            ]),
           })
         ])
       ).optional(),
@@ -220,7 +306,20 @@ export const RefinerSchema = z.object({
       title: z.string(),
       short: z.string().optional(),
       reasons: z.array(z.string()).optional(),
-      estimatedWorkload: z.enum(["low", "medium", "high"]).optional(),
+      estimatedWorkload: z.enum([
+        // English
+        "low", "medium", "high",
+        // French
+        "faible", "moyen", "élevé",
+        // Spanish
+        "bajo", "medio", "alto",
+        // German
+        "niedrig", "mittel", "hoch",
+        // Italian
+        "basso", "medio", "alto",
+        // Portuguese
+        "baixo", "médio", "alto"
+      ]).optional(),
     })
   ).optional(),
 
@@ -246,7 +345,20 @@ export const RefinerSchema = z.object({
   quality_metrics: z.object({
     overall_confidence: z.number().min(0).max(1).optional(),
     analysis_quality: z.number().min(1).max(10).optional(),
-    completion_status: z.enum(["partial", "complete"]).optional(),
+    completion_status: z.enum([
+      // English
+      "partial", "complete",
+      // French
+      "partiel", "complet",
+      // Spanish
+      "parcial", "completo",
+      // German
+      "teilweise", "vollständig",
+      // Italian
+      "parziale", "completo",
+      // Portuguese
+      "parcial", "completo"
+    ]).optional(),
     feasibility_score: z.number().min(0).max(1).optional(),
     asset_utilization_score: z.number().min(0).max(1).optional(), // NEW
   }),
@@ -255,7 +367,20 @@ export const RefinerSchema = z.object({
     z.object({
       type: z.string(),
       description: z.string(),
-      impact: z.enum(["minor", "moderate", "major"]).optional(),
+      impact: z.enum([
+        // English
+        "minor", "moderate", "major",
+        // French
+        "mineur", "modéré", "majeur",
+        // Spanish
+        "menor", "moderado", "mayor",
+        // German
+        "gering", "mäßig", "groß",
+        // Italian
+        "minore", "moderato", "maggiore",
+        // Portuguese
+        "menor", "moderado", "maior"
+      ]).optional(),
     })
   ).optional(),
 
@@ -263,7 +388,20 @@ export const RefinerSchema = z.object({
     z.object({
       type: z.string(),
       recommendation: z.string(),
-      priority: z.enum(["required", "recommended", "REQUIRED", "RECOMMENDED"]).optional(),
+      priority: z.enum([
+        // English
+        "required", "recommended", "REQUIRED", "RECOMMENDED",
+        // French
+        "requis", "recommandé", "REQUIS", "RECOMMANDÉ",
+        // Spanish
+        "requerido", "recomendado", "REQUERIDO", "RECOMENDADO",
+        // German
+        "erforderlich", "empfohlen", "ERFORDERLICH", "EMPFOHLEN",
+        // Italian
+        "richiesto", "raccomandato", "RICHIESTA", "RACCOMANDATO",
+        // Portuguese
+        "necessário", "recomendado", "NECESSÁRIO", "RECOMENDADO"
+      ]).optional(),
     })
   ).optional(),
 });
@@ -751,6 +889,227 @@ export function getDefaultScaffolding(profileId: string): { intro: string; core:
     ],
     outro: 'End with memorable conclusion and call-to-action'
   };
+}
+
+// Multilingual enum normalization functions
+export function normalizeImpactValue(impact: string): 'minor' | 'moderate' | 'major' {
+  const impactMap: Record<string, 'minor' | 'moderate' | 'major'> = {
+    // English
+    'minor': 'minor',
+    'moderate': 'moderate', 
+    'major': 'major',
+    // French
+    'mineur': 'minor',
+    'modéré': 'moderate',
+    'majeur': 'major',
+    // Spanish
+    'menor': 'minor',
+    'moderado': 'moderate',
+    'mayor': 'major',
+    // German
+    'gering': 'minor',
+    'mäßig': 'moderate',
+    'groß': 'major',
+    // Italian
+    'minore': 'minor',
+    'moderato': 'moderate',
+    'maggiore': 'major',
+    // Portuguese
+    'menor': 'minor',
+    'moderado': 'moderate',
+    'maior': 'major'
+  };
+  
+  return impactMap[impact.toLowerCase()] || 'moderate';
+}
+
+export function normalizePriorityValue(priority: string): 'required' | 'recommended' {
+  const priorityMap: Record<string, 'required' | 'recommended'> = {
+    // English
+    'required': 'required',
+    'recommended': 'recommended',
+    'REQUIRED': 'required',
+    'RECOMMENDED': 'recommended',
+    // French
+    'requis': 'required',
+    'recommandé': 'recommended',
+    'REQUIS': 'required',
+    'RECOMMANDÉ': 'recommended',
+    // Spanish
+    'requerido': 'required',
+    'recomendado': 'recommended',
+    'REQUERIDO': 'required',
+    'RECOMENDADO': 'recommended',
+    // German
+    'erforderlich': 'required',
+    'empfohlen': 'recommended',
+    'ERFORDERLICH': 'required',
+    'EMPFOHLEN': 'recommended',
+    // Italian
+    'richiesto': 'required',
+    'raccomandato': 'recommended',
+    'RICHIESTA': 'required',
+    'RACCOMANDATO': 'recommended',
+    // Portuguese
+    'necessário': 'required',
+    'recomendado': 'recommended',
+    'NECESSÁRIO': 'required',
+    'RECOMENDADO': 'recommended'
+  };
+  
+  return priorityMap[priority.toLowerCase()] || 'recommended';
+}
+
+export function normalizeContentComplexityValue(complexity: string): 'very_simple' | 'simple' | 'moderate' | 'complex' {
+  const complexityMap: Record<string, 'very_simple' | 'simple' | 'moderate' | 'complex'> = {
+    // English
+    'very_simple': 'very_simple',
+    'simple': 'simple',
+    'moderate': 'moderate',
+    'complex': 'complex',
+    // French
+    'très_simple': 'very_simple',
+    'modéré': 'moderate',
+    'complexe': 'complex',
+    // Spanish
+    'muy_simple': 'very_simple',
+    'moderado': 'moderate',
+    'complejo': 'complex',
+    // German
+    'sehr_einfach': 'very_simple',
+    'einfach': 'simple',
+    'mäßig': 'moderate',
+    'komplex': 'complex',
+    // Italian
+    'molto_semplice': 'very_simple',
+    'semplice': 'simple',
+    'moderato': 'moderate',
+    'complesso': 'complex',
+    // Portuguese
+    'muito_simples': 'very_simple',
+    'simples': 'simple',
+    'moderado': 'moderate',
+    'complexo': 'complex'
+  };
+  
+  return complexityMap[complexity.toLowerCase()] || 'moderate';
+}
+
+export function normalizeWorkloadValue(workload: string): 'low' | 'medium' | 'high' {
+  const workloadMap: Record<string, 'low' | 'medium' | 'high'> = {
+    // English
+    'low': 'low',
+    'medium': 'medium',
+    'high': 'high',
+    // French
+    'faible': 'low',
+    'moyen': 'medium',
+    'élevé': 'high',
+    // Spanish
+    'bajo': 'low',
+    'medio': 'medium',
+    'alto': 'high',
+    // German
+    'niedrig': 'low',
+    'mittel': 'medium',
+    'hoch': 'high',
+    // Italian
+    'basso': 'low',
+    'medio': 'medium',
+    'alto': 'high',
+    // Portuguese
+    'baixo': 'low',
+    'médio': 'medium',
+    'alto': 'high'
+  };
+  
+  return workloadMap[workload.toLowerCase()] || 'medium';
+}
+
+export function normalizeCompletionStatusValue(status: string): 'partial' | 'complete' {
+  const statusMap: Record<string, 'partial' | 'complete'> = {
+    // English
+    'partial': 'partial',
+    'complete': 'complete',
+    // French
+    'partiel': 'partial',
+    'complet': 'complete',
+    // Spanish
+    'parcial': 'partial',
+    'completo': 'complete',
+    // German
+    'teilweise': 'partial',
+    'vollständig': 'complete',
+    // Italian
+    'parziale': 'partial',
+    'completo': 'complete',
+    // Portuguese
+    'parcial': 'partial',
+    'completo': 'complete'
+  };
+  
+  return statusMap[status.toLowerCase()] || 'complete';
+}
+
+// Function to normalize multilingual refiner output to English
+export function normalizeRefinerOutput(refinerData: any): RefinerOutput {
+  const normalized = { ...refinerData };
+  
+  // Normalize content_type_analysis
+  if (normalized.prompt_analysis?.content_type_analysis?.content_complexity) {
+    normalized.prompt_analysis.content_type_analysis.content_complexity = 
+      normalizeContentComplexityValue(normalized.prompt_analysis.content_type_analysis.content_complexity);
+  }
+  
+  // Normalize creative_options
+  if (normalized.creative_options) {
+    normalized.creative_options = normalized.creative_options.map((option: any) => ({
+      ...option,
+      estimatedWorkload: option.estimatedWorkload ? normalizeWorkloadValue(option.estimatedWorkload) : option.estimatedWorkload
+    }));
+  }
+  
+  // Normalize quality_metrics
+  if (normalized.quality_metrics?.completion_status) {
+    normalized.quality_metrics.completion_status = 
+      normalizeCompletionStatusValue(normalized.quality_metrics.completion_status);
+  }
+  
+  // Normalize challenges
+  if (normalized.challenges) {
+    normalized.challenges = normalized.challenges.map((challenge: any) => ({
+      ...challenge,
+      impact: challenge.impact ? normalizeImpactValue(challenge.impact) : challenge.impact
+    }));
+  }
+  
+  // Normalize recommendations
+  if (normalized.recommendations) {
+    normalized.recommendations = normalized.recommendations.map((rec: any) => ({
+      ...rec,
+      priority: rec.priority ? normalizePriorityValue(rec.priority) : rec.priority
+    }));
+  }
+  
+  // Normalize asset recommended_edits
+  if (normalized.assets) {
+    normalized.assets = normalized.assets.map((asset: any) => {
+      if (asset.recommended_edits) {
+        asset.recommended_edits = asset.recommended_edits.map((edit: any) => {
+          if (typeof edit === 'object' && edit.priority) {
+            return {
+              ...edit,
+              priority: normalizePriorityValue(edit.priority)
+            };
+          }
+          return edit;
+        });
+      }
+      return asset;
+    });
+  }
+  
+  return normalized;
 }
 
 // Legacy exports for backward compatibility
