@@ -1,0 +1,540 @@
+{
+  "id": "veo3-fast-enhanced",
+  "name": "Veo3 Fast Enhanced",
+  "description": "Advanced AI video generation model with exceptional cinematic capabilities, complex scene composition, and professional-grade output. Based on Google's Veo 3 Fast model with incredible functionalities for atmospheric lighting, emotional storytelling, wildlife cinematography, and much more. Excels at creating cinematic masterpieces with detailed shot composition, professional audio design, and sophisticated visual effects.",
+  "version": "v3.0",
+  "provider": "Google (via fal.ai)",
+  "category": "video-generation",
+  "type": "text-to-video",
+  "endpoint": "fal-ai/veo3/fast",
+  "capabilities": [
+    "text-to-video-generation",
+    "cinematic-video-creation",
+    "atmospheric-lighting-control",
+    "complex-scene-composition",
+    "professional-audio-design",
+    "wildlife-cinematography",
+    "fantasy-and-sci-fi-scenes",
+    "product-commercial-creation",
+    "emotional-storytelling",
+    "high-quality-output",
+    "synchronized-audio-generation",
+    "seamless-loop-creation",
+    "professional-color-grading",
+    "advanced-camera-movements",
+    "volumetric-effects",
+    "particle-simulation",
+    "reflection-and-mirror-work",
+    "holographic-effects",
+    "fire-and-embers-simulation",
+    "water-and-ocean-cinematography",
+    "astrophotography-integration",
+    "macro-photography-simulation",
+    "black-and-white-cinematography",
+    "vintage-aesthetic-recreation",
+    "commercial-advertising",
+    "documentary-style-filmmaking"
+  ],
+  "features": {
+    "inputFormats": ["text", "structured-prompt"],
+    "outputFormats": ["mp4"],
+    "maxInputSize": "No specific limit mentioned",
+    "supportedAspectRatios": ["16:9", "9:16", "1:1"],
+    "supportedDurations": ["8s"],
+    "supportedResolutions": ["720p", "1080p"],
+    "cameraMovements": ["dolly-in", "crane-ascend", "push-in", "orbital", "tracking", "static", "top-down", "low-angle", "water-level"],
+    "styleOptions": ["cinematic", "documentary", "commercial", "fantasy", "sci-fi", "wildlife", "black-white", "vintage", "atmospheric", "ethereal", "dramatic", "mystical", "apocalyptic", "celestial", "oceanic", "fire-effects", "holographic", "reflection", "macro", "astrophotography"],
+    "audioCapabilities": ["synchronized-audio", "ambient-sound", "sound-effects", "musical-score", "dialogue", "environmental-audio", "foley-effects"],
+    "specialEffects": ["fire-simulation", "ember-particles", "volumetric-lighting", "heat-shimmer", "water-simulation", "smoke-effects", "god-rays", "holographic-projections", "reflections", "particle-systems", "atmospheric-haze", "bioluminescence", "starlight-effects", "moonlight-glow", "aurora-effects"]
+  },
+  "pricing": {
+    "currency": "USD",
+    "rates": {
+      "audioOff": {
+        "rate": 0.25,
+        "unit": "per second",
+        "description": "$0.25 per second for video without audio"
+      },
+      "audioOn": {
+        "rate": 0.40,
+        "unit": "per second",
+        "description": "$0.40 per second for video with synchronized audio"
+      }
+    },
+    "examples": [
+      {
+        "duration": "8 seconds",
+        "audio": "Off",
+        "cost": 2.0,
+        "description": "8-second video without audio costs $2.00"
+      },
+      {
+        "duration": "8 seconds",
+        "audio": "On",
+        "cost": 3.2,
+        "description": "8-second video with audio costs $3.20"
+      }
+    ],
+    "costOptimization": [
+      "Disable audio for cost savings when audio isn't needed",
+      "Use 720p resolution for faster generation and lower costs",
+      "Batch process multiple videos with queue system",
+      "Enable auto_fix to avoid regeneration costs from policy violations"
+    ]
+  },
+  "technicalSpecs": {
+    "architecture": "Google Veo 3 Fast AI Model",
+    "processingMethod": "AI-powered video generation with synchronized audio",
+    "frameRate": "Variable (optimized for smooth playback)",
+    "colorDepth": "8-bit, 10-bit",
+    "compression": "H.264, H.265",
+    "audioSupport": "Full synchronized audio generation with dialogue and sound effects",
+    "batchProcessing": "Supported via queue system",
+    "promptEnhancement": "Built-in prompt enhancement for better results",
+    "autoFix": "Automatic content policy compliance and moderation",
+    "seedControl": "Reproducible results with seed parameter"
+  },
+  "useCases": [
+    {
+      "category": "Cinematic Production",
+      "examples": [
+        "Atmospheric lighting scenes with fire and embers",
+        "Celestial and mystical compositions with god rays",
+        "Ocean cinematography with astrophotography integration",
+        "Fantasy scenes with holographic effects",
+        "Apocalyptic landscapes with dramatic lighting"
+      ]
+    },
+    {
+      "category": "Wildlife and Nature",
+      "examples": [
+        "Black and white wildlife cinematography",
+        "Ocean wave cinematography with Milky Way backgrounds",
+        "Documentary-style nature scenes",
+        "Macro photography simulation",
+        "Astrophotography integration with nature scenes"
+      ]
+    },
+    {
+      "category": "Commercial and Advertising",
+      "examples": [
+        "Product commercials with sophisticated effects",
+        "Perfume advertisements with water droplet formations",
+        "Luxury brand storytelling",
+        "High-end product demonstrations",
+        "Brand narrative videos"
+      ]
+    },
+    {
+      "category": "Fantasy and Sci-Fi",
+      "examples": [
+        "Mystical ritual scenes with fire halos",
+        "Celestial megastructures with orbital rings",
+        "Holographic projection scenes",
+        "Fantasy landscapes with magical effects",
+        "Sci-fi environments with advanced lighting"
+      ]
+    },
+    {
+      "category": "Emotional Storytelling",
+      "examples": [
+        "Atmospheric scenes with emotional depth",
+        "Cinematic compositions with narrative elements",
+        "Mystical and ethereal visual storytelling",
+        "Dramatic scenes with psychological impact",
+        "Artistic expression through visual composition"
+      ]
+    }
+  ],
+  "inputSchema": {
+    "type": "object",
+    "required": ["prompt"],
+    "properties": {
+      "prompt": {
+        "type": "string",
+        "description": "Detailed text prompt describing the video to generate. Can be simple text or structured JSON format for complex scenes."
+      },
+      "aspect_ratio": {
+        "type": "string",
+        "description": "Aspect ratio for the video",
+        "enum": ["16:9", "9:16", "1:1"]
+      },
+      "duration": {
+        "type": "string",
+        "description": "Duration of the generated video",
+        "enum": ["8s"]
+      },
+      "resolution": {
+        "type": "string",
+        "description": "Output resolution",
+        "enum": ["720p", "1080p"]
+      },
+      "generate_audio": {
+        "type": "boolean",
+        "description": "Whether to generate synchronized audio"
+      },
+      "enhance_prompt": {
+        "type": "boolean",
+        "description": "Whether to enhance the prompt for better results"
+      },
+      "auto_fix": {
+        "type": "boolean",
+        "description": "Automatically fix content policy violations"
+      },
+      "seed": {
+        "type": "integer",
+        "description": "Random seed for reproducible results"
+      },
+      "negative_prompt": {
+        "type": "string",
+        "description": "Elements to avoid in the generated video"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "video": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL where the generated video can be downloaded"
+          },
+          "content_type": {
+            "type": "string",
+            "description": "MIME type of the generated video file"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "Name of the generated video file"
+          },
+          "file_size": {
+            "type": "integer",
+            "description": "Size of the generated video file in bytes"
+          }
+        }
+      },
+      "requestId": {
+        "type": "string",
+        "description": "Unique identifier for the generation request"
+      }
+    }
+  },
+  "bestPractices": [
+    {
+      "category": "Structured Prompt Design",
+      "tips": [
+        "Use structured JSON format for complex scenes with multiple elements",
+        "Include detailed shot composition with camera movements",
+        "Specify lighting conditions and atmospheric effects",
+        "Define visual beats and timeline progression",
+        "Include audio design specifications",
+        "Add color palette and grading instructions",
+        "Specify physics rules for realistic effects",
+        "Include visual rules and constraints"
+      ]
+    },
+    {
+      "category": "Cinematic Techniques",
+      "tips": [
+        "Use professional camera movements (dolly, crane, push-in)",
+        "Specify lens types and technical parameters",
+        "Include exposure and grading specifications",
+        "Define depth of field and focus requirements",
+        "Add atmospheric effects and particle systems",
+        "Include lighting setup and mood specifications",
+        "Specify color grading and post-processing effects"
+      ]
+    },
+    {
+      "category": "Audio Design",
+      "tips": [
+        "Include ambient sound and environmental audio",
+        "Specify sound effects and foley elements",
+        "Add musical score and emotional tone",
+        "Include dialogue when appropriate",
+        "Define audio mixing levels and dynamics",
+        "Specify diegetic vs non-diegetic audio elements"
+      ]
+    },
+    {
+      "category": "Special Effects",
+      "tips": [
+        "Use realistic physics for particle systems",
+        "Include volumetric lighting and atmospheric effects",
+        "Specify fire, smoke, and ember simulations",
+        "Add water and ocean effects with proper physics",
+        "Include holographic and sci-fi elements",
+        "Use reflection and mirror work for artistic effects",
+        "Add astrophotography elements for cosmic scenes"
+      ]
+    }
+  ],
+  "limitations": [
+    "Fixed 8-second duration limit",
+    "May require regeneration for optimal results",
+    "Complex scenes may need multiple iterations",
+    "Audio generation adds to processing time and cost",
+    "Content policy restrictions apply"
+  ],
+  "integration": {
+    "clientLibrary": "@fal-ai/client",
+    "authentication": "API Key (FAL_KEY)",
+    "endpoints": {
+      "subscribe": "fal.subscribe('fal-ai/veo3/fast', { input: { prompt, ... } })",
+      "queue": "fal.queue.submit('fal-ai/veo3/fast', { input: { prompt, ... } })"
+    }
+  },
+  "examples": {
+    "cinematicFireHalo": {
+      "description": "Cinematic fire halo scene with ethereal witch-priestess",
+      "code": `
+{
+  "shot": {
+    "type": "single",
+    "camera_motion": "slow vertical dolly-in from low angle (subtle tilt up), no cuts",
+    "loop_hint": "hold last 6 frames for seamless social autoplay"
+  },
+  "subject": {
+    "character": "blonde woman in a flowing black long-sleeve dress, barefoot, ethereal witch-priestess",
+    "pose": "arms raised overhead, palms opening to the sky",
+    "expression": "rapt, eyes toward the halo",
+    "wardrobe_motion": "dress hem and sleeves ripple upward in heat-draft"
+  },
+  "scene": {
+    "environment": "void-black backdrop filled with ember particulates",
+    "hero_prop": "roaring circular fire halo behind subject (solar-flare look)",
+    "fx": ["sparks", "embers", "soft ash", "volumetric heat shimmer"],
+    "time_of_day": "timeless night"
+  },
+  "visual_details": {
+    "beats": [
+      {
+        "time": "0.0-2.5",
+        "action": "Embers drift up; faint ring of fire traces on behind the subject. Camera begins slow dolly-in from low angle.",
+        "focus": "silhouette resolves from black; rim-light on hair and arms"
+      },
+      {
+        "time": "2.5-5.5",
+        "action": "The fire ring ignites fully and churns like solar plasma; subject raises hands higher, heat ripple intensifies.",
+        "focus": "glowing edge highlights; micro-sparks arc around palms"
+      },
+      {
+        "time": "5.5-8.0",
+        "action": "Subject levitates a few inches; dress billows; ring pulses brighter once, then stabilizes for loop.",
+        "focus": "hero tableau framed by perfect circle; last frames steady for seamless loop"
+      }
+    ]
+  },
+  "cinematography": {
+    "lens": "telephoto 85mm feel, shallow depth (f/2.0), low-angle hero composition",
+    "framing": "centered, head near inner rim of the halo",
+    "exposure": "crisp highlights on fire, deep blacks preserved (no lifted shadows)",
+    "post": "high-contrast, slight glow bloom on highlights, tiny chromatic aberration on hottest edges"
+  },
+  "audio": {
+    "fx": [
+      "low sub-bass rumble",
+      "airy ember crackles",
+      "one soft whoosh swell at 5.5s"
+    ],
+    "music": "droning dark-ambient pad that rises subtly by +2 dB at the final pulse",
+    "dialogue": "none"
+  },
+  "color_palette": {
+    "primary": "incandescent orange-red (#FF5A1F)",
+    "secondary": "solar yellow-white core (#FFD36B)",
+    "accents": "deep ember reds (#C21A0F)",
+    "background": "true black (#000000)"
+  }
+}
+      `
+    },
+    "celestialMegastructure": {
+      "description": "Epic celestial megastructure with orbital ring",
+      "code": `
+{
+  "shot": {
+    "type": "single",
+    "camera_motion": "slow ascending crane shot rising from ground level of the city toward the massive glowing ring in the sky",
+    "loop_hint": "hold final frames of glowing ring and drifting clouds for seamless autoplay loop"
+  },
+  "subject": {
+    "hero_element": "colossal golden-lit megastructure ring hovering in the sky, half-shrouded in glowing clouds",
+    "secondary_elements": "grand white stone city with domes, spires, and gardens below",
+    "focus": "city foreground leading eye upward into the radiant sky portal"
+  },
+  "scene": {
+    "environment": "mythic celestial metropolis with gleaming architecture, manicured green gardens, and radiant skies",
+    "hero_prop": "orbital ring structure with glowing circuits and radiant energy",
+    "fx": ["god rays bursting through clouds", "drifting mist layers", "light shimmer on domes"],
+    "time_of_day": "bright mythic afternoon transitioning into heavenly glow"
+  },
+  "cinematography": {
+    "lens": "wide-angle 24mm, deep depth of field",
+    "framing": "low-to-high crane shot emphasizing vertical scale",
+    "exposure": "balanced to preserve detail in highlights of glowing ring and shadows of city",
+    "post": "epic cinematic HDR, golden-and-blue high contrast, volumetric god rays"
+  },
+  "audio": {
+    "fx": [
+      "low celestial hum",
+      "soft wind through spires",
+      "subtle choral shimmer as ring ignites"
+    ],
+    "music": "epic orchestral build with ethereal choir pads",
+    "dialogue": "none"
+  }
+}
+      `
+    },
+    "wildlifeCinematography": {
+      "description": "Black and white wildlife cinematography with leopard",
+      "code": `
+{
+  "shot": {
+    "camera_motion": "slow push-in from low angle toward leopard's piercing gaze",
+    "lens": "85mm telephoto, T1.8",
+    "shutter": "1/50",
+    "iso": 1600,
+    "look": "black-and-white cinematic wildlife portrait"
+  },
+  "subject": {
+    "primary": "a leopard reclining on a dark mound, tail draped forward, luminous eyes fixed directly on camera",
+    "secondary": "tall grass strands silhouetted against the darkness",
+    "tertiary": "texture of spotted fur shimmering in selective light"
+  },
+  "scene": {
+    "location": "savannah edge at night",
+    "time": "pre-dawn darkness",
+    "weather": "clear, cool air with faint breeze",
+    "mood": "intense, intimate, predatory stillness"
+  },
+  "cinematography": {
+    "framing": "leopard centered low, with long tail leading diagonally across frame; head and eyes near golden ratio point",
+    "depth_of_field": "shallow, isolating leopard from void background",
+    "exposure": "protect highlights in fur while preserving shadow depth",
+    "grading": "high-contrast monochrome; silver highlights, inky blacks"
+  },
+  "audio": {
+    "fx": [
+      "low ambient night crickets, sparse rustling grass",
+      "occasional distant owl call",
+      "soft breath of leopard, subtle rumble of chest purr-growl"
+    ],
+    "music": "tense, minimal drone with deep cello undertones fading in slowly",
+    "mix_notes": "diegetic animal and ambient sounds dominate; music subliminal"
+  }
+}
+      `
+    },
+    "oceanAstrophotography": {
+      "description": "Ocean wave cinematography with Milky Way background",
+      "code": `
+{
+  "shot": {
+    "camera_motion": "slow dolly-in at water level toward a towering curling wave",
+    "lens": "24mm wide-angle, T2.8",
+    "shutter": "1/48",
+    "iso": 800,
+    "look": "cinematic night ocean with astrophotography-grade sky"
+  },
+  "subject": {
+    "primary": "a giant midnight ocean wave curling like a claw, backlit by starlight",
+    "secondary": "Milky Way band arcing across the sky; distant jagged coast in silhouette",
+    "tertiary": "silver moon-glint ripples and sparse bioluminescent flecks in the foam"
+  },
+  "scene": {
+    "location": "open sea near volcanic coastline",
+    "time": "astronomical night",
+    "weather": "clear sky, light offshore wind",
+    "mood": "sublime, cosmic, awe-inducing calm-before-impact"
+  },
+  "cinematography": {
+    "framing": "waterline perspective rising slightly as the wave grows; horizon low-right, wave fills left frame, galaxy diagonal top-right",
+    "depth_of_field": "deep focus (hyperfocal) to keep stars and wave crisp",
+    "exposure": "ETTR with protected highlights in foam; specular star glints preserved",
+    "grading": "cool indigo-cyan sea, warm orange galactic core; metallic silver moon reflections"
+  },
+  "audio": {
+    "fx": [
+      "low ocean rumble and distant surf",
+      "hiss of wind over water",
+      "close, airy spray whoosh as the camera nears the tube"
+    ],
+    "music": "sub-bass ambient drone with slow swelling pads; no melody, just rising awe",
+    "mix_notes": "diegetic water dominates; music -12 LUFS bed, cresting to -9 LUFS at beat 3"
+  }
+}
+      `
+    },
+    "perfumeCommercial": {
+      "description": "Perfume commercial with water droplet formation",
+      "code": `
+{
+  "shot": {
+    "composition": "starts in extreme close-up of rippling water surface, transitions to droplets rising mid-air in formation, ends in centered macro on suspended perfume bottle",
+    "lens": "macro lens for droplet texture, 50mm for mid-air formation, 85mm for product reveal",
+    "frame_rate": "60fps",
+    "camera_movement": "cut 1: slow vertical pan up from water surface (2s), cut 2: orbital motion around forming droplet silhouette (3s), cut 3: slow dolly-in as bottle crystallizes mid-air (3s)"
+  },
+  "subject": {
+    "description": "water droplets rise from a liquid surface and form the suspended shape of a Chanel N°5 perfume bottle mid-air",
+    "props": "final Chanel N°5 bottle suspended in space, formed from clear and shimmering droplets"
+  },
+  "scene": {
+    "location": "glossy black reflective platform with infinite dark background",
+    "environment": "weightless, pure atmosphere with soft ambient mist and faint reflections"
+  },
+  "visual_details": {
+    "action": "droplets lift and spiral upward with balletic precision, converging mid-air into the iconic geometric silhouette of the Chanel N°5 bottle; the form crystallizes with a shimmer, label appearing last in suspended elegance",
+    "special_effects": "high-detail droplet simulation, slow-motion swirl, material morph from fluid to glass, suspended crystal shimmer"
+  },
+  "cinematography": {
+    "lighting": "directional spotlight from above with soft side fill, delicate reflections along droplet edges and bottle facets",
+    "color_palette": "black, silver, transparent highlights, champagne gold accent",
+    "tone": "luxurious, sensual, iconic"
+  },
+  "audio": {
+    "music": "minimal ambient piano with subtle orchestral undertone",
+    "ambient": "faint water resonance, high-frequency shimmer",
+    "sound_effects": "droplet rise chimes, soft formation resonance, crystalline ping as final form completes",
+    "mix_level": "elegant, delicate, focused on sonic purity and clarity"
+  }
+}
+      `
+    }
+  },
+  "workflowExamples": {
+    "cinematicProduction": {
+      "title": "Cinematic Production Workflow",
+      "description": "Create professional cinematic videos with structured prompts",
+      "steps": [
+        "Define shot composition and camera movements",
+        "Specify subject, environment, and visual effects",
+        "Create visual beats with timeline progression",
+        "Add cinematography specifications and technical parameters",
+        "Include audio design and sound effects",
+        "Define color palette and post-processing effects",
+        "Add physics rules for realistic effects",
+        "Specify visual rules and constraints"
+      ]
+    },
+    "commercialProduction": {
+      "title": "Commercial Production Workflow",
+      "description": "Create high-end commercial content with sophisticated effects",
+      "steps": [
+        "Define product and brand requirements",
+        "Create compelling visual narrative",
+        "Specify technical cinematography parameters",
+        "Add sophisticated special effects",
+        "Include professional audio design",
+        "Define color grading and post-processing",
+        "Optimize for platform requirements",
+        "Test and iterate for best results"
+      ]
+    }
+  }
+}

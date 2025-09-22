@@ -1,0 +1,282 @@
+{
+  "id": "veed-fabric-1.0",
+  "name": "VEED Fabric 1.0",
+  "description": "VEED Fabric 1.0 is an image-to-video API that turns any image into a talking video. Perfect for creating realistic talking avatars, lip-sync videos, and animated content from static images.",
+  "version": "1.0",
+  "provider": "VEED",
+  "category": "video-generation",
+  "type": "image-to-video",
+  "endpoint": "veed/fabric-1.0",
+  "capabilities": [
+    "image-to-video-generation",
+    "talking-avatar-creation",
+    "realistic-lipsync",
+    "audio-video-synchronization",
+    "speech-synchronization",
+    "avatar-animation",
+    "multilingual-support",
+    "high-quality-output",
+    "commercial-use"
+  ],
+  "features": {
+    "inputFormats": {
+      "image": ["jpg", "jpeg", "png", "webp", "gif", "avif"],
+      "audio": ["mp3", "ogg", "wav", "m4a", "aac"]
+    },
+    "outputFormats": ["mp4"],
+    "resolutions": ["480p", "720p"],
+    "maxInputSize": "No specific limit mentioned",
+    "supportedLanguages": ["Multiple languages supported"],
+    "processingTime": "Varies based on video length and resolution",
+    "quality": "High-quality realistic talking video"
+  },
+  "pricing": {
+    "currency": "USD",
+    "rates": {
+      "480p": {
+        "rate": 0.08,
+        "unit": "per second",
+        "description": "$0.08 per second for 480p resolution"
+      },
+      "720p": {
+        "rate": 0.15,
+        "unit": "per second", 
+        "description": "$0.15 per second for 720p resolution"
+      }
+    },
+    "examples": [
+      {
+        "duration": "10 seconds",
+        "resolution": "480p",
+        "cost": 0.8,
+        "description": "10-second 480p video costs $0.80"
+      },
+      {
+        "duration": "10 seconds",
+        "resolution": "720p",
+        "cost": 1.5,
+        "description": "10-second 720p video costs $1.50"
+      },
+      {
+        "duration": "60 seconds",
+        "resolution": "480p",
+        "cost": 4.8,
+        "description": "1-minute 480p video costs $4.80"
+      },
+      {
+        "duration": "60 seconds",
+        "resolution": "720p",
+        "cost": 9.0,
+        "description": "1-minute 720p video costs $9.00"
+      }
+    ],
+    "costOptimization": [
+      "Use 480p resolution for cost efficiency",
+      "Keep videos shorter when possible",
+      "Use high-quality images for better results",
+      "Optimize audio quality for better synchronization"
+    ]
+  },
+  "technicalSpecs": {
+    "architecture": "VEED Fabric 1.0 AI Model",
+    "processingMethod": "AI-powered image-to-video generation with lipsync",
+    "synchronizationAccuracy": "High precision audio-video sync",
+    "supportedResolutions": ["480p", "720p"],
+    "frameRate": "Maintains optimal frame rate for smooth animation",
+    "audioQuality": "Supports various audio formats and qualities"
+  },
+  "useCases": [
+    {
+      "category": "Content Creation",
+      "examples": [
+        "Talking avatar creation",
+        "Social media content with talking characters",
+        "Educational videos with animated presenters",
+        "Marketing videos with talking mascots"
+      ]
+    },
+    {
+      "category": "Entertainment",
+      "examples": [
+        "Animated character videos",
+        "Virtual influencer content",
+        "Interactive storytelling",
+        "Gaming content creation"
+      ]
+    },
+    {
+      "category": "Business",
+      "examples": [
+        "Corporate training with virtual presenters",
+        "Product demonstration videos",
+        "Customer service avatars",
+        "Professional presentation videos"
+      ]
+    },
+    {
+      "category": "Accessibility",
+      "examples": [
+        "Creating accessible content with talking avatars",
+        "Multilingual content creation",
+        "Visual storytelling for hearing impaired",
+        "Interactive educational content"
+      ]
+    }
+  ],
+  "inputSchema": {
+    "type": "object",
+    "required": ["image_url", "audio_url", "resolution"],
+    "properties": {
+      "image_url": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL of the input image file. Supported formats: jpg, jpeg, png, webp, gif, avif"
+      },
+      "audio_url": {
+        "type": "string",
+        "format": "uri",
+        "description": "URL of the input audio file. Supported formats: mp3, ogg, wav, m4a, aac"
+      },
+      "resolution": {
+        "type": "string",
+        "enum": ["480p", "720p"],
+        "description": "Output video resolution. 480p costs $0.08/second, 720p costs $0.15/second"
+      }
+    }
+  },
+  "outputSchema": {
+    "type": "object",
+    "properties": {
+      "video": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL where the generated talking video can be downloaded"
+          },
+          "content_type": {
+            "type": "string",
+            "description": "MIME type of the generated video file (video/mp4)"
+          },
+          "file_name": {
+            "type": "string",
+            "description": "Name of the generated video file"
+          },
+          "file_size": {
+            "type": "integer",
+            "description": "Size of the generated video file in bytes"
+          }
+        }
+      }
+    }
+  },
+  "bestPractices": [
+    {
+      "category": "Input Preparation",
+      "tips": [
+        "Use high-quality images with clear facial features",
+        "Ensure good lighting and contrast in the image",
+        "Use clear, high-quality audio for best results",
+        "Match audio length to desired video duration"
+      ]
+    },
+    {
+      "category": "Cost Optimization",
+      "tips": [
+        "Use 480p resolution for cost efficiency",
+        "Keep videos shorter when possible",
+        "Use high-quality images to avoid re-processing",
+        "Optimize audio quality for better synchronization"
+      ]
+    },
+    {
+      "category": "Quality Enhancement",
+      "tips": [
+        "Use images with clear facial expressions",
+        "Ensure subject is facing forward in the image",
+        "Use natural lighting for better results",
+        "Test with different audio qualities and lengths"
+      ]
+    }
+  ],
+  "limitations": [
+    "Requires clear facial features in the image",
+    "Works best with frontal face shots",
+    "Audio and video lengths should match",
+    "Processing time varies with video length and resolution",
+    "Higher resolution (720p) costs more than 480p"
+  ],
+  "integration": {
+    "clientLibrary": "@fal-ai/client",
+    "authentication": "API Key (FAL_KEY)",
+    "endpoints": {
+      "subscribe": "fal.subscribe('veed/fabric-1.0', { input: { image_url, audio_url, resolution } })",
+      "queue": "fal.queue.submit('veed/fabric-1.0', { input: { image_url, audio_url, resolution } })"
+    }
+  },
+  "examples": {
+    "basic": {
+      "description": "Basic image-to-talking-video generation",
+      "code": `
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("veed/fabric-1.0", {
+  input: {
+    image_url: "https://example.com/image.png",
+    audio_url: "https://example.com/audio.mp3",
+    resolution: "480p"
+  }
+});
+
+console.log(result.data.video.url);
+      `
+    },
+    "withLogs": {
+      "description": "Image-to-video generation with progress logs",
+      "code": `
+import { fal } from "@fal-ai/client";
+
+const result = await fal.subscribe("veed/fabric-1.0", {
+  input: {
+    image_url: "https://example.com/image.png",
+    audio_url: "https://example.com/audio.mp3",
+    resolution: "720p"
+  },
+  logs: true,
+  onQueueUpdate: (update) => {
+    if (update.status === "IN_PROGRESS") {
+      update.logs.map((log) => log.message).forEach(console.log);
+    }
+  }
+});
+      `
+    },
+    "queue": {
+      "description": "Queue-based processing for longer videos",
+      "code": `
+import { fal } from "@fal-ai/client";
+
+const { request_id } = await fal.queue.submit("veed/fabric-1.0", {
+  input: {
+    image_url: "https://example.com/image.png",
+    audio_url: "https://example.com/audio.mp3",
+    resolution: "480p"
+  },
+  webhookUrl: "https://your-webhook.url/for/results"
+});
+
+// Check status
+const status = await fal.queue.status("veed/fabric-1.0", {
+  requestId: request_id,
+  logs: true
+});
+
+// Get result when complete
+const result = await fal.queue.result("veed/fabric-1.0", {
+  requestId: request_id
+});
+      `
+    }
+  }
+}

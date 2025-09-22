@@ -1297,9 +1297,7 @@ function generateDirectorGradeOutput(
       reformulated_prompt: enhancedQueryAnalysis.enhanced_prompt_analysis.reformulated_prompt,
       clarity_score: Math.max(enhancedQueryAnalysis.enhanced_prompt_analysis.clarity_score || 1, 3),
       suggested_improvements: enhancedQueryAnalysis.enhanced_prompt_analysis.suggested_improvements,
-      content_type_analysis: enhancedQueryAnalysis.enhanced_prompt_analysis.content_type_analysis,
-      // CRITICAL: Include processing_metadata with language detection
-      processing_metadata: enhancedQueryAnalysis.enhanced_prompt_analysis.processing_metadata
+      content_type_analysis: enhancedQueryAnalysis.enhanced_prompt_analysis.content_type_analysis
     },
     
     // Enhanced Asset Analysis

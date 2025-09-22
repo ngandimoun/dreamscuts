@@ -62,3 +62,4 @@ export * from './fal-ai-wan-i2v';
 export * from './fal-ai-kling-video-v2-master-text-to-video';
 export * from './fal-ai-kling-video-v2-1-standard-image-to-video';
 export * from './fal-ai-stable-avatar';
+export * from './veed-fabric-1.0';

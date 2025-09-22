@@ -1,306 +1,256 @@
 {
   "id": "nano-banana",
-  "name": "Nano Banana",
-  "description": "Advanced AI video generation model for creating dynamic video content with precise frame control. Perfect for generating video frames, camera movements, and creative video sequences with high-quality output.",
-  "version": "v1.0",
-  "provider": "Nano Banana",
-  "category": "video-generation",
-  "type": "text-to-video",
-  "endpoint": "nano-banana",
+  "name": "Nano Banana Enhanced",
+  "description": "Advanced AI image generation model with 11 foundational capabilities for professional-grade image creation, editing, and manipulation. Based on Google's Gemini 2.5 Flash Image model with incredible functionalities for identity transformation, style application, background changes, object placement, cinematic photography, and much more. Excels at photorealistic portraits, cinematic compositions, and complex scene creation with exceptional detail capture.",
+  "version": "v2.0",
+  "provider": "Google Gemini 2.5 Flash Image",
+  "category": "image-generation",
+  "type": "text-to-image",
+  "endpoint": "fal-ai/gemini-25-flash-image",
   "capabilities": [
-    "text-to-video-generation",
-    "image-to-video-generation",
-    "frame-sequence-generation",
-    "camera-movement-control",
-    "dynamic-scene-generation",
+    "identity-character-transformation",
+    "style-effect-application", 
+    "background-environment-change",
+    "object-placement",
+    "aesthetic-arrangement-styling",
+    "generative-fill-expansion",
+    "multi-image-blending",
+    "object-material-transformation",
+    "text-typography",
+    "color-adaptation",
+    "photo-repair-enhancement",
+    "comic-generation",
+    "aspect-ratio-control",
+    "prompt-enhancers",
+    "professional-photography",
     "high-quality-output",
-    "creative-video-effects",
-    "precise-frame-control"
+    "creative-image-effects",
+    "precise-image-control",
+    "cinematic-photography",
+    "photorealistic-portraits",
+    "complex-scene-composition",
+    "atmospheric-lighting",
+    "emotional-storytelling",
+    "professional-studio-photography",
+    "vintage-aesthetic-recreation",
+    "typographic-illustration",
+    "collage-and-montage",
+    "therapy-room-visualization",
+    "nostalgic-mood-creation",
+    "holographic-effects",
+    "reflection-and-mirror-work",
+    "lightroom-style-grading"
   ],
   "features": {
-    "inputFormats": ["text", "image", "video"],
-    "outputFormats": ["mp4", "mov", "webm"],
+    "inputFormats": ["text", "image", "base64"],
+    "outputFormats": ["png", "jpg", "jpeg", "webp"],
     "maxInputSize": "No specific limit mentioned",
     "supportedAspectRatios": ["16:9", "9:16", "4:5", "1:1"],
-    "supportedDurations": ["5s", "10s", "15s", "30s"],
     "supportedResolutions": ["720p", "1080p", "4K"],
-    "cameraMovements": ["tracking", "panning", "zooming", "orbital", "dolly", "crane"],
-    "styleOptions": ["cinematic", "photographic", "artistic", "raw", "vintage"]
+    "styleOptions": ["cinematic", "photographic", "artistic", "raw", "vintage", "modern", "comic", "manga", "impressionist", "van_gogh", "simpson", "studio-portrait", "cinematic-black-white", "vintage-8k-grainy", "holographic", "reflection", "collage", "typographic", "therapy-room", "nostalgic", "lightroom-graded"],
+    "enhancementTypes": ["flexibility", "consistency", "both"],
+    "capabilityTypes": [
+      "identity_character_transformation",
+      "style_effect_application",
+      "background_environment_change", 
+      "object_placement",
+      "aesthetic_arrangement_styling",
+      "generative_fill_expansion",
+      "multi_image_blending",
+      "object_material_transformation",
+      "text_typography",
+      "color_adaptation",
+      "photo_repair_enhancement"
+    ],
+    "comicFeatures": ["consistent_characters", "panel_generation", "dialogue_integration", "style_consistency"],
+    "aspectRatioControl": ["reference_image_based", "blank_canvas_method", "custom_ratios"]
   },
   "pricing": {
     "currency": "USD",
     "rate": "Variable",
     "unit": "per generation",
-    "description": "Pricing varies based on duration and quality settings",
+    "description": "Pricing varies based on image complexity and quality settings",
     "examples": [
       {
-        "duration": "5 seconds",
-        "quality": "720p",
+        "type": "Basic image generation",
+        "quality": "1080p",
         "cost": "Standard rate",
-        "description": "5-second video at 720p resolution"
+        "description": "Single image generation at 1080p resolution"
       },
       {
-        "duration": "10 seconds",
+        "type": "Enhanced capability",
+        "quality": "4K",
+        "cost": "Premium rate", 
+        "description": "Image with specific capability (transformation, style, etc.) at 4K resolution"
+      },
+      {
+        "type": "Multi-image blending",
         "quality": "1080p",
         "cost": "Premium rate",
-        "description": "10-second video at 1080p resolution"
+        "description": "Combining multiple images into cohesive scene"
       }
     ],
     "costOptimization": [
-      "Use shorter durations for cost efficiency",
-      "Choose appropriate resolution for your needs",
-      "Batch process multiple videos",
-      "Use efficient prompt techniques"
+      "Use appropriate resolution for your needs",
+      "Batch process multiple images",
+      "Use efficient prompt techniques with enhancers",
+      "Combine multiple capabilities in single generation",
+      "Use reference images for better results"
     ]
   },
   "technicalSpecs": {
-    "architecture": "Nano Banana AI Model",
-    "processingMethod": "AI-powered video generation",
-    "frameRate": "24fps, 30fps, 60fps",
+    "architecture": "Google Gemini 2.5 Flash Image Model",
+    "processingMethod": "AI-powered image generation and editing",
     "colorDepth": "8-bit, 10-bit",
-    "compression": "H.264, H.265",
-    "audioSupport": "Optional audio generation",
-    "batchProcessing": "Supported"
+    "promptEnhancers": ["flexibility", "consistency", "combined"],
+    "foundationalCapabilities": 11,
+    "compression": "PNG, JPEG, WebP",
+    "batchProcessing": "Supported",
+    "referenceImageSupport": "Multiple images per generation",
+    "promptEnhancement": "Built-in flexibility and consistency enhancers"
   },
   "useCases": [
     {
-      "category": "Frame Generation",
+      "category": "Identity & Character Transformation",
       "examples": [
-        "First frame generation",
-        "Last frame generation",
-        "Key frame creation",
-        "Video sequence planning"
+        "Transform people into different characters while maintaining recognizable appearance",
+        "Create consistent character variations across multiple scenes",
+        "Social media content for personal branding experiments",
+        "Thumbnail creation for videos",
+        "Storytelling visuals with consistent characters"
       ]
     },
     {
-      "category": "Creative Content",
+      "category": "Style & Effect Application",
       "examples": [
-        "Cinematic video creation",
-        "Artistic video effects",
-        "Creative storytelling",
-        "Visual art projects"
+        "Apply artistic styles (Van Gogh, Simpson, Manga, etc.)",
+        "Style transfer while preserving subject identity",
+        "Creative projects requiring artistic transformation",
+        "Artistic interpretation of photographs"
       ]
     },
     {
-      "category": "Camera Movement",
+      "category": "Background & Environment Changes",
       "examples": [
-        "Tracking shots",
-        "Camera movements",
-        "Dynamic perspectives",
-        "Cinematic camera work"
+        "Change backgrounds with proper lighting adjustment",
+        "Environmental storytelling",
+        "Background replacement for portraits",
+        "Creating photos in different locations"
       ]
     },
     {
-      "category": "Professional Video",
+      "category": "Object Placement & Manipulation",
       "examples": [
-        "Commercial video production",
-        "Marketing content",
-        "Presentation videos",
-        "Training materials"
+        "Add objects to scenes with automatic lighting harmonization",
+        "E-commerce product placement",
+        "Lifestyle photos for marketing",
+        "Real estate staging",
+        "Object material transformation"
+      ]
+    },
+    {
+      "category": "Comic Generation",
+      "examples": [
+        "Generate entire comic pages with consistent characters",
+        "Create comic panels with dialogue integration",
+        "Maintain character consistency across panels",
+        "Professional comic book creation"
+      ]
+    },
+    {
+      "category": "Professional Photography",
+      "examples": [
+        "Product photography with perfect label reproduction",
+        "Portrait enhancement and retouching",
+        "Architectural visualization",
+        "Photo restoration and colorization"
+      ]
+    },
+    {
+      "category": "Text & Typography",
+      "examples": [
+        "Add, edit or enhance text elements with perfect consistency",
+        "Product label modification",
+        "Logo text changes",
+        "Brand customization"
+      ]
+    },
+    {
+      "category": "Advanced Editing",
+      "examples": [
+        "Generative fill and expansion",
+        "Multi-image blending",
+        "Color adaptation for brand consistency",
+        "Aspect ratio control using reference images"
+      ]
+    },
+    {
+      "category": "Cinematic Photography",
+      "examples": [
+        "After-the-rain rooftop scenes with atmospheric lighting",
+        "Blue hour photography with city neon reflections",
+        "Cinematic black and white studio portraits",
+        "Vintage 8K grainy portraits with nostalgic mood",
+        "Professional studio photography with dramatic lighting"
+      ]
+    },
+    {
+      "category": "Complex Scene Composition",
+      "examples": [
+        "Therapy room visualization with dual-age characters",
+        "Holographic projection scenes with futuristic elements",
+        "Reflection and mirror work with perfect symmetry",
+        "Collage and montage creation with vintage aesthetics",
+        "Typographic illustration with object-shaped text"
+      ]
+    },
+    {
+      "category": "Emotional Storytelling",
+      "examples": [
+        "Nostalgic mood creation with vintage Polaroid collages",
+        "Emotional therapy room scenes with dual perspectives",
+        "Romantic and ethereal portrait compositions",
+        "Dreamy atmospheric scenes with wind and movement",
+        "Cinematic goodbye scenes with emotional depth"
       ]
     }
   ],
-  "inputSchema": {
-    "type": "object",
-    "required": ["prompt"],
-    "properties": {
-      "prompt": {
-        "type": "string",
-        "description": "Detailed text prompt describing the video to generate"
-      },
-      "style": {
-        "type": "string",
-        "description": "Visual style for the video (e.g., 'cinematic', 'photographic', 'raw')",
-        "enum": ["cinematic", "photographic", "artistic", "raw", "vintage", "modern"]
-      },
-      "aspect_ratio": {
-        "type": "string",
-        "description": "Aspect ratio for the video",
-        "enum": ["16:9", "9:16", "4:5", "1:1"]
-      },
-      "duration": {
-        "type": "string",
-        "description": "Duration of the generated video",
-        "enum": ["5s", "10s", "15s", "30s"]
-      },
-      "resolution": {
-        "type": "string",
-        "description": "Output resolution",
-        "enum": ["720p", "1080p", "4K"]
-      },
-      "camera_movement": {
-        "type": "string",
-        "description": "Type of camera movement",
-        "enum": ["tracking", "panning", "zooming", "orbital", "dolly", "crane", "static"]
-      },
-      "negative_prompt": {
-        "type": "string",
-        "description": "Elements to avoid in the generated video"
-      },
-      "seed": {
-        "type": "integer",
-        "description": "Random seed for reproducible results"
-      }
-    }
-  },
-  "outputSchema": {
-    "type": "object",
-    "properties": {
-      "video": {
-        "type": "object",
-        "properties": {
-          "url": {
-            "type": "string",
-            "format": "uri",
-            "description": "URL where the generated video can be downloaded"
-          },
-          "content_type": {
-            "type": "string",
-            "description": "MIME type of the generated video file"
-          },
-          "file_name": {
-            "type": "string",
-            "description": "Name of the generated video file"
-          },
-          "file_size": {
-            "type": "integer",
-            "description": "Size of the generated video file in bytes"
-          },
-          "duration": {
-            "type": "number",
-            "description": "Duration of the video in seconds"
-          },
-          "resolution": {
-            "type": "string",
-            "description": "Resolution of the generated video"
-          }
-        }
-      }
-    }
-  },
   "bestPractices": [
-    {
-      "category": "Prompt Writing",
-      "tips": [
-        "Be specific about camera movements and angles",
-        "Describe the visual style and mood clearly",
-        "Include details about lighting and atmosphere",
-        "Specify the subject and their actions",
-        "Use cinematic terminology for better results"
-      ]
-    },
-    {
-      "category": "Frame Generation",
-      "tips": [
-        "Use 'first frame' or 'last frame' in prompts for specific frame generation",
-        "Describe the camera position and angle clearly",
-        "Specify the visual composition and framing",
-        "Include details about the subject's pose and expression",
-        "Use reference images when possible"
-      ]
-    },
-    {
-      "category": "Camera Movement",
-      "tips": [
-        "Use specific camera movement terms (tracking, panning, zooming)",
-        "Describe the speed and smoothness of movement",
-        "Specify the starting and ending positions",
-        "Include details about the subject being tracked",
-        "Consider the emotional impact of camera movement"
-      ]
-    },
-    {
-      "category": "Style and Quality",
-      "tips": [
-        "Choose appropriate style for your content type",
-        "Use negative prompts to avoid unwanted elements",
-        "Experiment with different aspect ratios",
-        "Consider the target platform and audience",
-        "Test different durations for optimal results"
-      ]
-    }
+    "Use prompt enhancers (flexibility and consistency) for better results",
+    "Combine multiple capabilities for exponential power",
+    "Use reference images for aspect ratio control",
+    "Apply the 6-component formula for professional photography",
+    "Start new conversations when edits go wrong",
+    "Use collage method for combining multiple characters",
+    "Be specific about lighting adjustments for environmental consistency"
   ],
+  "promptTemplates": {
+    "identityTransformation": "Transform this person into a {TARGET_CHARACTER}. Keep their face recognizable. Professional photography style.",
+    "styleApplication": "Apply the {TARGET_STYLE} style to this image while maintaining the subject. Professional quality.",
+    "backgroundChange": "Change the background to {NEW_BACKGROUND}. Keep the person the same. Adjust the lighting to match the new environment.",
+    "comicPanel": "Create a comic panel in {ART_STYLE}. Character: {CHARACTER_DESCRIPTION}. Action: {ACTION}. Background: {BACKGROUND}.",
+    "aspectRatioControl": "Redraw the content from image one onto image two and adjust image one by adding content so that its aspect ratio matches image two at the same time.",
+    "cinematicRooftop": "After-the-rain school rooftop at blue hour; quiet cinematic goodbye. Adult Korean woman in school-style blazer, knit vest, tie, pleated skirt; knee-high socks; polished black loafers; earbuds plugged to phone. Full-body by the chain-link fence; one hand holding phone at side, the other resting on fence; calm, direct gaze. Concrete rooftop with painted court arcs and shallow puddles reflecting city neon; chain-link fence; metal stairwell door ajar; distant skyline and passing train lights. Rain just ended; thin mist; teal-to-warm sky gradient. Paper timetable taped to fence, edges fluttering; single chalk piece near her loafer; on wet concrete near her shoes: a chalk smiling face and the handwritten phrase 'i miss you' (lowercase), slightly rain-smeared yet legible; spinning roof vent; folded umbrella against railing. Ambient blue-hour sky; warm sodium rim from stairwell door behind her; city windows and rooftop safety lamp reflecting in puddles; phone screen glow on fingers; crisp eye catchlights; breeze lifts hair tips. 35mm lens, f/2.0, ISO 200, 1/160 shutter speed; slight low angle to include sky and fence leading lines; sharp on face; shoes clearly resolved; background gently soft; vertical full-body with headroom; include chalk writing at feet. Cinematic teal–orange; low-contrast film curve; subtle grain 6–8; clean blacks; no clipped highlights. Nostalgia + forward motion—storm passed, city waking. 2048x2560 resolution.",
+    "studioPortrait": "Make this a studio portrait. Adjust the skin tone and give it a cinematic black-and-white color grade. The man is wearing a black shirt and sitting on the back side of a chair. Change the photo angle from eye level. Use a black background. The photo should look realistic in 8K without any pixel loss.",
+    "stickwomanCharacter": "A stickwoman character with a photorealistic 3D-rendered female head is taking on her couch with a laptop. Created Using: digital chalkboard-style concept illustration with 3D head rendering, white chalk-like vector linework for body on textured navy surface, soft spotlight simulating classroom lighting, dynamic composition with exaggerated body language and joyful posture, slightly top-down camera perspective, subtle ambient shadows, clean background texture simulating real chalk residue, minimalistic educational aesthetic blended with character-driven visual storytelling",
+    "hyperrealisticPortrait": "Hyper-realistic cinematic portrait on a deep burgundy backdrop. Maroon velvet blazer, black silk shirt, slim trousers. Leaning on elegant chair, one arm draped, confident gaze. Rich waves with highlights. Golden spotlight, dramatic shadows, ultra-detailed fabrics, skin tones, luxury editorial vibe. 85mm lens, 9:16 Instagram style.",
+    "vintagePortrait": "Retro vintage 8K grainy bright portrait of [insert your face reference], wearing a pastel green linen shirt with white linen pants, holding a rose. Dreamy 90s romantic film feel, windy atmosphere, solid wall and dramatic deep shadows. On the wall appears the shadow silhouette of a woman in traditional abaya with dupatta softly flowing in the wind. Emotional nostalgic mood.",
+    "holographicScene": "A man looking intently at a holographic projection of himself, which is emanating from a small device on a table. The man has dark hair and a beard, and he is wearing a dark blue t-shirt and a watch. His expression is one of curiosity and slight confusion. The holographic figure is glowing blue and appears to be in an active pose, gesturing with one hand. The background is a slightly blurred indoor setting, possibly a home or office",
+    "etherealPortrait": "A dreamy, ultra-realistic portrait of a handsome man lying gracefully beside white lilies, his head resting gently on his arms, reflected perfectly on a glossy black surface. Soft cinematic lighting highlights his glowing skin and sharp yet delicate facial features, with slightly wet strands of hair falling naturally across his forehead. The mood is ethereal, romantic, artistic, with a serene atmosphere. High detail, professional studio photography, 8K resolution",
+    "therapyRoom": "Use the two uploaded photos for likeness: Adult reference: [ADULT_PHOTO] Child reference: [CHILD_PHOTO] Photorealistic minimalist therapy room; light walls, grey sofa, wooden coffee table with a tissue box, notebook and a glass of water, simple frame and floor lamp, soft natural daylight. The same person at two ages sits side-by-side: adult on the left speaking with open hands; child on the right listening with head slightly down. Both wear matching [OUTFIT] (same color & style). Clean studio vibe, centered composition, shallow depth of field, 50mm look, 4K, vertical 3:4. No extra people, no text, no watermark.",
+    "vintageCollage": "Create an artistic collage of 6 vintage Polaroid photos, attached with a decorative rope and mini clothespins, like a home photo gallery. Each Polaroid frame has a slight fading and an old paper effect. The background is a soft pastel wall with light shadows, creating a cozy and creatively chaotic atmosphere. Emotions and poses: Light laughter — eyes closed, natural joy. Dreamy gaze upwards, relaxed pose. Playful wink. Calm smile with a head tilted to the side. Dynamic gesture hands raised high, full of energy. Romantic half-glance over the shoulder. The atmosphere is an art-retro style with elements of a '70s fashion magazine, soft diffused lighting, and muted warm and golden tones. Each photograph looks like a unique behind-the-scenes shot, with a touch of nostalgia and a sense of personal history.",
+    "typographicIllustration": "Create a typographic illustration shaped like a {OBJECT}, where the text itself forms the shape — bold and playful lettering style that fills the entire silhouette — letters adapt fluidly to the curves and contours of the object — vibrant and contrasting color palette that fits the theme — background is solid and enhances the focus on the main shape — vector-style, clean, high resolution, poster format, 1:1 aspect ratio."
+  },
   "limitations": [
-    "Processing time varies with video length and complexity",
-    "May require multiple attempts for optimal results",
-    "Quality depends on prompt specificity and clarity",
-    "Limited to supported aspect ratios and durations"
+    "May require regeneration for optimal results",
+    "Character consistency can degrade with extensive editing in same conversation",
+    "Complex text reproduction may have limitations",
+    "Aspect ratio control requires reference images"
   ],
   "integration": {
-    "clientLibrary": "Custom API client",
-    "authentication": "API Key",
-    "endpoints": {
-      "generate": "POST /api/v1/nano-banana/generate",
-      "status": "GET /api/v1/nano-banana/status/{id}",
-      "result": "GET /api/v1/nano-banana/result/{id}"
-    }
-  },
-  "examples": {
-    "basic": {
-      "description": "Basic video generation",
-      "code": `
-const result = await nanoBanana.generate({
-  prompt: "A woman walking through a forest with sunlight filtering through trees",
-  style: "cinematic",
-  aspect_ratio: "16:9",
-  duration: "10s",
-  resolution: "1080p"
-});
-      `
-    },
-    "frameGeneration": {
-      "description": "Generate specific video frames",
-      "code": `
-const firstFrame = await nanoBanana.generate({
-  prompt: "First frame: A woman standing in a room, looking at the camera",
-  style: "photographic",
-  aspect_ratio: "4:5",
-  duration: "5s"
-});
-
-const lastFrame = await nanoBanana.generate({
-  prompt: "Last frame: View from the top of the room, looking down at the woman",
-  style: "photographic",
-  aspect_ratio: "4:5",
-  duration: "5s"
-});
-      `
-    },
-    "cameraMovement": {
-      "description": "Generate video with specific camera movement",
-      "code": `
-const result = await nanoBanana.generate({
-  prompt: "Camera tracks the woman as she moves through the room",
-  style: "cinematic",
-  aspect_ratio: "16:9",
-  duration: "10s",
-  camera_movement: "tracking",
-  resolution: "1080p"
-});
-      `
-    }
-  },
-  "workflowExamples": {
-    "frameToVideo": {
-      "title": "Frame-to-Video Workflow",
-      "description": "Create video from first and last frames using Nano Banana",
-      "steps": [
-        "Generate first frame with Nano Banana",
-        "Generate last frame with Nano Banana", 
-        "Use frames with video generation tools like Kling or Midjourney",
-        "Apply camera movement prompts for smooth transitions"
-      ]
-    },
-    "cinematicCreation": {
-      "title": "Cinematic Video Creation",
-      "description": "Create professional cinematic videos",
-      "steps": [
-        "Write detailed cinematic prompt",
-        "Specify camera movements and angles",
-        "Choose appropriate style and resolution",
-        "Use negative prompts to avoid unwanted elements",
-        "Generate and refine as needed"
-      ]
-    }
+    "apiEndpoint": "fal-ai/gemini-25-flash-image",
+    "authentication": "API key required",
+    "rateLimits": "Standard fal.ai rate limits apply",
+    "webhookSupport": "Available for async processing"
   }
 }

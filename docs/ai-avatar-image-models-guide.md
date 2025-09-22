@@ -162,9 +162,9 @@ const productDemo = await nanoBanana.generateImage({
 ## 🌱 **Model 3: SeeDream 4.0**
 
 ### **Purpose & Capabilities**
-- **Primary Use**: Stylized, cinematic characters with high-resolution output
-- **Best For**: High-resolution content, product mockups, stylized avatars
-- **Key Strength**: Up to 4K resolution with excellent detail quality
+- **Primary Use**: Stylized, cinematic characters with high-resolution output and exceptional detail capture
+- **Best For**: High-resolution content, product mockups, stylized avatars, photorealistic macro photography
+- **Key Strength**: Up to 4K resolution with exceptional detail quality and complex optical effects
 
 ### **Technical Specifications**
 - **Resolution**: Up to 4096x4096 (4K)
@@ -204,6 +204,16 @@ const productDemo = await nanoBanana.generateImage({
 - **Use Case**: Corporate headshots, professional profiles
 - **Example**: LinkedIn-style professional headshots
 
+#### **7. Photorealistic Macro Photography**
+- **Why**: Exceptional detail capture in close-up compositions
+- **Use Case**: Product detail shots, scientific visualization, artistic macro work
+- **Example**: Crystal structures, texture studies, optical effects
+
+#### **8. Complex Optical Effects**
+- **Why**: Superior handling of refraction, reflection, and prismatic effects
+- **Use Case**: Scientific visualization, artistic compositions, optical illusions
+- **Example**: Light through prisms, refracted landscapes, anamorphic effects
+
 ### **Use Cases**
 
 #### **High-Resolution Marketing Content**
@@ -242,6 +252,24 @@ const characterViews = await Promise.all([
 ]);
 ```
 
+#### **Photorealistic Macro Photography**
+```typescript
+const macroResult = await seedream4.generateImage({
+  prompt: "Photorealistic macro of a cracked crystal cube suspended above an antique desk. Inside the cube: micro-rooms flicker—childhood toys, rain on windows, a hallway turning into waves. 90mm macro, f/2.8, razor focus on fracture line; refracted bokeh blooms in aurora mint, lilac haze, pale amber. Dust motes sparkle like constellations. A silver key lies beneath, reflected multiple times within the cube, skewing scale. Subtle anamorphic flare.",
+  style: "macro",
+  resolution: "4096x4096"
+});
+```
+
+#### **Memory-Based Narrative Visualization**
+```typescript
+const memoryResult = await seedream4.generateImage({
+  prompt: "Memory as a prism: A grandmother's kitchen dissolves into liquid light, each surface reflecting a different moment—her hands kneading dough, steam rising from a copper pot, sunlight through lace curtains. Anamorphic lens flares create emotional depth, while macro details capture the texture of flour on weathered hands.",
+  style: "memory-based",
+  resolution: "4096x4096"
+});
+```
+
 ### **When to Use SeeDream 4.0**
 ✅ **Perfect For:**
 - High-resolution requirements (4K+)
@@ -252,6 +280,13 @@ const characterViews = await Promise.all([
 - Character turnarounds
 - Commercial photography
 - Marketing materials
+- Photorealistic macro photography
+- Complex optical effects
+- Scientific visualization
+- Refractive and prismatic compositions
+- Memory-based narrative visualization
+- Atmospheric lighting studies
+- Texture and surface detail work
 
 ❌ **Not Ideal For:**
 - Character consistency across scenes (use Nano Banana)

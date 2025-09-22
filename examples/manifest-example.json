@@ -1,0 +1,194 @@
+{
+  "userId": "user_789",
+  "sourceRefs": {
+    "analyzerRef": "an_q123",
+    "refinerRef": "ref_mfpk9wnv_0vt3i4",
+    "scriptRef": "script_1758192494241_sz9u6qm3l"
+  },
+  "metadata": {
+    "intent": "video",
+    "durationSeconds": 60,
+    "aspectRatio": "16:9",
+    "platform": "youtube",
+    "language": "en",
+    "profile": "educational_explainer",
+    "priority": "normal",
+    "voiceGender": "female",
+    "cinematicLevel": "pro"
+  },
+  "scenes": [
+    {
+      "id": "s1",
+      "startAtSec": 0,
+      "durationSeconds": 8,
+      "purpose": "hook",
+      "narration": "How a degree opens doors you never knew existed.",
+      "language": "en",
+      "tts": {
+        "provider": "elevenlabs",
+        "voiceId": "eva",
+        "style": "confident",
+        "stability": 0.7,
+        "format": "mp3"
+      },
+      "visualAnchor": "asset_user_grad",
+      "visuals": [
+        {
+          "type": "user",
+          "assetId": "asset_user_grad",
+          "shot": { "camera": "push", "focal": "mid" }
+        }
+      ],
+      "effects": {
+        "transitions": ["fade_in"],
+        "layeredEffects": ["cinematic_zoom"]
+      }
+    },
+    {
+      "id": "s2",
+      "startAtSec": 8,
+      "durationSeconds": 44,
+      "purpose": "body",
+      "narration": "Degrees expand networks, skills, and opportunities—here's why.",
+      "language": "en",
+      "tts": { "provider": "elevenlabs", "voiceId": "eva" },
+      "visuals": [
+        {
+          "type": "generated",
+          "assetId": "gen_b_roll_classroom",
+          "shot": { "camera": "pan", "focal": "wide" }
+        },
+        {
+          "type": "generated",
+          "assetId": "gen_chart_opportunities",
+          "shot": { "camera": "static", "focal": "tight" },
+          "overlays": [
+            { "type": "chart", "params": { "assetId": "gen_chart_opportunities" } }
+          ]
+        }
+      ],
+      "musicCue": "music_build"
+    },
+    {
+      "id": "s3",
+      "startAtSec": 52,
+      "durationSeconds": 8,
+      "purpose": "cta",
+      "narration": "Apply now — shape your future.",
+      "language": "en",
+      "tts": { "provider": "elevenlabs", "voiceId": "eva" },
+      "visuals": [
+        {
+          "type": "generated",
+          "assetId": "gen_endcard",
+          "shot": { "camera": "static", "focal": "mid" }
+        }
+      ],
+      "effects": {
+        "transitions": ["bokeh_transition"]
+      }
+    }
+  ],
+  "assets": {
+    "asset_user_grad": {
+      "id": "asset_user_grad",
+      "source": "user",
+      "originUrl": "https://..../user_grad.jpg",
+      "mimeType": "image/jpeg",
+      "role": "primary",
+      "width": 2048,
+      "height": 1365,
+      "status": "ready"
+    },
+    "gen_b_roll_classroom": {
+      "id": "gen_b_roll_classroom",
+      "source": "generated",
+      "role": "background",
+      "status": "pending",
+      "requiredEdits": ["style-transfer:educational"]
+    },
+    "gen_chart_opportunities": {
+      "id": "gen_chart_opportunities",
+      "source": "generated",
+      "role": "graphic",
+      "status": "pending"
+    },
+    "gen_endcard": {
+      "id": "gen_endcard",
+      "source": "generated",
+      "role": "graphic",
+      "status": "pending"
+    }
+  },
+  "audio": {
+    "ttsDefaults": {
+      "provider": "elevenlabs",
+      "voiceId": "eva",
+      "style": "instructional",
+      "stability": 0.7,
+      "format": "mp3"
+    },
+    "narrationMap": {
+      "s1": { "provider": "elevenlabs", "voiceId": "eva" },
+      "s2": { "provider": "elevenlabs", "voiceId": "eva" },
+      "s3": { "provider": "elevenlabs", "voiceId": "eva" }
+    },
+    "music": {
+      "cueMap": {
+        "music_intro": { "id": "music_intro", "startSec": 0, "durationSec": 8, "mood": "neutral", "structure": "intro" },
+        "music_build": { "id": "music_build", "startSec": 8, "durationSec": 44, "mood": "uplift", "structure": "build" },
+        "music_outro": { "id": "music_outro", "startSec": 52, "durationSec": 8, "mood": "resolve", "structure": "outro" }
+      },
+      "duckToVoice": true
+    },
+    "sfx": [
+      { "id": "whoosh_1", "cue": "whoosh", "sceneId": "s1", "startAt": 0.7 }
+    ]
+  },
+  "visuals": {
+    "defaultAspect": "16:9",
+    "colorPalette": ["#0F172A", "#3B82F6", "#06B6D4"],
+    "fonts": { "primary": "Inter", "secondary": "Roboto" },
+    "imagePipeline": "text-to-image-then-video"
+  },
+  "effects": { "allowed": ["cinematic_zoom", "parallax_scroll", "bokeh_transition", "overlay_text"], "defaultTransition": "fade" },
+  "consistency": {
+    "character_faces": "locked",
+    "voice_style": "consistent",
+    "tone": "inspiring",
+    "visual_continuity": "maintain",
+    "enforceTextToImageToVideo": true,
+    "brand": { "colors": ["#0F172A","#3B82F6"], "logoAssetId": "asset_logo_01", "font": "Inter" }
+  },
+  "jobs": [
+    {
+      "id": "job_tts_s1",
+      "type": "tts_elevenlabs",
+      "payload": { "sceneId": "s1", "text": "How a degree opens doors you never knew existed.", "voiceId": "eva", "format": "mp3" },
+      "priority": 20
+    },
+    {
+      "id": "job_gen_image_classroom",
+      "type": "gen_image_falai",
+      "payload": { "sceneId": "s2", "prompt": "cinematic classroom b-roll, warm lighting, shallow depth of field, educational tone", "resultAssetId": "gen_b_roll_classroom" }
+    },
+    {
+      "id": "job_gen_chart_opportunities",
+      "type": "generate_chart_gptimage",
+      "payload": { "sceneId": "s2", "prompt": "Generate a simple bar chart showing 'Job Openings by Degree Level' with three bars labeled: 'High School','Bachelors','Masters', values: 30, 55, 70", "resultAssetId": "gen_chart_opportunities" }
+    },
+    {
+      "id": "job_gen_endcard",
+      "type": "gen_image_falai",
+      "payload": { "sceneId": "s3", "prompt": "clean brand endcard with CTA: 'Apply now', logo placeholder, education style", "resultAssetId": "gen_endcard" }
+    },
+    {
+      "id": "job_render",
+      "type": "render_shotstack",
+      "payload": { "manifestId": "MANIFEST_PLACEHOLDER", "shotstackJson": {} },
+      "dependsOn": ["job_tts_s1","job_gen_image_classroom","job_gen_chart_opportunities","job_gen_endcard"]
+    }
+  ],
+  "qualityGate": { "durationCompliance": true, "requiredAssetsReady": false },
+  "warnings": []
+}

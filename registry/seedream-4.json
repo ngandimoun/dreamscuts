@@ -1,7 +1,7 @@
 {
   "id": "seedream-4",
   "name": "Seedream 4",
-  "description": "Advanced AI video generation model for creating cinematic and creative video content. Perfect for generating video frames, camera movements, and dynamic scenes with high-quality output.",
+  "description": "Advanced AI video generation model for creating cinematic and creative video content. SeeDream 4 excels at capturing intricate details, complex compositions, and photorealistic scenes with exceptional precision. Perfect for generating video frames, camera movements, and dynamic scenes with high-quality output.",
   "version": "v4.0",
   "provider": "Seedream",
   "category": "video-generation",
@@ -15,7 +15,19 @@
     "dynamic-scene-generation",
     "high-quality-output",
     "creative-video-effects",
-    "frame-sequence-generation"
+    "frame-sequence-generation",
+    "photorealistic-detail-capture",
+    "complex-composition-generation",
+    "macro-photography-simulation",
+    "refraction-and-optical-effects",
+    "microscopic-scene-rendering",
+    "atmospheric-lighting-control",
+    "anamorphic-lens-effects",
+    "depth-of-field-mastery",
+    "bokeh-and-light-play",
+    "texture-and-surface-detail",
+    "scale-distortion-effects",
+    "memory-and-narrative-visualization"
   ],
   "features": {
     "inputFormats": ["text", "image", "video"],
@@ -25,7 +37,7 @@
     "supportedDurations": ["5s", "10s", "15s", "30s"],
     "supportedResolutions": ["720p", "1080p", "4K"],
     "cameraMovements": ["tracking", "panning", "zooming", "orbital", "dolly", "crane"],
-    "styleOptions": ["cinematic", "photographic", "artistic", "raw", "vintage"]
+    "styleOptions": ["cinematic", "photographic", "artistic", "raw", "vintage", "macro", "microscopic", "refractive", "anamorphic", "atmospheric", "narrative", "memory-based"]
   },
   "pricing": {
     "currency": "USD",
@@ -69,7 +81,11 @@
         "Cinematic video creation",
         "Artistic video effects",
         "Creative storytelling",
-        "Visual art projects"
+        "Visual art projects",
+        "Photorealistic macro photography",
+        "Complex optical compositions",
+        "Memory-based narrative visualization",
+        "Refractive and prismatic effects"
       ]
     },
     {
@@ -98,6 +114,30 @@
         "Presentation videos",
         "Training materials"
       ]
+    },
+    {
+      "category": "Advanced Photography",
+      "examples": [
+        "Macro photography simulation",
+        "Microscopic scene rendering",
+        "Refraction and optical effects",
+        "Anamorphic lens effects",
+        "Depth of field mastery",
+        "Bokeh and light play",
+        "Texture and surface detail",
+        "Scale distortion effects"
+      ]
+    },
+    {
+      "category": "Narrative Visualization",
+      "examples": [
+        "Memory-based storytelling",
+        "Conceptual art visualization",
+        "Abstract narrative sequences",
+        "Emotional journey mapping",
+        "Symbolic representation",
+        "Metaphorical visual storytelling"
+      ]
     }
   ],
   "inputSchema": {
@@ -111,7 +151,7 @@
       "style": {
         "type": "string",
         "description": "Visual style for the video (e.g., 'cinematic', 'photographic', 'raw')",
-        "enum": ["cinematic", "photographic", "artistic", "raw", "vintage", "modern"]
+        "enum": ["cinematic", "photographic", "artistic", "raw", "vintage", "modern", "macro", "microscopic", "refractive", "anamorphic", "atmospheric", "narrative", "memory-based"]
       },
       "aspect_ratio": {
         "type": "string",
@@ -186,7 +226,14 @@
         "Describe the visual style and mood clearly",
         "Include details about lighting and atmosphere",
         "Specify the subject and their actions",
-        "Use cinematic terminology for better results"
+        "Use cinematic terminology for better results",
+        "Include technical photography details (lens type, aperture, focal length)",
+        "Describe optical effects and refractions in detail",
+        "Use metaphorical and narrative language for complex concepts",
+        "Specify surface textures and material properties",
+        "Include atmospheric and environmental details",
+        "Use scale references for macro/microscopic scenes",
+        "Describe color palettes and lighting conditions precisely"
       ]
     },
     {
@@ -288,6 +335,45 @@ const result = await seedream4.generate({
   aspect_ratio: "4:5",
   duration: "5s",
   negative_prompt: "logos, text, extra limbs, smooth skin, HDR, modern phone"
+});
+      `
+    },
+    "photorealisticMacro": {
+      "description": "Generate photorealistic macro photography with complex optical effects",
+      "code": `
+const result = await seedream4.generate({
+  prompt: "Photorealistic macro of a cracked crystal cube suspended above an antique desk. Inside the cube: micro-rooms flicker—childhood toys, rain on windows, a hallway turning into waves. 90mm macro, f/2.8, razor focus on fracture line; refracted bokeh blooms in aurora mint, lilac haze, pale amber. Dust motes sparkle like constellations. A silver key lies beneath, reflected multiple times within the cube, skewing scale. Subtle anamorphic flare. Story: each refracted facet misremembers the key in a new shape, proving memory is a prism, not a mirror.",
+  style: "macro",
+  aspect_ratio: "16:9",
+  duration: "10s",
+  resolution: "4K",
+  camera_movement: "orbital"
+});
+      `
+    },
+    "memoryVisualization": {
+      "description": "Generate memory-based narrative visualization",
+      "code": `
+const result = await seedream4.generate({
+  prompt: "Memory as a prism: A grandmother's kitchen dissolves into liquid light, each surface reflecting a different moment—her hands kneading dough, steam rising from a copper pot, sunlight through lace curtains. The camera moves through these refracted memories, each angle revealing a new facet of the same story. Anamorphic lens flares create emotional depth, while macro details capture the texture of flour on weathered hands.",
+  style: "memory-based",
+  aspect_ratio: "16:9",
+  duration: "15s",
+  resolution: "4K",
+  camera_movement: "tracking"
+});
+      `
+    },
+    "opticalEffects": {
+      "description": "Generate complex optical and refractive effects",
+      "code": `
+const result = await seedream4.generate({
+  prompt: "Microscopic view of a dewdrop on a spider's web at dawn. Inside the droplet: the entire forest is compressed and refracted, creating infinite recursive landscapes. Each reflection shows a different season—spring buds, summer leaves, autumn colors, winter snow. The camera orbits the droplet as it catches the first light, creating prismatic rainbows that dance across the frame. Macro lens captures every surface detail of the web's silk.",
+  style: "microscopic",
+  aspect_ratio: "1:1",
+  duration: "8s",
+  resolution: "4K",
+  camera_movement: "orbital"
 });
       `
     }
