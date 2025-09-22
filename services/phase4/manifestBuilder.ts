@@ -39,6 +39,10 @@ import {
 import { callExtractorLLM } from './extractor';
 import { callGptRepair } from './repair';
 import { autoCalculateSceneTimings } from './deterministicParser';
+import { decomposeJobs } from './decomposeJobs';
+import { parseHumanPlanToDraftManifest as enhancedParseHumanPlan, autoCalculateSceneTimings as enhancedAutoCalculateSceneTimings, validateShotstackCompatibility } from './enhancedDeterministicParser';
+import { optimizeEffectsWithAI, batchOptimizeEffects } from './aiEffectOptimizer';
+import { applyDeterministicParser, applyCompleteDeterministicParser } from './enrichedDeterministicParser';
 
 type AnalyzerJson = any;
 type RefinerJson = any;
@@ -51,6 +55,29 @@ type UIInput = {
   language?: string | null;
   profile?: string | null;
 };
+
+export interface Phase4Inputs {
+  treatmentText: string;
+  studioBlueprint?: {
+    id: string;
+    userId: string | null;
+    sourceRefs: {
+      analyzerRef?: string | null;
+      refinerRef?: string | null;
+      scriptRef?: string | null;
+    };
+    title: string;
+    overview: any;
+    scenes: any[];
+    audioArc: any;
+    consistencyRules: any;
+    rawMarkdown: string;
+  };
+  analyzerJson?: AnalyzerJson;
+  refinerJson?: RefinerJson;
+  scriptJson?: ScriptJson;
+  userUI?: UIInput;
+}
 
 /* -----------------------
    Config / Safety defaults
@@ -85,22 +112,26 @@ const validateSchema = ajv.compile(manifestSchema as object);
  * Returns a validated ProductionManifest (passes AJV). If something breaks,
  * a deterministic minimal fallback manifest is returned (still valid).
  */
-export async function buildManifestFromTreatment(params: {
-  treatmentText: string;
-  analyzer?: AnalyzerJson;
-  refiner?: RefinerJson;
-  script?: ScriptJson;
-  ui?: UIInput;
-}): Promise<{ manifest: ProductionManifest; warnings: string[] }> {
-  const { treatmentText, analyzer = {}, refiner = {}, script = {}, ui = {} } = params;
+export async function buildManifestFromTreatment(params: Phase4Inputs): Promise<{ 
+  success: boolean; 
+  manifest?: ProductionManifest; 
+  jobs?: any[]; 
+  warnings: string[]; 
+  processingTimeMs: number;
+  usedRepair?: boolean;
+  error?: string;
+}> {
+  const { treatmentText, analyzerJson: analyzer = {}, refinerJson: refiner = {}, scriptJson: script = {}, userUI: ui = {} } = params;
   const warnings: string[] = [];
+  const startTime = Date.now();
 
-  // 1) Normalizer (deterministic)
-  const metadata = normalizeMetadata({
-    ui,
-    analyzer,
-    refiner,
-  });
+  try {
+    // 1) Normalizer (deterministic)
+    const metadata = normalizeMetadata({
+      ui,
+      analyzer,
+      refiner,
+    });
 
   // 2) Attempt LLM extraction (small model). If it fails, fallback to deterministic parser.
   let extracted: any | null = null;
@@ -111,8 +142,43 @@ export async function buildManifestFromTreatment(params: {
     warnings.push("Extractor LLM failed or timed out — using deterministic parser");
   }
   if (!isValidExtraction(extracted)) {
-    extracted = deterministicParseTreatment(treatmentText);
-    warnings.push("Used deterministic parser for treatment extraction");
+    // Use enhanced deterministic parser with AI-powered effect optimization
+    const enhancedDraft = enhancedParseHumanPlan(ui.userId || 'anonymous', treatmentText);
+    extracted = {
+      title: enhancedDraft.metadata?.note || "Enhanced Auto Plan",
+      totalDurationSeconds: enhancedDraft.metadata?.durationSeconds || null,
+      scenes: enhancedDraft.scenes?.map(scene => ({
+        id: scene.id,
+        title: `Scene ${scene.id}`,
+        durationWeight: scene.durationSeconds,
+        narration: scene.narration,
+        visualAnchorHint: scene.visuals?.[0]?.assetId || null,
+        effects: scene.effects?.layeredEffects || [],
+        musicCue: scene.musicCue
+      })) || [],
+      voice: { 
+        gender: enhancedDraft.audio?.ttsDefaults?.style || "any", 
+        voiceIdHint: enhancedDraft.audio?.ttsDefaults?.voiceId || null 
+      },
+      profile: enhancedDraft.metadata?.profile || null,
+      // Enhanced features
+      enhancedFeatures: {
+        orderingHints: enhancedDraft.scenes?.reduce((acc, scene) => {
+          if (scene.effects?.orderingHints) {
+            acc[scene.id] = scene.effects.orderingHints;
+          }
+          return acc;
+        }, {} as Record<string, any>) || {},
+        shotstackConfig: enhancedDraft.scenes?.reduce((acc, scene) => {
+          if (scene.effects?.shotstackConfig) {
+            acc[scene.id] = scene.effects.shotstackConfig;
+          }
+          return acc;
+        }, {} as Record<string, any>) || {},
+        platformOptimizations: enhancedDraft.effects?.allowed || []
+      }
+    };
+    warnings.push("Used enhanced deterministic parser with AI-powered effect optimization");
   }
 
   // 3) Build a manifest object (in-memory)
@@ -120,6 +186,44 @@ export async function buildManifestFromTreatment(params: {
 
   // 4) Auto-calculate scene timings to ensure timeline continuity
   manifest = autoCalculateSceneTimings(manifest);
+
+  // 4.1) Apply enriched deterministic parser with ordering hints and layered effects
+  manifest = applyCompleteDeterministicParser(manifest);
+  warnings.push("Applied enriched deterministic parser with ordering hints and layered effects sequencing");
+
+  // 4.5) AI-powered effect optimization (if enhanced features are available)
+  if (extracted.enhancedFeatures) {
+    try {
+      const effectOptimizations = await batchOptimizeEffects(
+        manifest.scenes,
+        manifest,
+        {
+          performanceLevel: 'balanced',
+          costSensitivity: 'medium'
+        }
+      );
+
+      // Apply AI optimizations to scenes
+      manifest.scenes = manifest.scenes.map(scene => {
+        const optimization = effectOptimizations.get(scene.id);
+        if (optimization) {
+          return {
+            ...scene,
+            effects: {
+              layeredEffects: optimization.effects,
+              orderingHints: optimization.orderingHints,
+              shotstackConfig: optimization.shotstackConfig
+            }
+          };
+        }
+        return scene;
+      });
+
+      warnings.push(`Applied AI-powered effect optimization to ${effectOptimizations.size} scenes`);
+    } catch (error) {
+      warnings.push("AI effect optimization failed, using deterministic effects");
+    }
+  }
 
   // 5) Decompose jobs deterministically
   manifest.jobs = decomposeJobs(manifest);
@@ -158,10 +262,42 @@ export async function buildManifestFromTreatment(params: {
     }
   }
 
-  // 9) Final qualityGate evaluation
-  manifest.qualityGate = manifest.qualityGate || { durationCompliance: true, requiredAssetsReady: false };
+    // 9) Shotstack compatibility validation (if enhanced features are available)
+    if (extracted.enhancedFeatures) {
+      try {
+        const shotstackValidation = validateShotstackCompatibility(manifest);
+        if (!shotstackValidation.isValid) {
+          warnings.push(`Shotstack compatibility issues: ${shotstackValidation.warnings.join(', ')}`);
+        }
+        if (shotstackValidation.optimizations.length > 0) {
+          warnings.push(`Shotstack optimizations suggested: ${shotstackValidation.optimizations.join(', ')}`);
+        }
+      } catch (error) {
+        warnings.push("Shotstack compatibility validation failed");
+      }
+    }
 
-  return { manifest, warnings };
+    // 10) Final qualityGate evaluation
+    manifest.qualityGate = manifest.qualityGate || { durationCompliance: true, requiredAssetsReady: false };
+
+    return { 
+      success: true, 
+      manifest, 
+      jobs: manifest.jobs, 
+      warnings, 
+      processingTimeMs: Date.now() - startTime,
+      usedRepair: false
+    };
+
+  } catch (error) {
+    console.error('Phase 4 processing error:', error);
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error',
+      warnings,
+      processingTimeMs: Date.now() - startTime
+    };
+  }
 }
 
 /* -----------------------
@@ -393,125 +529,6 @@ function buildManifestFromIntermediate(args: {
   return manifest;
 }
 
-/* -----------------------
-   Job decomposition (deterministic)
-   ----------------------- */
-function decomposeJobs(manifest: ProductionManifest): JobPlan[] {
-  const jobs: JobPlan[] = [];
-
-  // TTS jobs and generation jobs per scene
-  for (const s of manifest.scenes) {
-    // TTS job
-    if (s.narration) {
-      const jobId = `job_tts_${s.id}`;
-      jobs.push({
-        id: jobId,
-        type: "tts",
-        payload: {
-          sceneId: s.id,
-          text: s.narration,
-          provider: manifest.audio.ttsDefaults.provider,
-          voiceId: (s.tts && s.tts.voiceId) || manifest.audio.ttsDefaults.voiceId,
-          style: (s.tts && s.tts.style) || manifest.audio.ttsDefaults.style,
-          format: manifest.audio.ttsDefaults.format || "mp3",
-          sampleRate: manifest.audio.ttsDefaults.sampleRate || 22050,
-        },
-        priority: 10,
-      });
-    }
-
-    // Visual generation/enhancement jobs
-    for (const v of s.visuals) {
-      if (v.type === "generated") {
-        const resultAssetId = v.assetId;
-        const jobId = `job_gen_${resultAssetId}`;
-        // Build a prompt (deterministic from visual anchor + manifest profile)
-        const prompt = buildPromptFromVisualHint(s.visualAnchor || "", manifest.metadata.profile);
-        jobs.push({
-          id: jobId,
-          type: "generate_image",
-          payload: {
-            sceneId: s.id,
-            prompt,
-            model: "falai-image-v1",
-            resultAssetId,
-            resolution: "1920x1080",
-            quality: "high",
-          },
-          priority: 10,
-        });
-      } else if (v.type === "user_asset") {
-        // if user asset not ready, push an ingest/enhance job
-        const asset = manifest.assets[v.assetId];
-        if (asset && asset.status !== "ready") {
-          jobs.push({
-            id: `job_enhance_${v.assetId}`,
-            type: "enhance_image",
-            payload: { assetId: v.assetId, edits: asset.requiredEdits || [] },
-            priority: 8,
-          });
-        }
-      }
-    }
-
-    // Charts or overlays: check overlays for chart type
-    (s.visuals || []).forEach((vis) => {
-      if (vis.overlays) {
-        for (const o of vis.overlays) {
-          if (o.type === "chart") {
-            const chartId = `job_chart_${s.id}_${Math.random().toString(36).slice(2, 8)}`;
-            jobs.push({
-              id: chartId,
-              type: "generate_chart",
-              payload: {
-                sceneId: s.id,
-                data: o.params?.data || [],
-                style: o.params?.style || "vector-minimal",
-                provider: "gptimage",
-                resultAssetId: `gen_chart_${s.id}`,
-              },
-              priority: 9,
-            });
-          }
-        }
-      }
-    });
-  }
-
-  // Music generation jobs
-  for (const cueKey of Object.keys(manifest.audio.music.cueMap || {})) {
-    const cue = manifest.audio.music.cueMap[cueKey] as MusicCue;
-    jobs.push({
-      id: `job_music_${cue.id}`,
-      type: "generate_music",
-      payload: {
-        cueId: cue.id,
-        mood: cue.mood,
-        structure: cue.structure,
-        durationSec: cue.durationSec,
-        provider: "elevenlabs-music",
-        instructions: cue.instructions,
-      },
-      priority: 5,
-    });
-  }
-
-  // Final render job depends on everything else
-  const dependsOn = jobs.map((j) => j.id);
-  jobs.push({
-    id: "job_render_shotstack",
-    type: "render_shotstack",
-    payload: {
-      manifestId: (manifest as any).id,
-      shotstackJson: {}, // manifestToShotstack(manifest) called by worker at runtime
-      callbackUrl: process.env.SHOTSTACK_CALLBACK_URL || null,
-    },
-    dependsOn,
-    priority: 12,
-  });
-
-  return jobs;
-}
 
 /* -----------------------
    Validation + repair
@@ -809,7 +826,6 @@ function buildPromptFromVisualHint(hint: string, profile?: string) {
 export default {
   buildManifestFromTreatment,
   deterministicParseTreatment,
-  decomposeJobs,
   validateManifest,
   deterministicRepair,
   buildMinimalFallbackManifest,

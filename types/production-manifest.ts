@@ -54,6 +54,7 @@ export interface ScenePlan {
   subtitles?: SubtitleSpec[];         // optional precomputed
   charts?: ChartPlan[];               // optional data visuals
   notes?: string;
+  orderingHint?: number;              // sequential order for Shotstack workers (1, 2, 3...)
 }
 
 /* Scene visuals and shots */

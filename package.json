@@ -21,7 +21,10 @@
     "db:reset:production-manifest": "psql $DATABASE_URL -c \"DROP TABLE IF EXISTS dreamcut_production_manifest CASCADE;\" && npm run db:migrate:production-manifest",
     "db:reset:studio-blueprint": "psql $DATABASE_URL -c \"DROP TABLE IF EXISTS studio_blueprints CASCADE;\" && npm run db:migrate:studio-blueprint",
     "db:reset:dreamcut-jobs": "psql $DATABASE_URL -c \"DROP TABLE IF EXISTS dreamcut_jobs CASCADE;\" && npm run db:migrate:dreamcut-jobs",
-    "verify-safety": "node scripts/verify-safety.js"
+    "verify-safety": "node scripts/verify-safety.js",
+    "test-enhanced-parser": "node scripts/test-enhanced-deterministic-parser.js",
+    "test-enhanced-phase4": "node scripts/test-enhanced-phase4-integration.js",
+    "test-deterministic-parser": "jest tests/deterministicParser.test.ts"
   },
   "dependencies": {
     "@elevenlabs/elevenlabs-js": "^2.15.0",

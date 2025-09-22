@@ -1,6 +1,6 @@
 // services/phase4/extractor.ts
-// Use mock executor for testing - replace with real implementation in production
-import { executeGPT4oMini } from './mockExecutors';
+// Real GPT-4o-mini implementation for Phase 4 extractor
+import { executeGPT4oMini } from '../../executors/replicate-gpt-4o-mini';
 
 /**
  * Extractor Prompt (GPT-4o-mini)
@@ -63,9 +63,9 @@ export async function callExtractorLLM(treatmentText: string, hints: { totalDura
   try {
     const response = await executeGPT4oMini({
       prompt: `${extractorPrompt}\n\n### Treatment Text:\n${treatmentText}\n\n### Hints:\n${JSON.stringify(hints, null, 2)}`,
-      max_completion_tokens: 1000,
+      max_tokens: 1000,
       temperature: 0.1, // Low temperature for deterministic output
-      response_format: { type: "json_object" },
+      system_prompt: "You are a JSON extractor. Always return valid JSON only, no explanations or comments.",
     });
 
     const extracted = JSON.parse(response.text);

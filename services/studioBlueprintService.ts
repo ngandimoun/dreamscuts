@@ -370,13 +370,6 @@ export class StudioBlueprintService {
         temperature: options.temperature
       });
       
-      if (!gpt5Response.success) {
-        return {
-          success: false,
-          error: `GPT-5 generation failed: ${gpt5Response.error}`
-        };
-      }
-      
       // Parse markdown response
       const markdownContent = gpt5Response.text;
       const parsedBlueprint = parseMarkdownBlueprint(markdownContent);

@@ -121,11 +121,11 @@ export async function POST(req: NextRequest) {
       job_id: job.id,
       type: job.type,
       status: 'pending',
-      priority: job.priority,
+      priority: job.priority || 10,
       payload: job.payload,
-      depends_on: job.dependsOn,
-      retry_policy: job.retryPolicy,
-      max_attempts: job.retryPolicy.maxRetries,
+      depends_on: job.dependsOn || [],
+      retry_policy: job.retryPolicy || {},
+      max_attempts: job.retryPolicy?.maxRetries || 3,
     }));
 
     const { error: jobsError } = await supabaseServiceRole

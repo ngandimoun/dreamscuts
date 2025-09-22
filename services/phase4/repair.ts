@@ -1,6 +1,6 @@
 // services/phase4/repair.ts
-// Use mock executor for testing - replace with real implementation in production
-import { executeGPT5 } from './mockExecutors';
+// Real GPT-5 implementation for Phase 4 repair
+import { executeGPT5 } from '../../executors/gpt-5';
 import manifestSchema from '../../validators/production-manifest.schema.json';
 
 /**
@@ -71,7 +71,7 @@ Return the repaired JSON manifest:`,
       verbosity: 'low',
       max_completion_tokens: 4000,
       temperature: 0.1, // Aim for deterministic output
-      response_format: { type: "json_object" },
+      system_prompt: "You are a JSON repair assistant. Always return valid JSON only, no explanations or comments.",
     });
 
     const repaired = JSON.parse(response.text);
