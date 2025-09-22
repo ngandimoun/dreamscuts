@@ -14,10 +14,26 @@
 // - ElevenLabs Music → gen_music_elevenlabs
 // - Shotstack → render_shotstack (with captions)
 
-import { ProductionManifest, JobPlan, ScenePlan } from '../../types/production-manifest';
+import { ProductionManifest, JobPlan, ScenePlan, ProfileContext, HardConstraints } from '../../types/production-manifest';
 
 export interface JobPayload {
   [key: string]: any;
+}
+
+/**
+ * Helper function to inject profile context into job payloads
+ */
+function injectProfileContext(payload: JobPayload, manifest: ProductionManifest): JobPayload {
+  return {
+    ...payload,
+    // Profile-Pipeline Integration
+    profileContext: manifest.metadata.profileContext,
+    hardConstraints: manifest.metadata.hardConstraints,
+    enforcementMode: manifest.metadata.enforcementMode || 'balanced',
+    enhancementPolicy: manifest.metadata.profileContext?.enhancementPolicy || 'additive',
+    // Feature flags
+    featureFlags: manifest.metadata.featureFlags
+  };
 }
 
 /**
@@ -118,7 +134,7 @@ function createTTSJob(scene: ScenePlan, manifest: ProductionManifest): JobPlan {
   // Enhance text with audio tags based on scene purpose and tone
   const enhancedText = enhanceTextWithAudioTags(scene.narration!, scene.purpose, manifest.consistency.tone);
   
-  const payload: JobPayload = {
+  const basePayload: JobPayload = {
     sceneId: scene.id,
     text: enhancedText,
     originalText: scene.narration,
@@ -142,6 +158,8 @@ function createTTSJob(scene: ScenePlan, manifest: ProductionManifest): JobPlan {
     previousText: scene.id !== manifest.scenes[0]?.id ? manifest.scenes[manifest.scenes.indexOf(scene) - 1]?.narration : undefined,
     nextText: scene.id !== manifest.scenes[manifest.scenes.length - 1]?.id ? manifest.scenes[manifest.scenes.indexOf(scene) + 1]?.narration : undefined
   };
+
+  const payload = injectProfileContext(basePayload, manifest);
 
   return {
     id: ttsJobId,
@@ -169,7 +187,7 @@ function createAssetGenerationJob(
   const prompt = buildAssetPrompt(scene, visual, manifest);
   const modelConfig = determineAssetModel(visual, manifest);
   
-  const payload: JobPayload = {
+  const basePayload: JobPayload = {
     sceneId: scene.id,
     assetId: visual.assetId,
     prompt: prompt,
@@ -183,6 +201,8 @@ function createAssetGenerationJob(
     outputFormat: 'jpeg',
     acceleration: 'regular', // or 'high' for faster generation
     resultAssetId: visual.assetId,
+    // Language information from manifest
+    languageCode: manifest.metadata.language || 'en',
     // Fal.ai specific settings based on your instructions
     syncMode: false, // Use async for better performance
     seed: asset.meta?.seed || undefined,
@@ -199,6 +219,8 @@ function createAssetGenerationJob(
       guidance_scale: modelConfig.guidanceScale
     })
   };
+
+  const payload = injectProfileContext(basePayload, manifest);
 
   // Determine job type based on asset type
   const jobType = asset.durationSeconds && asset.durationSeconds > 0 ? 'gen_video_falai' : 'gen_image_falai';
@@ -222,13 +244,17 @@ function createAssetGenerationJob(
 function createChartGenerationJob(scene: ScenePlan, manifest: ProductionManifest): JobPlan {
   const chartId = `gen_chart_${scene.id}`;
   
-  const payload: JobPayload = {
+  const basePayload: JobPayload = {
     sceneId: scene.id,
     data: generateSampleData(scene),
     style: 'vector-minimal',
     provider: 'gptimage',
-    resultAssetId: chartId
+    resultAssetId: chartId,
+    // Language information from manifest
+    languageCode: manifest.metadata.language || 'en'
   };
+
+  const payload = injectProfileContext(basePayload, manifest);
 
   return {
     id: `job_chart_${scene.id}`,
@@ -253,10 +279,12 @@ function createLipSyncJob(scene: ScenePlan, manifest: ProductionManifest): JobPl
   // Find the face asset for this scene
   const faceAsset = scene.visuals.find(v => v.type === 'user' || v.type === 'generated')?.assetId;
   
-  const payload: JobPayload = {
+  const basePayload: JobPayload = {
     sceneId: scene.id,
     audioJobId: ttsJobId,
     videoAssetId: faceAsset,
+    // Language information from manifest
+    languageCode: manifest.metadata.language || 'en',
     // Primary provider: Veed (most reliable) - $0.4 per minute
     provider: 'veed',
     endpoint: 'veed/lipsync',
@@ -293,6 +321,8 @@ function createLipSyncJob(scene: ScenePlan, manifest: ProductionManifest): JobPl
     supportedAudioFormats: ['mp3', 'ogg', 'wav', 'm4a', 'aac']
   };
 
+  const payload = injectProfileContext(basePayload, manifest);
+
   return {
     id: `job_lipsync_${scene.id}`,
     type: 'lip_sync_lypsso', // Keep existing type for compatibility
@@ -317,11 +347,13 @@ function createMusicGenerationJobs(manifest: ProductionManifest): JobPlan[] {
   const musicId = 'music_01';
   const musicPrompt = generateMusicPrompt(manifest);
   
-  const payload: JobPayload = {
+  const basePayload: JobPayload = {
     cueId: musicId,
     prompt: musicPrompt,
     musicLengthMs: manifest.metadata.durationSeconds * 1000,
     outputFormat: 'mp3_44100_128',
+    // Language information from manifest
+    languageCode: manifest.metadata.language || 'en',
     // ElevenLabs Music specific settings
     provider: 'elevenlabs',
     action: 'compose_music',
@@ -338,6 +370,8 @@ function createMusicGenerationJobs(manifest: ProductionManifest): JobPlan[] {
     maxDuration: manifest.metadata.durationSeconds * 1000,
     costLimit: 0.10 // $0.10 per 30 seconds
   };
+
+  const payload = injectProfileContext(basePayload, manifest);
 
   jobs.push({
     id: `job_music_${musicId}`,
@@ -368,7 +402,7 @@ function createSoundEffectsJobs(manifest: ProductionManifest): JobPlan[] {
     soundEffects.forEach((effect, effectIndex) => {
       const effectId = `sound_effect_${scene.id}_${effectIndex}`;
       
-      const payload: JobPayload = {
+      const basePayload: JobPayload = {
         sceneId: scene.id,
         effectId: effectId,
         text: effect.description,
@@ -376,6 +410,8 @@ function createSoundEffectsJobs(manifest: ProductionManifest): JobPlan[] {
         loop: effect.loop || false,
         promptInfluence: 0.3,
         outputFormat: 'mp3_44100_128',
+        // Language information from manifest
+        languageCode: manifest.metadata.language || 'en',
         // ElevenLabs Sound Effects specific settings
         provider: 'elevenlabs',
         endpoint: 'fal-ai/elevenlabs/sound-effects/v2',
@@ -387,6 +423,8 @@ function createSoundEffectsJobs(manifest: ProductionManifest): JobPlan[] {
         startTime: effect.startTime || 0,
         endTime: effect.endTime || scene.durationSeconds
       };
+
+      const payload = injectProfileContext(basePayload, manifest);
 
       jobs.push({
         id: effectId,
@@ -483,10 +521,12 @@ function createVideoGenerationJobs(manifest: ProductionManifest): JobPlan[] {
       const videoConfig = determineVideoModel(scene, manifest);
       const videoId = `video_${scene.id}`;
       
-      const payload: JobPayload = {
+      const basePayload: JobPayload = {
         sceneId: scene.id,
         videoId: videoId,
         prompt: buildVideoPrompt(scene, manifest),
+        // Language information from manifest
+        languageCode: manifest.metadata.language || 'en',
         // Video model configuration based on your instructions
         model: videoConfig.model,
         endpoint: videoConfig.endpoint,
@@ -501,6 +541,8 @@ function createVideoGenerationJobs(manifest: ProductionManifest): JobPlan[] {
         quality: 'high',
         acceleration: 'regular'
       };
+
+      const payload = injectProfileContext(basePayload, manifest);
 
       jobs.push({
         id: videoId,
@@ -622,8 +664,10 @@ function buildVideoPrompt(scene: ScenePlan, manifest: ProductionManifest): strin
  * Supports advanced features: captions, transitions, effects
  */
 function createRenderJob(manifest: ProductionManifest, allJobIds: string[]): JobPlan {
-  const payload: JobPayload = {
+  const basePayload: JobPayload = {
     manifestId: 'MANIFEST_PLACEHOLDER', // Will be replaced with actual ID
+    // Language information from manifest
+    languageCode: manifest.metadata.language || 'en',
     // Shotstack configuration
     provider: 'shotstack',
     environment: 'stage', // or 'production'
@@ -658,6 +702,8 @@ function createRenderJob(manifest: ProductionManifest, allJobIds: string[]): Job
     costLimit: 0.50, // $0.50 per minute
     maxDuration: manifest.metadata.durationSeconds
   };
+
+  const payload = injectProfileContext(basePayload, manifest);
 
   return {
     id: 'job_render_shotstack',

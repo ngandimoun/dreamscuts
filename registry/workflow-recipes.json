@@ -1,0 +1,573 @@
+{
+  "version": "1.0.0",
+  "description": "High-signal workflow recipes for deterministic production pipeline",
+  "lastUpdated": "2025-01-27T00:00:00Z",
+  
+  "recipes": {
+    "ugc_testimonial_recipe": {
+      "recipeId": "ugc_testimonial_recipe",
+      "recipeName": "UGC Testimonial Workflow",
+      "description": "Authentic user-generated testimonial content with handheld feel",
+      "profileId": "ugc_testimonial",
+      "enforcementMode": "balanced",
+      "workflow": {
+        "steps": [
+          {
+            "step": 1,
+            "name": "Image Enhancement",
+            "description": "Enhance user uploaded product images with UGC style",
+            "jobType": "enhance_image_falai",
+            "model": "nano_banana",
+            "promptEnhancement": {
+              "basePrompt": "UGC style product photo, handheld camera, authentic lighting, casual setting",
+              "styleTags": ["handheld", "authentic", "casual", "personal"],
+              "qualityTags": ["high quality", "natural lighting", "realistic"],
+              "forbiddenTags": ["professional", "studio", "commercial", "polished"]
+            },
+            "constraints": {
+              "maxEnhancementIntensity": 0.4,
+              "requiredStyle": "handheld",
+              "forbiddenEffects": ["cinematic_zoom", "bokeh_transition"]
+            }
+          },
+          {
+            "step": 2,
+            "name": "Multi-Camera Angles",
+            "description": "Generate multiple camera angles for dynamic UGC feel",
+            "jobType": "gen_image_falai",
+            "model": "nano_banana",
+            "promptEnhancement": {
+              "basePrompt": "UGC style product photo from different angles, handheld camera, authentic feel",
+              "angleVariations": ["close-up", "medium shot", "wide shot", "overhead"],
+              "styleTags": ["handheld", "authentic", "casual", "personal"],
+              "qualityTags": ["high quality", "natural lighting", "realistic"]
+            },
+            "constraints": {
+              "maxVariations": 4,
+              "requiredStyle": "handheld",
+              "forbiddenEffects": ["professional", "studio"]
+            }
+          },
+          {
+            "step": 3,
+            "name": "Voice Generation",
+            "description": "Generate authentic testimonial voice with casual tone",
+            "jobType": "tts_elevenlabs",
+            "model": "elevenlabs_dialogue",
+            "promptEnhancement": {
+              "basePrompt": "Casual, authentic testimonial voice",
+              "voiceStyle": "conversational",
+              "emotionTags": ["authentic", "personal", "trustworthy"],
+              "v3AudioTags": ["[casual]", "[authentic]", "[personal]"]
+            },
+            "constraints": {
+              "maxEmotionIntensity": 0.4,
+              "requiredTone": "casual",
+              "forbiddenStyles": ["dramatic", "commercial", "formal"]
+            }
+          },
+          {
+            "step": 4,
+            "name": "Video Animation",
+            "description": "Animate images with UGC-style camera movements",
+            "jobType": "gen_video_falai",
+            "model": "veo3_fast",
+            "promptEnhancement": {
+              "basePrompt": "UGC style video with handheld camera movements, authentic feel",
+              "cameraMovements": ["handheld", "slight shake", "natural pan"],
+              "styleTags": ["handheld", "authentic", "casual", "personal"],
+              "qualityTags": ["high quality", "natural lighting", "realistic"]
+            },
+            "constraints": {
+              "maxMovementIntensity": 0.4,
+              "requiredStyle": "handheld",
+              "forbiddenEffects": ["cinematic_zoom", "smooth_tracking"]
+            }
+          },
+          {
+            "step": 5,
+            "name": "Final Render",
+            "description": "Render final UGC testimonial video with authentic feel",
+            "jobType": "render_shotstack",
+            "constraints": {
+              "maxEffectIntensity": 0.4,
+              "requiredStyle": "handheld",
+              "forbiddenEffects": ["cinematic_zoom", "bokeh_transition"]
+            }
+          }
+        ]
+      },
+      "expectedOutput": {
+        "duration": "15-30 seconds",
+        "style": "handheld, authentic, casual",
+        "quality": "high but not overly polished",
+        "cost": "$2-4"
+      }
+    },
+    
+    "ugc_reaction_recipe": {
+      "recipeId": "ugc_reaction_recipe",
+      "recipeName": "UGC Reaction Workflow",
+      "description": "Engaging reaction content for social media with bold, attention-grabbing style",
+      "profileId": "ugc_reaction",
+      "enforcementMode": "creative",
+      "workflow": {
+        "steps": [
+          {
+            "step": 1,
+            "name": "Image Enhancement",
+            "description": "Enhance user uploaded images with bold, social media style",
+            "jobType": "enhance_image_falai",
+            "model": "nano_banana",
+            "promptEnhancement": {
+              "basePrompt": "Bold, attention-grabbing image, social media style, vibrant colors",
+              "styleTags": ["bold", "vibrant", "attention-grabbing", "social media"],
+              "qualityTags": ["high quality", "vibrant colors", "eye-catching"],
+              "forbiddenTags": ["subtle", "minimalist", "professional"]
+            },
+            "constraints": {
+              "maxEnhancementIntensity": 0.6,
+              "requiredStyle": "handheld",
+              "forbiddenEffects": ["cinematic_zoom", "bokeh_transition"]
+            }
+          },
+          {
+            "step": 2,
+            "name": "Voice Generation",
+            "description": "Generate excited reaction voice with energy",
+            "jobType": "tts_elevenlabs",
+            "model": "elevenlabs_dialogue",
+            "promptEnhancement": {
+              "basePrompt": "Excited, energetic reaction voice",
+              "voiceStyle": "excited",
+              "emotionTags": ["excited", "surprised", "engaging"],
+              "v3AudioTags": ["[excited]", "[surprised]", "[energetic]"]
+            },
+            "constraints": {
+              "maxEmotionIntensity": 0.6,
+              "requiredTone": "energetic",
+              "forbiddenStyles": ["calm", "professional", "formal"]
+            }
+          },
+          {
+            "step": 3,
+            "name": "Sound Effects",
+            "description": "Add engaging sound effects for reaction content",
+            "jobType": "gen_sound_effects_elevenlabs",
+            "model": "elevenlabs_sound_effects",
+            "promptEnhancement": {
+              "basePrompt": "Engaging sound effects for reaction content",
+              "soundCategories": ["whoosh", "pop", "chime", "notification"],
+              "styleTags": ["engaging", "attention-grabbing", "social media"],
+              "qualityTags": ["high quality", "clear", "impactful"]
+            },
+            "constraints": {
+              "maxSoundIntensity": 0.6,
+              "requiredStyle": "engaging",
+              "forbiddenEffects": ["subtle", "minimalist"]
+            }
+          },
+          {
+            "step": 4,
+            "name": "Video Animation",
+            "description": "Animate with dynamic, attention-grabbing movements",
+            "jobType": "gen_video_falai",
+            "model": "veo3_fast",
+            "promptEnhancement": {
+              "basePrompt": "Dynamic, attention-grabbing video with bold movements",
+              "cameraMovements": ["dynamic", "energetic", "attention-grabbing"],
+              "styleTags": ["bold", "vibrant", "attention-grabbing", "social media"],
+              "qualityTags": ["high quality", "vibrant colors", "eye-catching"]
+            },
+            "constraints": {
+              "maxMovementIntensity": 0.6,
+              "requiredStyle": "handheld",
+              "forbiddenEffects": ["cinematic_zoom", "bokeh_transition"]
+            }
+          },
+          {
+            "step": 5,
+            "name": "Final Render",
+            "description": "Render final UGC reaction video with bold style",
+            "jobType": "render_shotstack",
+            "constraints": {
+              "maxEffectIntensity": 0.6,
+              "requiredStyle": "handheld",
+              "forbiddenEffects": ["cinematic_zoom", "bokeh_transition"]
+            }
+          }
+        ]
+      },
+      "expectedOutput": {
+        "duration": "10-20 seconds",
+        "style": "bold, vibrant, attention-grabbing",
+        "quality": "high energy, social media optimized",
+        "cost": "$3-5"
+      }
+    },
+    
+    "product_ad_recipe": {
+      "recipeId": "product_ad_recipe",
+      "recipeName": "Product Advertisement Workflow",
+      "description": "Professional product advertisement with brand consistency",
+      "profileId": "marketing_dynamic",
+      "enforcementMode": "strict",
+      "workflow": {
+        "steps": [
+          {
+            "step": 1,
+            "name": "Product Enhancement",
+            "description": "Enhance product images with professional, brand-consistent style",
+            "jobType": "enhance_image_falai",
+            "model": "seedream_4.0",
+            "promptEnhancement": {
+              "basePrompt": "Professional product photo, brand-consistent, high quality",
+              "styleTags": ["professional", "brand-consistent", "high quality"],
+              "qualityTags": ["high quality", "professional", "brand-consistent"],
+              "forbiddenTags": ["casual", "handheld", "authentic"]
+            },
+            "constraints": {
+              "maxEnhancementIntensity": 0.8,
+              "requiredStyle": "cinematic",
+              "forbiddenEffects": ["handheld", "casual"]
+            }
+          },
+          {
+            "step": 2,
+            "name": "Multi-Camera Angles",
+            "description": "Generate professional product shots from multiple angles",
+            "jobType": "gen_image_falai",
+            "model": "seedream_4.0",
+            "promptEnhancement": {
+              "basePrompt": "Professional product photo from different angles, brand-consistent",
+              "angleVariations": ["close-up", "medium shot", "wide shot", "overhead", "detail"],
+              "styleTags": ["professional", "brand-consistent", "high quality"],
+              "qualityTags": ["high quality", "professional", "brand-consistent"]
+            },
+            "constraints": {
+              "maxVariations": 5,
+              "requiredStyle": "cinematic",
+              "forbiddenEffects": ["handheld", "casual"]
+            }
+          },
+          {
+            "step": 3,
+            "name": "Voice Generation",
+            "description": "Generate professional, confident voice for product advertisement",
+            "jobType": "tts_elevenlabs",
+            "model": "elevenlabs_dialogue",
+            "promptEnhancement": {
+              "basePrompt": "Professional, confident product advertisement voice",
+              "voiceStyle": "dramatic",
+              "emotionTags": ["confident", "persuasive", "professional"],
+              "v3AudioTags": ["[confident]", "[persuasive]", "[professional]"]
+            },
+            "constraints": {
+              "maxEmotionIntensity": 0.8,
+              "requiredTone": "energetic",
+              "forbiddenStyles": ["casual", "conversational", "calm"]
+            }
+          },
+          {
+            "step": 4,
+            "name": "Music Generation",
+            "description": "Generate upbeat, brand-consistent background music",
+            "jobType": "gen_music_elevenlabs",
+            "model": "elevenlabs_music",
+            "promptEnhancement": {
+              "basePrompt": "Upbeat, brand-consistent background music for product advertisement",
+              "musicStyle": "upbeat",
+              "emotionTags": ["energetic", "confident", "persuasive"],
+              "qualityTags": ["high quality", "professional", "brand-consistent"]
+            },
+            "constraints": {
+              "maxMusicIntensity": 0.7,
+              "requiredStyle": "upbeat",
+              "forbiddenEffects": ["calm", "minimalist", "subtle"]
+            }
+          },
+          {
+            "step": 5,
+            "name": "Video Animation",
+            "description": "Animate with professional, cinematic movements",
+            "jobType": "gen_video_falai",
+            "model": "veo3_fast",
+            "promptEnhancement": {
+              "basePrompt": "Professional, cinematic video with smooth movements",
+              "cameraMovements": ["smooth", "professional", "cinematic"],
+              "styleTags": ["professional", "cinematic", "high quality"],
+              "qualityTags": ["high quality", "professional", "cinematic"]
+            },
+            "constraints": {
+              "maxMovementIntensity": 0.8,
+              "requiredStyle": "cinematic",
+              "forbiddenEffects": ["handheld", "casual"]
+            }
+          },
+          {
+            "step": 6,
+            "name": "Final Render",
+            "description": "Render final product advertisement with professional quality",
+            "jobType": "render_shotstack",
+            "constraints": {
+              "maxEffectIntensity": 0.8,
+              "requiredStyle": "cinematic",
+              "forbiddenEffects": ["handheld", "casual"]
+            }
+          }
+        ]
+      },
+      "expectedOutput": {
+        "duration": "30-60 seconds",
+        "style": "professional, cinematic, brand-consistent",
+        "quality": "high production value, professional",
+        "cost": "$8-15"
+      }
+    },
+    
+    "educational_explainer_recipe": {
+      "recipeId": "educational_explainer_recipe",
+      "recipeName": "Educational Explainer Workflow",
+      "description": "Clear, informative educational content with minimalist approach",
+      "profileId": "educational_explainer",
+      "enforcementMode": "strict",
+      "workflow": {
+        "steps": [
+          {
+            "step": 1,
+            "name": "Image Enhancement",
+            "description": "Enhance images with clear, educational style",
+            "jobType": "enhance_image_falai",
+            "model": "nano_banana",
+            "promptEnhancement": {
+              "basePrompt": "Clear, educational image, minimalist style, easy to understand",
+              "styleTags": ["clear", "educational", "minimalist", "easy to understand"],
+              "qualityTags": ["high quality", "clear", "educational"],
+              "forbiddenTags": ["dramatic", "cinematic", "complex"]
+            },
+            "constraints": {
+              "maxEnhancementIntensity": 0.3,
+              "requiredStyle": "minimalist",
+              "forbiddenEffects": ["dramatic", "cinematic_zoom", "bokeh_transition"]
+            }
+          },
+          {
+            "step": 2,
+            "name": "Chart Generation",
+            "description": "Generate clear, educational charts and diagrams",
+            "jobType": "gen_chart_imagegpt1",
+            "model": "imagegpt1",
+            "promptEnhancement": {
+              "basePrompt": "Clear, educational chart, minimalist style, easy to understand",
+              "chartStyle": "minimalist",
+              "styleTags": ["clear", "educational", "minimalist", "easy to understand"],
+              "qualityTags": ["high quality", "clear", "educational"]
+            },
+            "constraints": {
+              "maxChartComplexity": 0.3,
+              "requiredStyle": "minimalist",
+              "forbiddenEffects": ["complex", "dramatic", "cinematic"]
+            }
+          },
+          {
+            "step": 3,
+            "name": "Voice Generation",
+            "description": "Generate clear, educational voice with professional tone",
+            "jobType": "tts_elevenlabs",
+            "model": "elevenlabs_dialogue",
+            "promptEnhancement": {
+              "basePrompt": "Clear, educational voice, professional tone",
+              "voiceStyle": "clear",
+              "emotionTags": ["clear", "educational", "professional"],
+              "v3AudioTags": ["[clear]", "[educational]", "[professional]"]
+            },
+            "constraints": {
+              "maxEmotionIntensity": 0.2,
+              "requiredTone": "professional",
+              "forbiddenStyles": ["dramatic", "energetic", "casual"]
+            }
+          },
+          {
+            "step": 4,
+            "name": "Music Generation",
+            "description": "Generate subtle, educational background music",
+            "jobType": "gen_music_elevenlabs",
+            "model": "elevenlabs_music",
+            "promptEnhancement": {
+              "basePrompt": "Subtle, educational background music, minimalist style",
+              "musicStyle": "subtle",
+              "emotionTags": ["calm", "educational", "minimalist"],
+              "qualityTags": ["high quality", "subtle", "educational"]
+            },
+            "constraints": {
+              "maxMusicIntensity": 0.2,
+              "requiredStyle": "subtle",
+              "forbiddenEffects": ["energetic", "dramatic", "complex"]
+            }
+          },
+          {
+            "step": 5,
+            "name": "Video Animation",
+            "description": "Animate with smooth, educational movements",
+            "jobType": "gen_video_falai",
+            "model": "veo3_fast",
+            "promptEnhancement": {
+              "basePrompt": "Smooth, educational video with clear movements",
+              "cameraMovements": ["smooth", "clear", "educational"],
+              "styleTags": ["clear", "educational", "minimalist"],
+              "qualityTags": ["high quality", "clear", "educational"]
+            },
+            "constraints": {
+              "maxMovementIntensity": 0.3,
+              "requiredStyle": "minimalist",
+              "forbiddenEffects": ["dramatic", "cinematic_zoom", "bokeh_transition"]
+            }
+          },
+          {
+            "step": 6,
+            "name": "Final Render",
+            "description": "Render final educational explainer with clear, minimalist style",
+            "jobType": "render_shotstack",
+            "constraints": {
+              "maxEffectIntensity": 0.3,
+              "requiredStyle": "minimalist",
+              "forbiddenEffects": ["dramatic", "cinematic_zoom", "bokeh_transition"]
+            }
+          }
+        ]
+      },
+      "expectedOutput": {
+        "duration": "60-120 seconds",
+        "style": "clear, minimalist, educational",
+        "quality": "high clarity, easy to understand",
+        "cost": "$5-8"
+      }
+    },
+    
+    "cinematic_trailer_recipe": {
+      "recipeId": "cinematic_trailer_recipe",
+      "recipeName": "Cinematic Trailer Workflow",
+      "description": "High-quality cinematic trailer with dramatic effects",
+      "profileId": "cinematic_trailer",
+      "enforcementMode": "creative",
+      "workflow": {
+        "steps": [
+          {
+            "step": 1,
+            "name": "Image Enhancement",
+            "description": "Enhance images with cinematic, dramatic style",
+            "jobType": "enhance_image_falai",
+            "model": "seedream_4.0",
+            "promptEnhancement": {
+              "basePrompt": "Cinematic, dramatic image, high production value",
+              "styleTags": ["cinematic", "dramatic", "high production value"],
+              "qualityTags": ["high quality", "cinematic", "dramatic"],
+              "forbiddenTags": ["casual", "handheld", "minimalist"]
+            },
+            "constraints": {
+              "maxEnhancementIntensity": 1.0,
+              "requiredStyle": "cinematic",
+              "forbiddenEffects": ["handheld", "casual", "minimalist"]
+            }
+          },
+          {
+            "step": 2,
+            "name": "Voice Generation",
+            "description": "Generate dramatic, cinematic voice for trailer",
+            "jobType": "tts_elevenlabs",
+            "model": "elevenlabs_dialogue",
+            "promptEnhancement": {
+              "basePrompt": "Dramatic, cinematic trailer voice",
+              "voiceStyle": "dramatic",
+              "emotionTags": ["dramatic", "cinematic", "epic"],
+              "v3AudioTags": ["[dramatic]", "[cinematic]", "[epic]"]
+            },
+            "constraints": {
+              "maxEmotionIntensity": 1.0,
+              "requiredTone": "dramatic",
+              "forbiddenStyles": ["casual", "conversational", "calm"]
+            }
+          },
+          {
+            "step": 3,
+            "name": "Music Generation",
+            "description": "Generate epic, cinematic background music",
+            "jobType": "gen_music_elevenlabs",
+            "model": "elevenlabs_music",
+            "promptEnhancement": {
+              "basePrompt": "Epic, cinematic background music for trailer",
+              "musicStyle": "epic",
+              "emotionTags": ["epic", "dramatic", "cinematic"],
+              "qualityTags": ["high quality", "epic", "cinematic"]
+            },
+            "constraints": {
+              "maxMusicIntensity": 0.9,
+              "requiredStyle": "epic",
+              "forbiddenEffects": ["subtle", "minimalist", "calm"]
+            }
+          },
+          {
+            "step": 4,
+            "name": "Sound Effects",
+            "description": "Add dramatic sound effects for cinematic impact",
+            "jobType": "gen_sound_effects_elevenlabs",
+            "model": "elevenlabs_sound_effects",
+            "promptEnhancement": {
+              "basePrompt": "Dramatic sound effects for cinematic trailer",
+              "soundCategories": ["impact", "whoosh", "dramatic", "epic"],
+              "styleTags": ["dramatic", "cinematic", "epic"],
+              "qualityTags": ["high quality", "dramatic", "cinematic"]
+            },
+            "constraints": {
+              "maxSoundIntensity": 1.0,
+              "requiredStyle": "dramatic",
+              "forbiddenEffects": ["subtle", "minimalist", "calm"]
+            }
+          },
+          {
+            "step": 5,
+            "name": "Video Animation",
+            "description": "Animate with cinematic, dramatic movements",
+            "jobType": "gen_video_falai",
+            "model": "veo3",
+            "promptEnhancement": {
+              "basePrompt": "Cinematic, dramatic video with epic movements",
+              "cameraMovements": ["cinematic", "dramatic", "epic"],
+              "styleTags": ["cinematic", "dramatic", "epic"],
+              "qualityTags": ["high quality", "cinematic", "dramatic"]
+            },
+            "constraints": {
+              "maxMovementIntensity": 1.0,
+              "requiredStyle": "cinematic",
+              "forbiddenEffects": ["handheld", "casual", "minimalist"]
+            }
+          },
+          {
+            "step": 6,
+            "name": "Final Render",
+            "description": "Render final cinematic trailer with dramatic effects",
+            "jobType": "render_shotstack",
+            "constraints": {
+              "maxEffectIntensity": 1.0,
+              "requiredStyle": "cinematic",
+              "forbiddenEffects": ["handheld", "casual", "minimalist"]
+            }
+          }
+        ]
+      },
+      "expectedOutput": {
+        "duration": "30-90 seconds",
+        "style": "cinematic, dramatic, epic",
+        "quality": "high production value, movie-quality",
+        "cost": "$15-25"
+      }
+    }
+  },
+  
+  "defaults": {
+    "enforcementMode": "balanced",
+    "maxSteps": 6,
+    "timeoutPerStep": 600,
+    "maxTotalTimeout": 3600
+  }
+}

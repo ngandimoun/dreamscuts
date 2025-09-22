@@ -68,6 +68,26 @@ const LANGUAGE_CREATIVE_TEMPLATES = {
       style: "Narration claire et structurée",
       music: "Musique de fond professionnelle et subtile",
       transitions: ["fondu", "glissement", "zoom sur graphiques"]
+    },
+    ugc_testimonial: {
+      core_concept: "Créer du contenu testimonial authentique et personnel",
+      visual_approach: "Style UGC authentique avec caméra à la main",
+      style_direction: "Style décontracté et naturel",
+      mood_guidance: "Ton authentique et personnel",
+      pacing: "naturel",
+      style: "Narration conversationnelle et sincère",
+      music: "Musique de fond subtile et naturelle",
+      transitions: ["fondu", "glissement naturel"]
+    },
+    ugc_reaction: {
+      core_concept: "Créer du contenu de réaction engageant pour les réseaux sociaux",
+      visual_approach: "Style UGC dynamique et énergique",
+      style_direction: "Style audacieux et accrocheur",
+      mood_guidance: "Ton excité et engageant",
+      pacing: "rapide",
+      style: "Narration énergique et expressive",
+      music: "Musique entraînante et moderne",
+      transitions: ["coupure rapide", "zoom dynamique", "effet de glissement"]
     }
   },
   
@@ -112,6 +132,26 @@ const LANGUAGE_CREATIVE_TEMPLATES = {
       style: "Narración clara y estructurada",
       music: "Música de fondo profesional y sutil",
       transitions: ["desvanecimiento", "deslizamiento", "zoom en gráficos"]
+    },
+    ugc_testimonial: {
+      core_concept: "Crear contenido testimonial auténtico y personal",
+      visual_approach: "Estilo UGC auténtico con cámara en mano",
+      style_direction: "Estilo relajado y natural",
+      mood_guidance: "Tono auténtico y personal",
+      pacing: "natural",
+      style: "Narración conversacional y sincera",
+      music: "Música de fondo sutil y natural",
+      transitions: ["desvanecimiento", "deslizamiento natural"]
+    },
+    ugc_reaction: {
+      core_concept: "Crear contenido de reacción atractivo para redes sociales",
+      visual_approach: "Estilo UGC dinámico y energético",
+      style_direction: "Estilo audaz y llamativo",
+      mood_guidance: "Tono emocionado y atractivo",
+      pacing: "rápido",
+      style: "Narración energética y expresiva",
+      music: "Música pegajosa y moderna",
+      transitions: ["corte rápido", "zoom dinámico", "efecto de deslizamiento"]
     }
   },
   
@@ -332,6 +372,26 @@ const LANGUAGE_CREATIVE_TEMPLATES = {
       style: "명확하고 구조화된 내레이션",
       music: "은은하고 전문적인 배경음악",
       transitions: ["페이드", "슬라이드", "차트 줌"]
+    },
+    ugc_testimonial: {
+      core_concept: "진정성 있고 개인적인 추천 콘텐츠 만들기",
+      visual_approach: "핸드헬드 카메라로 진정성 있는 UGC 스타일",
+      style_direction: "편안하고 자연스러운 스타일",
+      mood_guidance: "진정성 있고 개인적인 톤",
+      pacing: "자연스러운",
+      style: "대화형이고 진심 어린 내레이션",
+      music: "은은하고 자연스러운 배경음악",
+      transitions: ["페이드", "자연스러운 슬라이드"]
+    },
+    ugc_reaction: {
+      core_concept: "소셜 미디어를 위한 매력적인 반응 콘텐츠 만들기",
+      visual_approach: "역동적이고 에너지 넘치는 UGC 스타일",
+      style_direction: "대담하고 눈에 띄는 스타일",
+      mood_guidance: "흥미진진하고 매력적인 톤",
+      pacing: "빠른",
+      style: "에너지 넘치고 표현력 있는 내레이션",
+      music: "캐치하고 모던한 음악",
+      transitions: ["빠른 컷", "역동적 줌", "슬라이드 효과"]
     }
   },
   
@@ -376,6 +436,26 @@ const LANGUAGE_CREATIVE_TEMPLATES = {
       style: "Narasi yang jelas dan terstruktur",
       music: "Musik latar yang halus dan profesional",
       transitions: ["fade", "slide", "zoom grafik"]
+    },
+    ugc_testimonial: {
+      core_concept: "Membuat konten testimonial yang autentik dan personal",
+      visual_approach: "Gaya UGC autentik dengan kamera genggam",
+      style_direction: "Gaya santai dan natural",
+      mood_guidance: "Nada autentik dan personal",
+      pacing: "natural",
+      style: "Narasi percakapan dan tulus",
+      music: "Musik latar yang halus dan natural",
+      transitions: ["fade", "slide natural"]
+    },
+    ugc_reaction: {
+      core_concept: "Membuat konten reaksi yang menarik untuk media sosial",
+      visual_approach: "Gaya UGC yang dinamis dan energik",
+      style_direction: "Gaya berani dan mencolok",
+      mood_guidance: "Nada bersemangat dan menarik",
+      pacing: "cepat",
+      style: "Narasi yang energik dan ekspresif",
+      music: "Musik yang catchy dan modern",
+      transitions: ["cut cepat", "zoom dinamis", "efek slide"]
     }
   }
 };
@@ -393,27 +473,51 @@ export function getLanguageAwareCreativeProfile(
   
   if (!languageTemplates || !languageTemplates[profileId as keyof typeof languageTemplates]) {
     // Fallback to English profile with default values
-    const defaultEnglishProfile = {
-      core_concept: "Create engaging and informative content",
-      visual_approach: "Professional and clear visuals",
-      style_direction: "Clean and modern style",
-      mood_guidance: "Informative and engaging tone",
-      pacing: "moderate",
-      style: "Clear and structured narration",
-      music: "Subtle background music",
-      transitions: ["fade", "slide", "zoom"]
+    const defaultEnglishProfiles = {
+      educational_explainer: {
+        core_concept: "Create engaging and informative content",
+        visual_approach: "Professional and clear visuals",
+        style_direction: "Clean and modern style",
+        mood_guidance: "Informative and engaging tone",
+        pacing: "moderate",
+        style: "Clear and structured narration",
+        music: "Subtle background music",
+        transitions: ["fade", "slide", "zoom"]
+      },
+      ugc_testimonial: {
+        core_concept: "Create authentic and personal testimonial content",
+        visual_approach: "Authentic UGC style with handheld camera",
+        style_direction: "Casual and natural style",
+        mood_guidance: "Authentic and personal tone",
+        pacing: "natural",
+        style: "Conversational and sincere narration",
+        music: "Subtle and natural background music",
+        transitions: ["fade", "natural slide"]
+      },
+      ugc_reaction: {
+        core_concept: "Create engaging reaction content for social media",
+        visual_approach: "Dynamic and energetic UGC style",
+        style_direction: "Bold and attention-grabbing style",
+        mood_guidance: "Excited and engaging tone",
+        pacing: "fast",
+        style: "Energetic and expressive narration",
+        music: "Catchy and modern music",
+        transitions: ["quick cut", "dynamic zoom", "slide effect"]
+      }
     };
+    
+    const defaultProfile = defaultEnglishProfiles[profileId as keyof typeof defaultEnglishProfiles] || defaultEnglishProfiles.educational_explainer;
     
     return {
       profileId,
-      core_concept: defaultEnglishProfile.core_concept,
-      visual_approach: defaultEnglishProfile.visual_approach,
-      style_direction: defaultEnglishProfile.style_direction,
-      mood_guidance: defaultEnglishProfile.mood_guidance,
-      pacing: defaultEnglishProfile.pacing,
-      style: defaultEnglishProfile.style,
-      music: defaultEnglishProfile.music,
-      transitions: defaultEnglishProfile.transitions,
+      core_concept: defaultProfile.core_concept,
+      visual_approach: defaultProfile.visual_approach,
+      style_direction: defaultProfile.style_direction,
+      mood_guidance: defaultProfile.mood_guidance,
+      pacing: defaultProfile.pacing,
+      style: defaultProfile.style,
+      music: defaultProfile.music,
+      transitions: defaultProfile.transitions,
       language: 'en'
     };
   }

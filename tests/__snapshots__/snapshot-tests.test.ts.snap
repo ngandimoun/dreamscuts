@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Snapshot Tests - Profile-Pipeline Integration Educational Explainer Profile Snapshot should produce consistent educational feature flags 1`] = `
+{
+  "enableCostCaps": true,
+  "enableProfileOverrides": true,
+  "enableQualityGates": true,
+  "enableTimeoutCaps": true,
+  "enableWorkerEnhancements": true,
+  "maxCostPerJob": 0.5,
+  "maxJobTimeout": 600,
+  "maxRetries": 3,
+  "maxTotalCost": 5,
+  "maxTotalTimeout": 3600,
+  "minQualityScore": 0.3,
+  "promptEnhancementMode": "strict",
+}
+`;
+
+exports[`Snapshot Tests - Profile-Pipeline Integration Marketing Dynamic Profile Snapshot should produce consistent marketing feature flags 1`] = `
+{
+  "enableCostCaps": true,
+  "enableProfileOverrides": true,
+  "enableQualityGates": true,
+  "enableTimeoutCaps": true,
+  "enableWorkerEnhancements": true,
+  "maxCostPerJob": 1,
+  "maxJobTimeout": 600,
+  "maxRetries": 3,
+  "maxTotalCost": 10,
+  "maxTotalTimeout": 3600,
+  "minQualityScore": 0.3,
+  "promptEnhancementMode": "creative",
+}
+`;
+
+exports[`Snapshot Tests - Profile-Pipeline Integration UGC Testimonial Profile Snapshot should produce consistent UGC feature flags 1`] = `
+{
+  "enableCostCaps": true,
+  "enableProfileOverrides": true,
+  "enableQualityGates": true,
+  "enableTimeoutCaps": true,
+  "enableWorkerEnhancements": true,
+  "maxCostPerJob": 0.3,
+  "maxJobTimeout": 600,
+  "maxRetries": 3,
+  "maxTotalCost": 3,
+  "maxTotalTimeout": 3600,
+  "minQualityScore": 0.3,
+  "promptEnhancementMode": "balanced",
+}
+`;

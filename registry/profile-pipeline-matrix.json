@@ -1,0 +1,304 @@
+{
+  "version": "1.0.0",
+  "description": "Centralized model selection matrix for creative profiles and pipeline configuration",
+  "lastUpdated": "2025-01-27T00:00:00Z",
+  
+  "profiles": {
+    "educational_explainer": {
+      "profileId": "educational_explainer",
+      "profileName": "Educational Explainer",
+      "coreConcept": "Clear, informative content for learning",
+      "visualApproach": "Clean, minimalist visuals with focus on clarity",
+      "styleDirection": "Professional, accessible, easy to understand",
+      "moodGuidance": "Calm, informative, patient",
+      "pipelineConfiguration": {
+        "imageModel": "nano_banana",
+        "videoModel": "veo3_fast",
+        "ttsModel": "elevenlabs_dialogue",
+        "lipSyncModel": "veed_fabric_1.0",
+        "chartModel": "imagegpt1",
+        "musicModel": "elevenlabs_music",
+        "soundEffectsModel": "elevenlabs_sound_effects"
+      },
+      "enhancementPolicy": "additive",
+      "hardConstraints": {
+        "style": {
+          "palette": ["#FFFFFF", "#F8F9FA", "#6C757D", "#007BFF", "#28A745"],
+          "fonts": ["Inter", "Roboto", "Open Sans"],
+          "visualStyle": "minimalist"
+        },
+        "effects": {
+          "maxIntensity": 0.3,
+          "allowedTypes": ["fade", "slide", "zoom"],
+          "forbiddenTypes": ["dramatic", "cinematic_zoom", "bokeh_transition"]
+        },
+        "pacing": {
+          "maxSpeed": 2.0,
+          "transitionStyle": "smooth"
+        },
+        "audioStyle": {
+          "tone": "professional",
+          "musicIntensity": 0.2,
+          "voiceStyle": "clear"
+        }
+      },
+      "costLimits": {
+        "maxCostPerJob": 0.50,
+        "maxTotalCost": 5.00
+      },
+      "timeouts": {
+        "maxJobTimeout": 300,
+        "maxTotalTimeout": 1800
+      }
+    },
+    
+    "marketing_dynamic": {
+      "profileId": "marketing_dynamic",
+      "profileName": "Marketing Dynamic",
+      "coreConcept": "Engaging, persuasive content for brand promotion",
+      "visualApproach": "Dynamic, eye-catching visuals with brand consistency",
+      "styleDirection": "Professional, confident, attention-grabbing",
+      "moodGuidance": "Enthusiastic, persuasive, confident",
+      "pipelineConfiguration": {
+        "imageModel": "seedream_4.0",
+        "videoModel": "veo3_fast",
+        "ttsModel": "elevenlabs_dialogue",
+        "lipSyncModel": "veed_fabric_1.0",
+        "chartModel": "imagegpt1",
+        "musicModel": "elevenlabs_music",
+        "soundEffectsModel": "elevenlabs_sound_effects"
+      },
+      "enhancementPolicy": "transform_lite",
+      "hardConstraints": {
+        "style": {
+          "palette": ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4", "#FFEAA7"],
+          "fonts": ["Montserrat", "Poppins", "Lato"],
+          "visualStyle": "cinematic"
+        },
+        "effects": {
+          "maxIntensity": 0.8,
+          "allowedTypes": ["fade", "slide", "zoom", "cinematic_zoom", "bokeh_transition"],
+          "forbiddenTypes": []
+        },
+        "pacing": {
+          "maxSpeed": 4.0,
+          "transitionStyle": "dynamic"
+        },
+        "audioStyle": {
+          "tone": "energetic",
+          "musicIntensity": 0.7,
+          "voiceStyle": "dramatic"
+        }
+      },
+      "costLimits": {
+        "maxCostPerJob": 1.00,
+        "maxTotalCost": 10.00
+      },
+      "timeouts": {
+        "maxJobTimeout": 600,
+        "maxTotalTimeout": 3600
+      }
+    },
+    
+    "ugc_testimonial": {
+      "profileId": "ugc_testimonial",
+      "profileName": "UGC Testimonial",
+      "coreConcept": "Authentic, user-generated style testimonial content",
+      "visualApproach": "Handheld, authentic, personal feel",
+      "styleDirection": "Casual, genuine, relatable",
+      "moodGuidance": "Authentic, personal, trustworthy",
+      "pipelineConfiguration": {
+        "imageModel": "nano_banana",
+        "videoModel": "veo3_fast",
+        "ttsModel": "elevenlabs_dialogue",
+        "lipSyncModel": "veed_fabric_1.0",
+        "chartModel": "imagegpt1",
+        "musicModel": "elevenlabs_music",
+        "soundEffectsModel": "elevenlabs_sound_effects"
+      },
+      "enhancementPolicy": "additive",
+      "hardConstraints": {
+        "style": {
+          "palette": ["#FFE5B4", "#FFB6C1", "#87CEEB", "#98FB98", "#F0E68C"],
+          "fonts": ["Comic Sans MS", "Arial", "Helvetica"],
+          "visualStyle": "handheld"
+        },
+        "effects": {
+          "maxIntensity": 0.4,
+          "allowedTypes": ["fade", "slide"],
+          "forbiddenTypes": ["cinematic_zoom", "bokeh_transition", "dramatic"]
+        },
+        "pacing": {
+          "maxSpeed": 1.5,
+          "transitionStyle": "static"
+        },
+        "audioStyle": {
+          "tone": "casual",
+          "musicIntensity": 0.3,
+          "voiceStyle": "conversational"
+        }
+      },
+      "costLimits": {
+        "maxCostPerJob": 0.30,
+        "maxTotalCost": 3.00
+      },
+      "timeouts": {
+        "maxJobTimeout": 240,
+        "maxTotalTimeout": 1200
+      }
+    },
+    
+    "ugc_reaction": {
+      "profileId": "ugc_reaction",
+      "profileName": "UGC Reaction",
+      "coreConcept": "Engaging reaction content for social media",
+      "visualApproach": "Dynamic, energetic, social media optimized",
+      "styleDirection": "Bold, attention-grabbing, trendy",
+      "moodGuidance": "Excited, surprised, engaging",
+      "pipelineConfiguration": {
+        "imageModel": "nano_banana",
+        "videoModel": "veo3_fast",
+        "ttsModel": "elevenlabs_dialogue",
+        "lipSyncModel": "veed_fabric_1.0",
+        "chartModel": "imagegpt1",
+        "musicModel": "elevenlabs_music",
+        "soundEffectsModel": "elevenlabs_sound_effects"
+      },
+      "enhancementPolicy": "transform_lite",
+      "hardConstraints": {
+        "style": {
+          "palette": ["#FF1493", "#00BFFF", "#FFD700", "#FF4500", "#32CD32"],
+          "fonts": ["Impact", "Arial Black", "Comic Sans MS"],
+          "visualStyle": "handheld"
+        },
+        "effects": {
+          "maxIntensity": 0.6,
+          "allowedTypes": ["fade", "slide", "zoom", "whoosh", "pop"],
+          "forbiddenTypes": ["cinematic_zoom", "bokeh_transition"]
+        },
+        "pacing": {
+          "maxSpeed": 3.0,
+          "transitionStyle": "dynamic"
+        },
+        "audioStyle": {
+          "tone": "energetic",
+          "musicIntensity": 0.5,
+          "voiceStyle": "excited"
+        }
+      },
+      "costLimits": {
+        "maxCostPerJob": 0.40,
+        "maxTotalCost": 4.00
+      },
+      "timeouts": {
+        "maxJobTimeout": 300,
+        "maxTotalTimeout": 1500
+      }
+    },
+    
+    "cinematic_trailer": {
+      "profileId": "cinematic_trailer",
+      "profileName": "Cinematic Trailer",
+      "coreConcept": "High-quality cinematic content for trailers and previews",
+      "visualApproach": "Professional, cinematic, high production value",
+      "styleDirection": "Dramatic, polished, movie-quality",
+      "moodGuidance": "Epic, dramatic, compelling",
+      "pipelineConfiguration": {
+        "imageModel": "seedream_4.0",
+        "videoModel": "veo3",
+        "ttsModel": "elevenlabs_dialogue",
+        "lipSyncModel": "veed_fabric_1.0",
+        "chartModel": "imagegpt1",
+        "musicModel": "elevenlabs_music",
+        "soundEffectsModel": "elevenlabs_sound_effects"
+      },
+      "enhancementPolicy": "transform_lite",
+      "hardConstraints": {
+        "style": {
+          "palette": ["#000000", "#1A1A1A", "#FFD700", "#C0C0C0", "#8B0000"],
+          "fonts": ["Cinzel", "Playfair Display", "Montserrat"],
+          "visualStyle": "cinematic"
+        },
+        "effects": {
+          "maxIntensity": 1.0,
+          "allowedTypes": ["fade", "slide", "zoom", "cinematic_zoom", "bokeh_transition", "dramatic"],
+          "forbiddenTypes": []
+        },
+        "pacing": {
+          "maxSpeed": 5.0,
+          "transitionStyle": "dynamic"
+        },
+        "audioStyle": {
+          "tone": "dramatic",
+          "musicIntensity": 0.9,
+          "voiceStyle": "dramatic"
+        }
+      },
+      "costLimits": {
+        "maxCostPerJob": 2.00,
+        "maxTotalCost": 20.00
+      },
+      "timeouts": {
+        "maxJobTimeout": 900,
+        "maxTotalTimeout": 7200
+      }
+    }
+  },
+  
+  "defaults": {
+    "imageModel": "nano_banana",
+    "videoModel": "veo3_fast",
+    "ttsModel": "elevenlabs_dialogue",
+    "lipSyncModel": "veed_fabric_1.0",
+    "chartModel": "imagegpt1",
+    "musicModel": "elevenlabs_music",
+    "soundEffectsModel": "elevenlabs_sound_effects",
+    "enhancementPolicy": "additive",
+    "enforcementMode": "balanced"
+  },
+  
+  "modelCapabilities": {
+    "nano_banana": {
+      "description": "Cost-effective image generation with C.R.I.S.T.A.L method",
+      "bestFor": ["cost-effective", "consistent", "rapid prototyping"],
+      "costPerImage": 0.01,
+      "maxResolution": "1024x1024"
+    },
+    "seedream_4.0": {
+      "description": "High-quality image generation with advanced prompting",
+      "bestFor": ["high-quality", "detailed", "professional"],
+      "costPerImage": 0.05,
+      "maxResolution": "1024x1024"
+    },
+    "imagegpt1": {
+      "description": "OpenAI's specialized chart and diagram generation",
+      "bestFor": ["charts", "diagrams", "data visualization"],
+      "costPerImage": 0.08,
+      "maxResolution": "1024x1024"
+    },
+    "veo3_fast": {
+      "description": "Fast video generation with good quality",
+      "bestFor": ["fast generation", "good quality", "cost-effective"],
+      "costPerSecond": 0.10,
+      "maxDuration": 10
+    },
+    "veo3": {
+      "description": "High-quality video generation with cinematic effects",
+      "bestFor": ["high-quality", "cinematic", "professional"],
+      "costPerSecond": 0.20,
+      "maxDuration": 10
+    },
+    "elevenlabs_dialogue": {
+      "description": "Natural dialogue TTS with emotion control",
+      "bestFor": ["natural speech", "dialogue", "emotion control"],
+      "costPerCharacter": 0.0001,
+      "maxLength": 5000
+    },
+    "veed_fabric_1.0": {
+      "description": "Realistic image-to-video with lip sync",
+      "bestFor": ["talking avatars", "lip sync", "realistic"],
+      "costPerSecond": 0.15,
+      "maxDuration": 30
+    }
+  }
+}

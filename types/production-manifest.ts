@@ -35,6 +35,76 @@ export interface ManifestMetadata {
   voiceGender?: "male" | "female" | "neutral" | "auto";
   cinematicLevel?: "basic" | "pro";
   note?: string;
+  
+  // NEW: Profile-Pipeline Integration
+  profileId?: string;                 // creative profile ID
+  profileVersion?: string;            // profile version for compatibility
+  pipelineRecipeId?: string;          // workflow recipe ID
+  enforcementMode?: "strict" | "balanced" | "creative"; // constraint enforcement level
+  hardConstraints?: HardConstraints;  // non-overridable constraints
+  profileContext?: ProfileContext;    // profile-specific context
+  featureFlags?: {
+    promptEnhancementMode: 'strict' | 'balanced' | 'creative';
+    enableWorkerEnhancements: boolean;
+    maxCostPerJob: number;
+    maxTotalCost: number;
+    maxJobTimeout: number;
+    maxTotalTimeout: number;
+    maxRetries: number;
+  };
+}
+
+/* ---------- Profile-Pipeline Integration Types ---------- */
+export interface HardConstraints {
+  style?: {
+    palette?: string[];               // allowed colors
+    fonts?: string[];                 // allowed fonts
+    visualStyle?: string;             // "minimalist" | "cinematic" | "handheld"
+  };
+  effects?: {
+    maxIntensity?: number;            // 0-1 scale
+    allowedTypes?: string[];          // ["fade", "slide", "zoom"]
+    forbiddenTypes?: string[];        // ["dramatic", "cinematic_zoom"]
+  };
+  pacing?: {
+    maxSpeed?: number;                // scenes per minute
+    transitionStyle?: string;         // "smooth" | "dynamic" | "static"
+  };
+  audioStyle?: {
+    tone?: string;                    // "professional" | "casual" | "energetic"
+    musicIntensity?: number;          // 0-1 scale
+    voiceStyle?: string;              // "clear" | "dramatic" | "conversational"
+  };
+  aspectRatio?: string;               // locked aspect ratio
+  platform?: string;                  // locked platform
+}
+
+export interface ProfileContext {
+  profileId: string;
+  profileName: string;
+  coreConcept: string;
+  visualApproach: string;
+  styleDirection: string;
+  moodGuidance: string;
+  pipelineConfiguration: {
+    imageModel?: string;              // "nano_banana" | "seedream_4.0" | "imagegpt1"
+    videoModel?: string;              // "veo3_fast" | "veo3"
+    ttsModel?: string;                // "elevenlabs_dialogue"
+    lipSyncModel?: string;            // "veed_fabric_1.0" | "veed_lipsync"
+    chartModel?: string;              // "imagegpt1"
+    musicModel?: string;              // "elevenlabs_music"
+    soundEffectsModel?: string;       // "elevenlabs_sound_effects"
+  };
+  enhancementPolicy: "additive" | "transform_lite"; // how workers can enhance prompts
+  costLimits?: {
+    maxCostPerJob?: number;
+    maxTotalCost?: number;
+  };
+  timeouts?: {
+    maxJobTimeout?: number;           // seconds
+    maxTotalTimeout?: number;         // seconds
+  };
+  languageAwareRecipes?: { [key: string]: any }; // Language-aware workflow recipes
 }
 
 /* ---------- Scenes ---------- */
@@ -193,11 +263,22 @@ export interface JobPlan {
     | "gen_music_elevenlabs"
     | "lip_sync_lypsso"
     | "generate_chart_gptimage"
+    | "gen_chart_imagegpt1"
+    | "gen_talking_avatar_veed"
     | "render_shotstack";
   payload: Record<string, any>;
   dependsOn?: string[];
   priority?: number;
   retryPolicy?: { maxRetries?: number; backoffSeconds?: number };
+  estimatedCost?: number;
+  estimatedDuration?: number;
+  warnings?: string[];
+  
+  // NEW: Profile-Pipeline Integration
+  profileContext?: ProfileContext;    // profile context for this job
+  hardConstraints?: HardConstraints;  // constraints to enforce
+  enforcementMode?: "strict" | "balanced" | "creative"; // how strictly to enforce
+  enhancementPolicy?: "additive" | "transform_lite"; // how workers can enhance
 }
 
 /* ---------- QA ---------- */

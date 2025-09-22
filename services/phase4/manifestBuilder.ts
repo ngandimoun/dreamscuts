@@ -43,6 +43,9 @@ import { decomposeJobs } from './decomposeJobs';
 import { parseHumanPlanToDraftManifest as enhancedParseHumanPlan, autoCalculateSceneTimings as enhancedAutoCalculateSceneTimings, validateShotstackCompatibility } from './enhancedDeterministicParser';
 import { optimizeEffectsWithAI, batchOptimizeEffects } from './aiEffectOptimizer';
 import { applyDeterministicParser, applyCompleteDeterministicParser } from './enrichedDeterministicParser';
+import { ProfileContext, HardConstraints } from '../../types/production-manifest';
+import { getFeatureFlagsForProfile, applyFeatureFlagsToJob, validateJobAgainstFeatureFlags } from '../../lib/production-planner/feature-flags';
+import { loadLanguageAwareWorkflowRecipes } from '../../lib/production-planner/language-aware-workflow-recipes';
 
 type AnalyzerJson = any;
 type RefinerJson = any;
@@ -54,6 +57,8 @@ type UIInput = {
   platform?: string | null;
   language?: string | null;
   profile?: string | null;
+  profileId?: string;
+  enforcementMode?: 'strict' | 'balanced' | 'creative';
 };
 
 export interface Phase4Inputs {
@@ -183,6 +188,9 @@ export async function buildManifestFromTreatment(params: Phase4Inputs): Promise<
 
   // 3) Build a manifest object (in-memory)
   let manifest = buildManifestFromIntermediate({ extracted, metadata, analyzer, refiner, script, ui });
+
+  // 3.1) Apply profile-pipeline integration (deterministic merge layer)
+  manifest = await mergeProfileIntoManifest(manifest, extracted, metadata, analyzer, refiner, script, ui);
 
   // 4) Auto-calculate scene timings to ensure timeline continuity
   manifest = autoCalculateSceneTimings(manifest);
@@ -821,6 +829,301 @@ function buildPromptFromVisualHint(hint: string, profile?: string) {
 
 
 /* -----------------------
+   Profile-Pipeline Integration Functions
+   ----------------------- */
+
+/**
+ * mergeProfileIntoManifest
+ * - Centralized deterministic merge of profile context and hard constraints
+ * - Applies precedence order: User UI > Workflow Recipe > Creative Profile > Refiner > Analyzer > Worker Enhancements
+ * - Injects profileContext and hardConstraints into manifest metadata
+ */
+async function mergeProfileIntoManifest(
+  manifest: ProductionManifest,
+  extracted: any,
+  metadata: any,
+  analyzer: any,
+  refiner: any,
+  script: any,
+  ui: UIInput
+): Promise<ProductionManifest> {
+  try {
+    // Load profile-pipeline matrix
+    const profileMatrix = await loadProfilePipelineMatrix();
+    
+    // Determine profile ID with precedence order
+    const profileId = determineProfileId(ui, extracted, refiner, analyzer);
+    
+    // Get profile configuration
+    const profileConfig = profileMatrix.profiles[profileId] || profileMatrix.profiles['educational_explainer'];
+    
+    // Load language-aware workflow recipes
+    const languageAwareRecipes = await loadLanguageAwareWorkflowRecipes(metadata.language);
+    
+    // Create profile context
+    const profileContext: ProfileContext = {
+      profileId: profileConfig.profileId,
+      profileName: profileConfig.profileName,
+      coreConcept: profileConfig.coreConcept,
+      visualApproach: profileConfig.visualApproach,
+      styleDirection: profileConfig.styleDirection,
+      moodGuidance: profileConfig.moodGuidance,
+      pipelineConfiguration: profileConfig.pipelineConfiguration,
+      enhancementPolicy: profileConfig.enhancementPolicy,
+      costLimits: profileConfig.costLimits,
+      timeouts: profileConfig.timeouts,
+      // Add language-aware workflow recipes to profile context
+      languageAwareRecipes: languageAwareRecipes
+    };
+    
+    // Create hard constraints
+    const hardConstraints: HardConstraints = profileConfig.hardConstraints;
+    
+    // Apply hard constraints to manifest
+    manifest = applyHardConstraints(manifest, hardConstraints);
+    
+    // Apply feature flags
+    const featureFlags = getFeatureFlagsForProfile(profileContext.profileId);
+    manifest = applyFeatureFlagsToManifest(manifest, featureFlags);
+    
+    // Update manifest metadata with profile context
+    manifest.metadata = {
+      ...manifest.metadata,
+      profileId: profileContext.profileId,
+      profileVersion: "1.0.0",
+      pipelineRecipeId: extracted.pipelineRecipeId || null,
+      enforcementMode: ui.enforcementMode || "balanced",
+      hardConstraints,
+      profileContext,
+      featureFlags: {
+        promptEnhancementMode: featureFlags.promptEnhancementMode,
+        enableWorkerEnhancements: featureFlags.enableWorkerEnhancements,
+        maxCostPerJob: featureFlags.maxCostPerJob,
+        maxTotalCost: featureFlags.maxTotalCost,
+        maxJobTimeout: featureFlags.maxJobTimeout,
+        maxTotalTimeout: featureFlags.maxTotalTimeout,
+        maxRetries: featureFlags.maxRetries
+      }
+    };
+    
+    return manifest;
+  } catch (error) {
+    console.warn('Profile merge failed, using defaults:', error);
+    return manifest;
+  }
+}
+
+/**
+ * applyHardConstraints
+ * - Applies hard constraints to manifest without overriding profile intent
+ * - Clamps or drops conflicting enhancements
+ * - Logs constraint violations
+ */
+function applyHardConstraints(manifest: ProductionManifest, hardConstraints: HardConstraints): ProductionManifest {
+  const warnings: string[] = [];
+  
+  // Apply style constraints
+  if (hardConstraints.style) {
+    if (hardConstraints.style.palette && manifest.visuals.colorPalette) {
+      // Clamp color palette to allowed colors
+      const allowedColors = hardConstraints.style.palette;
+      manifest.visuals.colorPalette = manifest.visuals.colorPalette.filter(color => 
+        allowedColors.includes(color)
+      );
+      if (manifest.visuals.colorPalette.length === 0) {
+        manifest.visuals.colorPalette = [allowedColors[0]];
+        warnings.push(`Color palette clamped to profile constraint: ${allowedColors[0]}`);
+      }
+    }
+    
+    if (hardConstraints.style.fonts && manifest.visuals.fonts) {
+      // Clamp fonts to allowed fonts
+      const allowedFonts = hardConstraints.style.fonts;
+      if (manifest.visuals.fonts.primary && !allowedFonts.includes(manifest.visuals.fonts.primary)) {
+        manifest.visuals.fonts.primary = allowedFonts[0];
+        warnings.push(`Primary font clamped to profile constraint: ${allowedFonts[0]}`);
+      }
+      if (manifest.visuals.fonts.secondary && !allowedFonts.includes(manifest.visuals.fonts.secondary)) {
+        manifest.visuals.fonts.secondary = allowedFonts[0];
+        warnings.push(`Secondary font clamped to profile constraint: ${allowedFonts[0]}`);
+      }
+    }
+  }
+  
+  // Apply effects constraints
+  if (hardConstraints.effects) {
+    if (hardConstraints.effects.allowedTypes && manifest.effects.allowed) {
+      // Filter allowed effects
+      const originalAllowed = [...manifest.effects.allowed];
+      manifest.effects.allowed = manifest.effects.allowed.filter(effect => 
+        hardConstraints.effects!.allowedTypes!.includes(effect)
+      );
+      if (manifest.effects.allowed.length !== originalAllowed.length) {
+        warnings.push(`Effects filtered to profile constraints: ${manifest.effects.allowed.join(', ')}`);
+      }
+    }
+    
+    if (hardConstraints.effects.forbiddenTypes && manifest.effects.allowed) {
+      // Remove forbidden effects
+      const originalAllowed = [...manifest.effects.allowed];
+      manifest.effects.allowed = manifest.effects.allowed.filter(effect => 
+        !hardConstraints.effects!.forbiddenTypes!.includes(effect)
+      );
+      if (manifest.effects.allowed.length !== originalAllowed.length) {
+        warnings.push(`Forbidden effects removed: ${originalAllowed.filter(e => !manifest.effects.allowed.includes(e)).join(', ')}`);
+      }
+    }
+  }
+  
+  // Apply audio style constraints
+  if (hardConstraints.audioStyle && manifest.audio.ttsDefaults) {
+    if (hardConstraints.audioStyle.voiceStyle && manifest.audio.ttsDefaults.style) {
+      // Clamp voice style to allowed style
+      const allowedStyle = hardConstraints.audioStyle.voiceStyle;
+      if (manifest.audio.ttsDefaults.style !== allowedStyle) {
+        manifest.audio.ttsDefaults.style = allowedStyle;
+        warnings.push(`Voice style clamped to profile constraint: ${allowedStyle}`);
+      }
+    }
+  }
+  
+  // Apply aspect ratio constraint
+  if (hardConstraints.aspectRatio && manifest.metadata.aspectRatio !== hardConstraints.aspectRatio) {
+    manifest.metadata.aspectRatio = hardConstraints.aspectRatio;
+    warnings.push(`Aspect ratio clamped to profile constraint: ${hardConstraints.aspectRatio}`);
+  }
+  
+  // Apply platform constraint
+  if (hardConstraints.platform && manifest.metadata.platform !== hardConstraints.platform) {
+    manifest.metadata.platform = hardConstraints.platform;
+    warnings.push(`Platform clamped to profile constraint: ${hardConstraints.platform}`);
+  }
+  
+  // Add warnings to manifest
+  if (warnings.length > 0) {
+    manifest.warnings = [...(manifest.warnings || []), ...warnings];
+  }
+  
+  return manifest;
+}
+
+/**
+ * determineProfileId
+ * - Determines profile ID based on precedence order
+ * - User UI > Workflow Recipe > Creative Profile > Refiner > Analyzer
+ */
+function determineProfileId(ui: UIInput, extracted: any, refiner: any, analyzer: any): string {
+  // Precedence order: User UI > Workflow Recipe > Creative Profile > Refiner > Analyzer
+  if (ui.profile) return ui.profile;
+  if (extracted.pipelineRecipeId) {
+    // Map recipe to profile
+    const recipeToProfileMap: Record<string, string> = {
+      'ugc_testimonial_recipe': 'ugc_testimonial',
+      'ugc_reaction_recipe': 'ugc_reaction',
+      'product_ad_recipe': 'marketing_dynamic',
+      'educational_explainer_recipe': 'educational_explainer',
+      'cinematic_trailer_recipe': 'cinematic_trailer'
+    };
+    return recipeToProfileMap[extracted.pipelineRecipeId] || 'educational_explainer';
+  }
+  if (extracted.profile) return extracted.profile;
+  if (refiner.profile) return refiner.profile;
+  if (analyzer.profile) return analyzer.profile;
+  
+  return 'educational_explainer'; // Default fallback
+}
+
+/**
+ * loadProfilePipelineMatrix
+ * - Loads profile-pipeline matrix from registry
+ */
+async function loadProfilePipelineMatrix(): Promise<any> {
+  try {
+    const fs = await import('fs/promises');
+    const path = await import('path');
+    const matrixPath = path.join(process.cwd(), 'registry', 'profile-pipeline-matrix.json');
+    const matrixData = await fs.readFile(matrixPath, 'utf-8');
+    return JSON.parse(matrixData);
+  } catch (error) {
+    console.warn('Failed to load profile-pipeline matrix, using defaults:', error);
+    return {
+      profiles: {
+        'educational_explainer': {
+          profileId: 'educational_explainer',
+          profileName: 'Educational Explainer',
+          coreConcept: 'Clear, informative content for learning',
+          visualApproach: 'Clean, minimalist visuals with focus on clarity',
+          styleDirection: 'Professional, accessible, easy to understand',
+          moodGuidance: 'Calm, informative, patient',
+          pipelineConfiguration: {
+            imageModel: 'nano_banana',
+            videoModel: 'veo3_fast',
+            ttsModel: 'elevenlabs_dialogue',
+            lipSyncModel: 'veed_fabric_1.0',
+            chartModel: 'imagegpt1',
+            musicModel: 'elevenlabs_music',
+            soundEffectsModel: 'elevenlabs_sound_effects'
+          },
+          enhancementPolicy: 'additive',
+          hardConstraints: {
+            style: {
+              palette: ['#FFFFFF', '#F8F9FA', '#6C757D', '#007BFF', '#28A745'],
+              fonts: ['Inter', 'Roboto', 'Open Sans'],
+              visualStyle: 'minimalist'
+            },
+            effects: {
+              maxIntensity: 0.3,
+              allowedTypes: ['fade', 'slide', 'zoom'],
+              forbiddenTypes: ['dramatic', 'cinematic_zoom', 'bokeh_transition']
+            },
+            pacing: {
+              maxSpeed: 2.0,
+              transitionStyle: 'smooth'
+            },
+            audioStyle: {
+              tone: 'professional',
+              musicIntensity: 0.2,
+              voiceStyle: 'clear'
+            }
+          }
+        }
+      }
+    };
+  }
+}
+
+/**
+ * Apply feature flags to manifest
+ */
+function applyFeatureFlagsToManifest(manifest: ProductionManifest, featureFlags: any): ProductionManifest {
+  const updatedManifest = { ...manifest };
+  
+  // Apply cost caps to jobs
+  if (featureFlags.enableCostCaps && updatedManifest.jobs) {
+    updatedManifest.jobs = updatedManifest.jobs.map(job => {
+      if (job.estimatedCost && job.estimatedCost > featureFlags.maxCostPerJob) {
+        job.estimatedCost = featureFlags.maxCostPerJob;
+        job.warnings = [...(job.warnings || []), `Cost capped to ${featureFlags.maxCostPerJob}`];
+      }
+      return job;
+    });
+  }
+  
+  // Apply timeout caps to jobs
+  if (featureFlags.enableTimeoutCaps && updatedManifest.jobs) {
+    updatedManifest.jobs = updatedManifest.jobs.map(job => {
+      if (job.estimatedDuration && job.estimatedDuration > featureFlags.maxJobTimeout) {
+        job.estimatedDuration = featureFlags.maxJobTimeout;
+        job.warnings = [...(job.warnings || []), `Timeout capped to ${featureFlags.maxJobTimeout}s`];
+      }
+      return job;
+    });
+  }
+  
+  return updatedManifest;
+}
+
+/* -----------------------
    Exports (if needed externally)
    ----------------------- */
 export default {
@@ -829,6 +1132,8 @@ export default {
   validateManifest,
   deterministicRepair,
   buildMinimalFallbackManifest,
+  mergeProfileIntoManifest,
+  applyHardConstraints,
 };
 
 /* End of manifestBuilder.ts */

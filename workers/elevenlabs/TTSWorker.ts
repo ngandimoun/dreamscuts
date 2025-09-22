@@ -18,6 +18,7 @@ import { BaseWorker, WorkerConfig, JobResult } from '../base/BaseWorker';
 import { ElevenLabsService } from '../../lib/elevenlabs/service';
 import { DialogueManager } from '../../lib/elevenlabs/dialogue-manager';
 import type { TextToDialogueOptions, DialogueSettings } from '../../lib/elevenlabs/types';
+import { ProfileContext, HardConstraints } from '../../types/production-manifest';
 
 export interface TTSJobPayload {
   sceneId: string;
@@ -47,6 +48,12 @@ export interface TTSJobPayload {
     voice_id: string;
     lines: string[];
   }>;
+  
+  // NEW: Profile-Pipeline Integration
+  profileContext?: ProfileContext;
+  hardConstraints?: HardConstraints;
+  enforcementMode?: 'strict' | 'balanced' | 'creative';
+  enhancementPolicy?: 'additive' | 'transform_lite';
 }
 
 export class TTSWorker extends BaseWorker {
@@ -85,50 +92,59 @@ export class TTSWorker extends BaseWorker {
         hasAudioTags: !!payload.audioTags?.length
       });
 
+      // Step 0: Apply hard constraints before any enhancement
+      const constrainedPayload = this.applyHardConstraints(payload);
+      if (constrainedPayload !== payload) {
+        this.log('info', 'Applied hard constraints to TTS job', {
+          originalVoiceStyle: payload.voiceSettings?.style,
+          constrainedVoiceStyle: constrainedPayload.voiceSettings?.style
+        });
+      }
+
       // Step 1: Enhance text with rich examples from codebase
-      let enhancedText = payload.text;
+      let enhancedText = constrainedPayload.text;
       
       // Apply V3 Audio Tags from codebase examples
-      if (payload.v3AudioTags && payload.v3AudioTags.length > 0) {
-        enhancedText = this.enhanceWithV3AudioTags(payload.text, payload.v3AudioTags, payload.promptType);
+      if (constrainedPayload.v3AudioTags && constrainedPayload.v3AudioTags.length > 0) {
+        enhancedText = this.enhanceWithV3AudioTags(constrainedPayload.text, constrainedPayload.v3AudioTags, constrainedPayload.promptType);
         this.log('debug', 'Enhanced text with V3 audio tags', { enhancedText });
       }
       
       // Apply traditional audio tags if provided
-      if (payload.audioTags && payload.audioTags.length > 0) {
+      if (constrainedPayload.audioTags && constrainedPayload.audioTags.length > 0) {
         enhancedText = this.dialogueManager.enhanceTextWithAudioTags(
           enhancedText,
-          payload.audioTags
+          constrainedPayload.audioTags
         );
         this.log('debug', 'Enhanced text with traditional audio tags', { enhancedText });
       }
       
       // Apply prompt type enhancements from codebase examples
-      if (payload.promptType) {
-        enhancedText = this.enhanceByPromptType(enhancedText, payload.promptType, payload.emotionLevel);
-        this.log('debug', 'Enhanced text by prompt type', { promptType: payload.promptType, enhancedText });
+      if (constrainedPayload.promptType) {
+        enhancedText = this.enhanceByPromptType(enhancedText, constrainedPayload.promptType, constrainedPayload.emotionLevel);
+        this.log('debug', 'Enhanced text by prompt type', { promptType: constrainedPayload.promptType, enhancedText });
       }
 
       // Step 2: Prepare dialogue settings
       const dialogueSettings: DialogueSettings = {
-        stability: payload.dialogueSettings?.stability || 'natural',
-        use_audio_tags: payload.dialogueSettings?.use_audio_tags ?? true,
-        enhance_emotion: payload.dialogueSettings?.enhance_emotion ?? true,
-        multi_speaker: payload.dialogueSettings?.multi_speaker ?? false,
-        speaker_voices: payload.dialogueSettings?.speaker_voices
+        stability: constrainedPayload.dialogueSettings?.stability || 'natural',
+        use_audio_tags: constrainedPayload.dialogueSettings?.use_audio_tags ?? true,
+        enhance_emotion: constrainedPayload.dialogueSettings?.enhance_emotion ?? true,
+        multi_speaker: constrainedPayload.dialogueSettings?.multi_speaker ?? false,
+        speaker_voices: constrainedPayload.dialogueSettings?.speaker_voices
       };
 
       // Step 3: Prepare ElevenLabs options
       const options: TextToDialogueOptions = {
         text: enhancedText,
-        voice_id: payload.voiceId,
-        model_id: payload.modelId || 'eleven_multilingual_v2',
-        language_code: payload.languageCode,
-        voice_settings: payload.voiceSettings,
-        output_format: payload.outputFormat || 'mp3_44100_128',
-        seed: payload.seed,
-        previous_text: payload.previousText,
-        next_text: payload.nextText,
+        voice_id: constrainedPayload.voiceId,
+        model_id: constrainedPayload.modelId || 'eleven_multilingual_v2',
+        language_code: constrainedPayload.languageCode,
+        voice_settings: constrainedPayload.voiceSettings,
+        output_format: constrainedPayload.outputFormat || 'mp3_44100_128',
+        seed: constrainedPayload.seed,
+        previous_text: constrainedPayload.previousText,
+        next_text: constrainedPayload.nextText,
         apply_text_normalization: 'auto',
         apply_language_text_normalization: false,
         dialogue_settings: dialogueSettings
@@ -204,6 +220,68 @@ export class TTSWorker extends BaseWorker {
     if (!payload.voiceId && !process.env.ELEVENLABS_DEFAULT_VOICE_ID) {
       throw new Error('Voice ID is required for TTS job');
     }
+  }
+
+  /**
+   * Apply hard constraints to TTS job payload
+   * - Clamps or drops conflicting enhancements
+   * - Logs constraint violations
+   */
+  private applyHardConstraints(payload: TTSJobPayload): TTSJobPayload {
+    if (!payload.hardConstraints || !payload.enforcementMode) {
+      return payload; // No constraints to apply
+    }
+
+    const constraints = payload.hardConstraints;
+    const enforcementMode = payload.enforcementMode;
+    const constrainedPayload = { ...payload };
+    const warnings: string[] = [];
+
+    // Apply audio style constraints
+    if (constraints.audioStyle) {
+      // Clamp voice style to allowed style
+      if (constraints.audioStyle.voiceStyle && payload.voiceSettings?.style) {
+        const allowedStyle = constraints.audioStyle.voiceStyle;
+        if (payload.voiceSettings.style !== allowedStyle) {
+          constrainedPayload.voiceSettings = {
+            ...payload.voiceSettings,
+            style: allowedStyle
+          };
+          warnings.push(`Voice style clamped to profile constraint: ${allowedStyle}`);
+        }
+      }
+
+      // Clamp emotion level based on constraints
+      if (constraints.audioStyle.tone && payload.emotionLevel) {
+        const allowedTone = constraints.audioStyle.tone;
+        const toneMapping: Record<string, string> = {
+          'professional': 'subtle',
+          'casual': 'moderate',
+          'energetic': 'dramatic'
+        };
+        const allowedEmotionLevel = toneMapping[allowedTone] || 'moderate';
+        if (payload.emotionLevel !== allowedEmotionLevel) {
+          constrainedPayload.emotionLevel = allowedEmotionLevel as 'subtle' | 'moderate' | 'dramatic';
+          warnings.push(`Emotion level clamped to profile constraint: ${allowedEmotionLevel}`);
+        }
+      }
+    }
+
+    // Apply enhancement policy constraints
+    if (payload.enhancementPolicy === 'additive' && enforcementMode === 'strict') {
+      // In strict mode with additive policy, limit enhancements
+      if (payload.v3AudioTags && payload.v3AudioTags.length > 3) {
+        constrainedPayload.v3AudioTags = payload.v3AudioTags.slice(0, 3);
+        warnings.push(`V3 audio tags limited to 3 in strict additive mode`);
+      }
+    }
+
+    // Log constraint violations
+    if (warnings.length > 0) {
+      this.log('info', 'Applied hard constraints to TTS job', { warnings });
+    }
+
+    return constrainedPayload;
   }
 
   /**

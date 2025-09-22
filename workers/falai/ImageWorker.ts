@@ -31,6 +31,8 @@ export interface ImageJobPayload {
   outputFormat?: string;
   acceleration?: string;
   resultAssetId: string;
+  // Language information
+  languageCode?: string;
   // Model-specific parameters
   quality?: string;
   style?: string;
@@ -98,7 +100,13 @@ export class ImageWorker extends BaseWorker {
         this.log('debug', 'Enhanced prompt using C.R.I.S.T.A.L method', { enhancedPrompt });
       }
 
-      // Step 2: Apply prompt type enhancements from codebase examples
+      // Step 2: Apply language-aware prompt enhancement
+      if (payload.languageCode && payload.languageCode !== 'en') {
+        enhancedPrompt = this.enhancePromptForLanguage(enhancedPrompt, payload.languageCode);
+        this.log('debug', 'Enhanced prompt for language', { languageCode: payload.languageCode, enhancedPrompt });
+      }
+
+      // Step 3: Apply prompt type enhancements from codebase examples
       if (payload.promptType) {
         enhancedPrompt = this.enhanceByPromptType(enhancedPrompt, payload.promptType, payload);
         this.log('debug', 'Enhanced prompt by type', { promptType: payload.promptType, enhancedPrompt });
@@ -396,6 +404,89 @@ Limitations: No text overlays, no watermarks, no blur effects`
   }
 
   /**
+   * Enhance prompt for specific language context
+   */
+  private enhancePromptForLanguage(prompt: string, languageCode: string): string {
+    const languageEnhancements: Record<string, string> = {
+      'es': ' (Spanish context, culturally appropriate imagery)',
+      'fr': ' (French context, culturally appropriate imagery)',
+      'de': ' (German context, culturally appropriate imagery)',
+      'it': ' (Italian context, culturally appropriate imagery)',
+      'pt': ' (Portuguese context, culturally appropriate imagery)',
+      'ru': ' (Russian context, culturally appropriate imagery)',
+      'ja': ' (Japanese context, culturally appropriate imagery)',
+      'ko': ' (Korean context, culturally appropriate imagery)',
+      'zh': ' (Chinese context, culturally appropriate imagery)',
+      'ar': ' (Arabic context, culturally appropriate imagery)',
+      'hi': ' (Hindi context, culturally appropriate imagery)',
+      'id': ' (Indonesian context, culturally appropriate imagery)',
+      'th': ' (Thai context, culturally appropriate imagery)',
+      'vi': ' (Vietnamese context, culturally appropriate imagery)',
+      'tr': ' (Turkish context, culturally appropriate imagery)',
+      'pl': ' (Polish context, culturally appropriate imagery)',
+      'nl': ' (Dutch context, culturally appropriate imagery)',
+      'sv': ' (Swedish context, culturally appropriate imagery)',
+      'no': ' (Norwegian context, culturally appropriate imagery)',
+      'da': ' (Danish context, culturally appropriate imagery)',
+      'fi': ' (Finnish context, culturally appropriate imagery)',
+      'cs': ' (Czech context, culturally appropriate imagery)',
+      'hu': ' (Hungarian context, culturally appropriate imagery)',
+      'ro': ' (Romanian context, culturally appropriate imagery)',
+      'bg': ' (Bulgarian context, culturally appropriate imagery)',
+      'hr': ' (Croatian context, culturally appropriate imagery)',
+      'sk': ' (Slovak context, culturally appropriate imagery)',
+      'sl': ' (Slovenian context, culturally appropriate imagery)',
+      'et': ' (Estonian context, culturally appropriate imagery)',
+      'lv': ' (Latvian context, culturally appropriate imagery)',
+      'lt': ' (Lithuanian context, culturally appropriate imagery)',
+      'el': ' (Greek context, culturally appropriate imagery)',
+      'he': ' (Hebrew context, culturally appropriate imagery)',
+      'fa': ' (Persian context, culturally appropriate imagery)',
+      'ur': ' (Urdu context, culturally appropriate imagery)',
+      'bn': ' (Bengali context, culturally appropriate imagery)',
+      'ta': ' (Tamil context, culturally appropriate imagery)',
+      'te': ' (Telugu context, culturally appropriate imagery)',
+      'ml': ' (Malayalam context, culturally appropriate imagery)',
+      'kn': ' (Kannada context, culturally appropriate imagery)',
+      'gu': ' (Gujarati context, culturally appropriate imagery)',
+      'pa': ' (Punjabi context, culturally appropriate imagery)',
+      'or': ' (Odia context, culturally appropriate imagery)',
+      'as': ' (Assamese context, culturally appropriate imagery)',
+      'ne': ' (Nepali context, culturally appropriate imagery)',
+      'si': ' (Sinhala context, culturally appropriate imagery)',
+      'my': ' (Burmese context, culturally appropriate imagery)',
+      'km': ' (Khmer context, culturally appropriate imagery)',
+      'lo': ' (Lao context, culturally appropriate imagery)',
+      'ka': ' (Georgian context, culturally appropriate imagery)',
+      'am': ' (Amharic context, culturally appropriate imagery)',
+      'sw': ' (Swahili context, culturally appropriate imagery)',
+      'zu': ' (Zulu context, culturally appropriate imagery)',
+      'af': ' (Afrikaans context, culturally appropriate imagery)',
+      'sq': ' (Albanian context, culturally appropriate imagery)',
+      'az': ' (Azerbaijani context, culturally appropriate imagery)',
+      'be': ' (Belarusian context, culturally appropriate imagery)',
+      'bs': ' (Bosnian context, culturally appropriate imagery)',
+      'ca': ' (Catalan context, culturally appropriate imagery)',
+      'cy': ' (Welsh context, culturally appropriate imagery)',
+      'eu': ' (Basque context, culturally appropriate imagery)',
+      'gl': ' (Galician context, culturally appropriate imagery)',
+      'is': ' (Icelandic context, culturally appropriate imagery)',
+      'ga': ' (Irish context, culturally appropriate imagery)',
+      'mk': ' (Macedonian context, culturally appropriate imagery)',
+      'mt': ' (Maltese context, culturally appropriate imagery)',
+      'sr': ' (Serbian context, culturally appropriate imagery)',
+      'uk': ' (Ukrainian context, culturally appropriate imagery)'
+    };
+
+    const enhancement = languageEnhancements[languageCode];
+    if (enhancement) {
+      return prompt + enhancement;
+    }
+    
+    return prompt;
+  }
+
+  /**
    * Get worker status with Fal.ai-specific info
    */
   getStatus(): any {
@@ -418,7 +509,8 @@ Limitations: No text overlays, no watermarks, no blur effects`
         'cristal_method',
         'prompt_type_enhancement',
         'rich_examples',
-        'model_specific_optimization'
+        'model_specific_optimization',
+        'language_aware_prompts'
       ],
       examples: this.getExamples()
     };
